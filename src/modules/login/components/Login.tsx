@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
+import { useHistory } from 'react-router-dom'
 
 import {
   TextField,
@@ -24,6 +25,7 @@ import {
 } from '@material-ui/icons'
 
 import * as actions from '../actions'
+const PATH = process.env.REACT_APP_BASE_PATH
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -55,6 +57,7 @@ interface State {
 export default function Login() {
   const classes = useStyles()
   const dispatch = useDispatch()
+  const history = useHistory()
 
   const [values, setValues] = useState({
     password: '',
@@ -93,6 +96,10 @@ export default function Login() {
       password: loginInfo.password,
     })
     dispatch(actionLogin)
+  }
+
+  const onRegister = () => {
+    history.push(`${PATH}/register`)
   }
 
   return (
@@ -202,6 +209,16 @@ export default function Login() {
                 onClick={handleSubmit(onLogin)}
               >
                 เข้าสู่ระบบ
+              </Button>
+              <Button
+                size='large'
+                color='secondary'
+                variant='outlined'
+                fullWidth
+                type='submit'
+                onClick={onRegister}
+              >
+                สมัครสมาชิก
               </Button>
             </form>
           </Paper>
