@@ -229,7 +229,7 @@ export default function NavBar({
   const isLoggedIn = checkIsLoggedIn()
 
   const getUsernameLabel = () => {
-    if (isLoggedIn) return getCookie('firstname')
+    if (isLoggedIn) return getCookie('firstName')
     else return 'เข้าสู่ระบบ'
   }
   const usernameLabel = getUsernameLabel()
@@ -299,8 +299,10 @@ export default function NavBar({
   const logout = () => {
     handleMenuClose()
     eraseCookie('token')
-    eraseCookie('firstname')
-    eraseCookie('lastname')
+    eraseCookie('firstName')
+    eraseCookie('lastName')
+    eraseCookie('ministryId')
+    eraseCookie('departmentId')
     eraseCookie('id')
     dispatch(uiActions.setFlashMessage('ออกจากระบบเรียบร้อยแล้ว', 'success'))
     setTimeout(() => {

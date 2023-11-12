@@ -72,8 +72,8 @@ export default function NavDropdownMobile({
   const isUser = isLoginAsUser()
 
   const fullnameLabel = `${
-    getCookie('firstname') ? getCookie('firstname') : ''
-  } ${getCookie('lastname') ? getCookie('lastname') : ''}`
+    getCookie('firstName') ? getCookie('firstName') : ''
+  } ${getCookie('lastName') ? getCookie('lastName') : ''}`
 
   const getRoleLabel = () => {
     if (isAdmin) return 'หัวหน้างาน'
