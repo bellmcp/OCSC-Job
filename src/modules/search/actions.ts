@@ -7,34 +7,28 @@ import * as uiActions from 'modules/ui/actions'
 // import { mock, mockPersonLetters } from './mock'
 
 const LOAD_EDUCATION_LEVELS_REQUEST =
-  'ocsc-person-accredit/search/LOAD_EDUCATION_LEVELS_REQUEST'
+  'ocsc-job/search/LOAD_EDUCATION_LEVELS_REQUEST'
 const LOAD_EDUCATION_LEVELS_SUCCESS =
-  'ocsc-person-accredit/search/LOAD_EDUCATION_LEVELS_SUCCESS'
+  'ocsc-job/search/LOAD_EDUCATION_LEVELS_SUCCESS'
 const LOAD_EDUCATION_LEVELS_FAILURE =
-  'ocsc-person-accredit/search/LOAD_EDUCATION_LEVELS_FAILURE'
+  'ocsc-job/search/LOAD_EDUCATION_LEVELS_FAILURE'
 
-const SEARCH_CURRICULUMS_REQUEST =
-  'ocsc-person-accredit/search/SEARCH_CURRICULUMS_REQUEST'
-const SEARCH_CURRICULUMS_SUCCESS =
-  'ocsc-person-accredit/search/SEARCH_CURRICULUMS_SUCCESS'
-const SEARCH_CURRICULUMS_FAILURE =
-  'ocsc-person-accredit/search/SEARCH_CURRICULUMS_FAILURE'
+const SEARCH_CURRICULUMS_REQUEST = 'ocsc-job/search/SEARCH_CURRICULUMS_REQUEST'
+const SEARCH_CURRICULUMS_SUCCESS = 'ocsc-job/search/SEARCH_CURRICULUMS_SUCCESS'
+const SEARCH_CURRICULUMS_FAILURE = 'ocsc-job/search/SEARCH_CURRICULUMS_FAILURE'
 
-const INCREMENT_VISITOR_REQUEST =
-  'ocsc-person-accredit/search/INCREMENT_VISITOR_REQUEST'
-const INCREMENT_VISITOR_SUCCESS =
-  'ocsc-person-accredit/search/INCREMENT_VISITOR_SUCCESS'
-const INCREMENT_VISITOR_FAILURE =
-  'ocsc-person-accredit/search/INCREMENT_VISITOR_FAILURE'
+const INCREMENT_VISITOR_REQUEST = 'ocsc-job/search/INCREMENT_VISITOR_REQUEST'
+const INCREMENT_VISITOR_SUCCESS = 'ocsc-job/search/INCREMENT_VISITOR_SUCCESS'
+const INCREMENT_VISITOR_FAILURE = 'ocsc-job/search/INCREMENT_VISITOR_FAILURE'
 
 const SEARCH_PERSON_LETTERS_REQUEST =
-  'ocsc-person-accredit/search/SEARCH_PERSON_LETTERS_REQUEST'
+  'ocsc-job/search/SEARCH_PERSON_LETTERS_REQUEST'
 const SEARCH_PERSON_LETTERS_SUCCESS =
-  'ocsc-person-accredit/search/SEARCH_PERSON_LETTERS_SUCCESS'
+  'ocsc-job/search/SEARCH_PERSON_LETTERS_SUCCESS'
 const SEARCH_PERSON_LETTERS_FAILURE =
-  'ocsc-person-accredit/search/SEARCH_PERSON_LETTERS_FAILURE'
+  'ocsc-job/search/SEARCH_PERSON_LETTERS_FAILURE'
 
-const CLEAR_SEARCH_RESULT = 'ocsc-person-accredit/search/CLEAR_SEARCH_RESULT'
+const CLEAR_SEARCH_RESULT = 'ocsc-job/search/CLEAR_SEARCH_RESULT'
 
 function loadEducationlevels() {
   return async (dispatch: any) => {

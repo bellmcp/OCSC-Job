@@ -6,85 +6,78 @@ import { getCookie } from 'utils/cookies'
 import { handleApiError } from 'utils/error'
 
 const LOAD_PROGRESS_GOVERNMENT_REQUEST =
-  'ocsc-person-accredit/curriculum/progress/LOAD_PROGRESS_GOVERNMENT_REQUEST'
+  'ocsc-job/curriculum/progress/LOAD_PROGRESS_GOVERNMENT_REQUEST'
 const LOAD_PROGRESS_GOVERNMENT_SUCCESS =
-  'ocsc-person-accredit/curriculum/progress/LOAD_PROGRESS_GOVERNMENT_SUCCESS'
+  'ocsc-job/curriculum/progress/LOAD_PROGRESS_GOVERNMENT_SUCCESS'
 const LOAD_PROGRESS_GOVERNMENT_FAILURE =
-  'ocsc-person-accredit/curriculum/progress/LOAD_PROGRESS_GOVERNMENT_FAILURE'
+  'ocsc-job/curriculum/progress/LOAD_PROGRESS_GOVERNMENT_FAILURE'
 
 const LOAD_PROGRESS_INDIVIDUAL_REQUEST =
-  'ocsc-person-accredit/curriculum/progress/LOAD_PROGRESS_INDIVIDUAL_REQUEST'
+  'ocsc-job/curriculum/progress/LOAD_PROGRESS_INDIVIDUAL_REQUEST'
 const LOAD_PROGRESS_INDIVIDUAL_SUCCESS =
-  'ocsc-person-accredit/curriculum/progress/LOAD_PROGRESS_INDIVIDUAL_SUCCESS'
+  'ocsc-job/curriculum/progress/LOAD_PROGRESS_INDIVIDUAL_SUCCESS'
 const LOAD_PROGRESS_INDIVIDUAL_FAILURE =
-  'ocsc-person-accredit/curriculum/progress/LOAD_PROGRESS_INDIVIDUAL_FAILURE'
+  'ocsc-job/curriculum/progress/LOAD_PROGRESS_INDIVIDUAL_FAILURE'
 
 const LOAD_LOCK_STATUS_REQUEST =
-  'ocsc-person-accredit/curriculum/approve/LOAD_LOCK_STATUS_REQUEST'
+  'ocsc-job/curriculum/approve/LOAD_LOCK_STATUS_REQUEST'
 const LOAD_LOCK_STATUS_SUCCESS =
-  'ocsc-person-accredit/curriculum/approve/LOAD_LOCK_STATUS_SUCCESS'
+  'ocsc-job/curriculum/approve/LOAD_LOCK_STATUS_SUCCESS'
 const LOAD_LOCK_STATUS_FAILURE =
-  'ocsc-person-accredit/curriculum/approve/LOAD_LOCK_STATUS_FAILURE'
+  'ocsc-job/curriculum/approve/LOAD_LOCK_STATUS_FAILURE'
 
-const LOCK_REQUEST = 'ocsc-person-accredit/curriculum/approve/LOCK_REQUEST'
-const LOCK_SUCCESS = 'ocsc-person-accredit/curriculum/approve/LOCK_SUCCESS'
-const LOCK_FAILURE = 'ocsc-person-accredit/curriculum/approve/LOCK_FAILURE'
+const LOCK_REQUEST = 'ocsc-job/curriculum/approve/LOCK_REQUEST'
+const LOCK_SUCCESS = 'ocsc-job/curriculum/approve/LOCK_SUCCESS'
+const LOCK_FAILURE = 'ocsc-job/curriculum/approve/LOCK_FAILURE'
 
-const UNLOCK_REQUEST = 'ocsc-person-accredit/curriculum/approve/UNLOCK_REQUEST'
-const UNLOCK_SUCCESS = 'ocsc-person-accredit/curriculum/approve/UNLOCK_SUCCESS'
-const UNLOCK_FAILURE = 'ocsc-person-accredit/curriculum/approve/UNLOCK_FAILURE'
+const UNLOCK_REQUEST = 'ocsc-job/curriculum/approve/UNLOCK_REQUEST'
+const UNLOCK_SUCCESS = 'ocsc-job/curriculum/approve/UNLOCK_SUCCESS'
+const UNLOCK_FAILURE = 'ocsc-job/curriculum/approve/UNLOCK_FAILURE'
 
 const LOAD_WAIT_CURRICULUM_REQUEST =
-  'ocsc-person-accredit/curriculum/approve/LOAD_WAIT_CURRICULUM_REQUEST'
+  'ocsc-job/curriculum/approve/LOAD_WAIT_CURRICULUM_REQUEST'
 const LOAD_WAIT_CURRICULUM_SUCCESS =
-  'ocsc-person-accredit/curriculum/approve/LOAD_WAIT_CURRICULUM_SUCCESS'
+  'ocsc-job/curriculum/approve/LOAD_WAIT_CURRICULUM_SUCCESS'
 const LOAD_WAIT_CURRICULUM_FAILURE =
-  'ocsc-person-accredit/curriculum/approve/LOAD_WAIT_CURRICULUM_FAILURE'
+  'ocsc-job/curriculum/approve/LOAD_WAIT_CURRICULUM_FAILURE'
 
 const LOAD_RECOMMENDATION_REQUEST =
-  'ocsc-person-accredit/curriculum/approve/LOAD_RECOMMENDATION_REQUEST'
+  'ocsc-job/curriculum/approve/LOAD_RECOMMENDATION_REQUEST'
 const LOAD_RECOMMENDATION_SUCCESS =
-  'ocsc-person-accredit/curriculum/approve/LOAD_RECOMMENDATION_SUCCESS'
+  'ocsc-job/curriculum/approve/LOAD_RECOMMENDATION_SUCCESS'
 const LOAD_RECOMMENDATION_FAILURE =
-  'ocsc-person-accredit/curriculum/approve/LOAD_RECOMMENDATION_FAILURE'
+  'ocsc-job/curriculum/approve/LOAD_RECOMMENDATION_FAILURE'
 
 const LOAD_RECOMMENDATION_2_REQUEST =
-  'ocsc-person-accredit/curriculum/approve/LOAD_RECOMMENDATION_2_REQUEST'
+  'ocsc-job/curriculum/approve/LOAD_RECOMMENDATION_2_REQUEST'
 const LOAD_RECOMMENDATION_2_SUCCESS =
-  'ocsc-person-accredit/curriculum/approve/LOAD_RECOMMENDATION_2_SUCCESS'
+  'ocsc-job/curriculum/approve/LOAD_RECOMMENDATION_2_SUCCESS'
 const LOAD_RECOMMENDATION_2_FAILURE =
-  'ocsc-person-accredit/curriculum/approve/LOAD_RECOMMENDATION_2_FAILURE'
+  'ocsc-job/curriculum/approve/LOAD_RECOMMENDATION_2_FAILURE'
 
-const UPDATE_ROW_REQUEST =
-  'ocsc-person-accredit/curriculum/approve/UPDATE_ROW_REQUEST'
-const UPDATE_ROW_SUCCESS =
-  'ocsc-person-accredit/curriculum/approve/UPDATE_ROW_SUCCESS'
-const UPDATE_ROW_FAILURE =
-  'ocsc-person-accredit/curriculum/approve/UPDATE_ROW_FAILURE'
+const UPDATE_ROW_REQUEST = 'ocsc-job/curriculum/approve/UPDATE_ROW_REQUEST'
+const UPDATE_ROW_SUCCESS = 'ocsc-job/curriculum/approve/UPDATE_ROW_SUCCESS'
+const UPDATE_ROW_FAILURE = 'ocsc-job/curriculum/approve/UPDATE_ROW_FAILURE'
 
-const IMPORT_FILE_REQUEST =
-  'ocsc-person-accredit/curriculum/approve/IMPORT_FILE_REQUEST'
-const IMPORT_FILE_SUCCESS =
-  'ocsc-person-accredit/curriculum/approve/IMPORT_FILE_SUCCESS'
-const IMPORT_FILE_FAILURE =
-  'ocsc-person-accredit/curriculum/approve/IMPORT_FILE_FAILURE'
+const IMPORT_FILE_REQUEST = 'ocsc-job/curriculum/approve/IMPORT_FILE_REQUEST'
+const IMPORT_FILE_SUCCESS = 'ocsc-job/curriculum/approve/IMPORT_FILE_SUCCESS'
+const IMPORT_FILE_FAILURE = 'ocsc-job/curriculum/approve/IMPORT_FILE_FAILURE'
 
 const DELETE_WAIT_CURRICULUM_REQUEST =
-  'ocsc-person-accredit/curriculum/approve/DELETE_WAIT_CURRICULUM_REQUEST'
+  'ocsc-job/curriculum/approve/DELETE_WAIT_CURRICULUM_REQUEST'
 const DELETE_WAIT_CURRICULUM_SUCCESS =
-  'ocsc-person-accredit/curriculum/approve/DELETE_WAIT_CURRICULUM_SUCCESS'
+  'ocsc-job/curriculum/approve/DELETE_WAIT_CURRICULUM_SUCCESS'
 const DELETE_WAIT_CURRICULUM_FAILURE =
-  'ocsc-person-accredit/curriculum/approve/DELETE_WAIT_CURRICULUM_FAILURE'
+  'ocsc-job/curriculum/approve/DELETE_WAIT_CURRICULUM_FAILURE'
 
 const LOAD_CIRCULAR_LETTER_REQUEST =
-  'ocsc-person-accredit/curriculum/approve/LOAD_CIRCULAR_LETTER_REQUEST'
+  'ocsc-job/curriculum/approve/LOAD_CIRCULAR_LETTER_REQUEST'
 const LOAD_CIRCULAR_LETTER_SUCCESS =
-  'ocsc-person-accredit/curriculum/approve/LOAD_CIRCULAR_LETTER_SUCCESS'
+  'ocsc-job/curriculum/approve/LOAD_CIRCULAR_LETTER_SUCCESS'
 const LOAD_CIRCULAR_LETTER_FAILURE =
-  'ocsc-person-accredit/curriculum/approve/LOAD_CIRCULAR_LETTER_FAILURE'
+  'ocsc-job/curriculum/approve/LOAD_CIRCULAR_LETTER_FAILURE'
 
-const CLEAR_SEARCH_RESULT =
-  'ocsc-person-accredit/curriculum/approve/CLEAR_SEARCH_RESULT'
+const CLEAR_SEARCH_RESULT = 'ocsc-job/curriculum/approve/CLEAR_SEARCH_RESULT'
 
 function loadProgressGovernment() {
   const token = getCookie('token')

@@ -2,40 +2,37 @@ import axios from 'axios'
 import { get } from 'lodash'
 import * as uiActions from 'modules/ui/actions'
 
-const LOAD_COUNTRIES_REQUEST =
-  'ocsc-person-accredit/info/country/LOAD_COUNTRIES_REQUEST'
-const LOAD_COUNTRIES_SUCCESS =
-  'ocsc-person-accredit/info/country/LOAD_COUNTRIES_SUCCESS'
-const LOAD_COUNTRIES_FAILURE =
-  'ocsc-person-accredit/info/country/LOAD_COUNTRIES_FAILURE'
+const LOAD_COUNTRIES_REQUEST = 'ocsc-job/info/country/LOAD_COUNTRIES_REQUEST'
+const LOAD_COUNTRIES_SUCCESS = 'ocsc-job/info/country/LOAD_COUNTRIES_SUCCESS'
+const LOAD_COUNTRIES_FAILURE = 'ocsc-job/info/country/LOAD_COUNTRIES_FAILURE'
 
 const LOAD_SALARY_GROUPS_REQUEST =
-  'ocsc-person-accredit/info/salary-group/LOAD_SALARY_GROUPS_REQUEST'
+  'ocsc-job/info/salary-group/LOAD_SALARY_GROUPS_REQUEST'
 const LOAD_SALARY_GROUPS_SUCCESS =
-  'ocsc-person-accredit/info/salary-group/LOAD_SALARY_GROUPS_SUCCESS'
+  'ocsc-job/info/salary-group/LOAD_SALARY_GROUPS_SUCCESS'
 const LOAD_SALARY_GROUPS_FAILURE =
-  'ocsc-person-accredit/info/salary-group/LOAD_SALARY_GROUPS_FAILURE'
+  'ocsc-job/info/salary-group/LOAD_SALARY_GROUPS_FAILURE'
 
 const LOAD_EDUCATION_LEVELS_REQUEST =
-  'ocsc-person-accredit/info/salary-group/LOAD_EDUCATION_LEVELS_REQUEST'
+  'ocsc-job/info/salary-group/LOAD_EDUCATION_LEVELS_REQUEST'
 const LOAD_EDUCATION_LEVELS_SUCCESS =
-  'ocsc-person-accredit/info/salary-group/LOAD_EDUCATION_LEVELS_SUCCESS'
+  'ocsc-job/info/salary-group/LOAD_EDUCATION_LEVELS_SUCCESS'
 const LOAD_EDUCATION_LEVELS_FAILURE =
-  'ocsc-person-accredit/info/salary-group/LOAD_EDUCATION_LEVELS_FAILURE'
+  'ocsc-job/info/salary-group/LOAD_EDUCATION_LEVELS_FAILURE'
 
 const LOAD_UNIVERSITIES_REQUEST =
-  'ocsc-person-accredit/info/university/LOAD_UNIVERSITIES_REQUEST'
+  'ocsc-job/info/university/LOAD_UNIVERSITIES_REQUEST'
 const LOAD_UNIVERSITIES_SUCCESS =
-  'ocsc-person-accredit/info/university/LOAD_UNIVERSITIES_SUCCESS'
+  'ocsc-job/info/university/LOAD_UNIVERSITIES_SUCCESS'
 const LOAD_UNIVERSITIES_FAILURE =
-  'ocsc-person-accredit/info/university/LOAD_UNIVERSITIES_FAILURE'
+  'ocsc-job/info/university/LOAD_UNIVERSITIES_FAILURE'
 
 const LOAD_CIRCULAR_LETTERS_REQUEST =
-  'ocsc-person-accredit/info/circular-letters/LOAD_CIRCULAR_LETTERS_REQUEST'
+  'ocsc-job/info/circular-letters/LOAD_CIRCULAR_LETTERS_REQUEST'
 const LOAD_CIRCULAR_LETTERS_SUCCESS =
-  'ocsc-person-accredit/info/circular-letters/LOAD_CIRCULAR_LETTERS_SUCCESS'
+  'ocsc-job/info/circular-letters/LOAD_CIRCULAR_LETTERS_SUCCESS'
 const LOAD_CIRCULAR_LETTERS_FAILURE =
-  'ocsc-person-accredit/info/circular-letters/LOAD_CIRCULAR_LETTERS_FAILURE'
+  'ocsc-job/info/circular-letters/LOAD_CIRCULAR_LETTERS_FAILURE'
 
 function loadCountries() {
   return async (dispatch: any) => {

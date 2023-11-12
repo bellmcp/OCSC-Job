@@ -4,64 +4,52 @@ import { getCookie } from 'utils/cookies'
 
 import * as uiActions from 'modules/ui/actions'
 
-const GET_PERSON_LETTER_REQUEST =
-  'ocsc-person-accredit/search/GET_PERSON_LETTER_REQUEST'
-const GET_PERSON_LETTER_SUCCESS =
-  'ocsc-person-accredit/search/GET_PERSON_LETTER_SUCCESS'
-const GET_PERSON_LETTER_FAILURE =
-  'ocsc-person-accredit/search/GET_PERSON_LETTER_FAILURE'
+const GET_PERSON_LETTER_REQUEST = 'ocsc-job/search/GET_PERSON_LETTER_REQUEST'
+const GET_PERSON_LETTER_SUCCESS = 'ocsc-job/search/GET_PERSON_LETTER_SUCCESS'
+const GET_PERSON_LETTER_FAILURE = 'ocsc-job/search/GET_PERSON_LETTER_FAILURE'
 
-const LOAD_WORKERS_REQUEST = 'ocsc-person-accredit/search/LOAD_WORKERS_REQUEST'
-const LOAD_WORKERS_SUCCESS = 'ocsc-person-accredit/search/LOAD_WORKERS_SUCCESS'
-const LOAD_WORKERS_FAILURE = 'ocsc-person-accredit/search/LOAD_WORKERS_FAILURE'
+const LOAD_WORKERS_REQUEST = 'ocsc-job/search/LOAD_WORKERS_REQUEST'
+const LOAD_WORKERS_SUCCESS = 'ocsc-job/search/LOAD_WORKERS_SUCCESS'
+const LOAD_WORKERS_FAILURE = 'ocsc-job/search/LOAD_WORKERS_FAILURE'
 
-const LOAD_WORK_STATUS_REQUEST =
-  'ocsc-person-accredit/search/LOAD_WORK_STATUS_REQUEST'
-const LOAD_WORK_STATUS_SUCCESS =
-  'ocsc-person-accredit/search/LOAD_WORK_STATUS_SUCCESS'
-const LOAD_WORK_STATUS_FAILURE =
-  'ocsc-person-accredit/search/LOAD_WORK_STATUS_FAILURE'
+const LOAD_WORK_STATUS_REQUEST = 'ocsc-job/search/LOAD_WORK_STATUS_REQUEST'
+const LOAD_WORK_STATUS_SUCCESS = 'ocsc-job/search/LOAD_WORK_STATUS_SUCCESS'
+const LOAD_WORK_STATUS_FAILURE = 'ocsc-job/search/LOAD_WORK_STATUS_FAILURE'
 
-const ADD_PERSON_LETTER_REQUEST =
-  'ocsc-person-accredit/search/ADD_PERSON_LETTER_REQUEST'
-const ADD_PERSON_LETTER_SUCCESS =
-  'ocsc-person-accredit/search/ADD_PERSON_LETTER_SUCCESS'
-const ADD_PERSON_LETTER_FAILURE =
-  'ocsc-person-accredit/search/ADD_PERSON_LETTER_FAILURE'
+const ADD_PERSON_LETTER_REQUEST = 'ocsc-job/search/ADD_PERSON_LETTER_REQUEST'
+const ADD_PERSON_LETTER_SUCCESS = 'ocsc-job/search/ADD_PERSON_LETTER_SUCCESS'
+const ADD_PERSON_LETTER_FAILURE = 'ocsc-job/search/ADD_PERSON_LETTER_FAILURE'
 
-const EDIT_PERSON_LETTER_REQUEST =
-  'ocsc-person-accredit/search/EDIT_PERSON_LETTER_REQUEST'
-const EDIT_PERSON_LETTER_SUCCESS =
-  'ocsc-person-accredit/search/EDIT_PERSON_LETTER_SUCCESS'
-const EDIT_PERSON_LETTER_FAILURE =
-  'ocsc-person-accredit/search/EDIT_PERSON_LETTER_FAILURE'
+const EDIT_PERSON_LETTER_REQUEST = 'ocsc-job/search/EDIT_PERSON_LETTER_REQUEST'
+const EDIT_PERSON_LETTER_SUCCESS = 'ocsc-job/search/EDIT_PERSON_LETTER_SUCCESS'
+const EDIT_PERSON_LETTER_FAILURE = 'ocsc-job/search/EDIT_PERSON_LETTER_FAILURE'
 
-const UPLOAD_FILE_REQUEST = 'ocsc-person-accredit/search/UPLOAD_FILE_REQUEST'
-const UPLOAD_FILE_SUCCESS = 'ocsc-person-accredit/search/UPLOAD_FILE_SUCCESS'
-const UPLOAD_FILE_FAILURE = 'ocsc-person-accredit/search/UPLOAD_FILE_FAILURE'
+const UPLOAD_FILE_REQUEST = 'ocsc-job/search/UPLOAD_FILE_REQUEST'
+const UPLOAD_FILE_SUCCESS = 'ocsc-job/search/UPLOAD_FILE_SUCCESS'
+const UPLOAD_FILE_FAILURE = 'ocsc-job/search/UPLOAD_FILE_FAILURE'
 
-const CLEAR_SEARCH_RESULT = 'ocsc-person-accredit/search/CLEAR_SEARCH_RESULT'
+const CLEAR_SEARCH_RESULT = 'ocsc-job/search/CLEAR_SEARCH_RESULT'
 
 const LOAD_PERSON_LETTER_DEGREES_REQUEST =
-  'ocsc-person-accredit/search/LOAD_PERSON_LETTER_DEGREES_REQUEST'
+  'ocsc-job/search/LOAD_PERSON_LETTER_DEGREES_REQUEST'
 const LOAD_PERSON_LETTER_DEGREES_SUCCESS =
-  'ocsc-person-accredit/search/LOAD_PERSON_LETTER_DEGREES_SUCCESS'
+  'ocsc-job/search/LOAD_PERSON_LETTER_DEGREES_SUCCESS'
 const LOAD_PERSON_LETTER_DEGREES_FAILURE =
-  'ocsc-person-accredit/search/LOAD_PERSON_LETTER_DEGREES_FAILURE'
+  'ocsc-job/search/LOAD_PERSON_LETTER_DEGREES_FAILURE'
 
 const EDIT_PERSON_LETTER_DEGREE_REQUEST =
-  'ocsc-person-accredit/search/EDIT_PERSON_LETTER_DEGREE_REQUEST'
+  'ocsc-job/search/EDIT_PERSON_LETTER_DEGREE_REQUEST'
 const EDIT_PERSON_LETTER_DEGREE_SUCCESS =
-  'ocsc-person-accredit/search/EDIT_PERSON_LETTER_DEGREE_SUCCESS'
+  'ocsc-job/search/EDIT_PERSON_LETTER_DEGREE_SUCCESS'
 const EDIT_PERSON_LETTER_DEGREE_FAILURE =
-  'ocsc-person-accredit/search/EDIT_PERSON_LETTER_DEGREE_FAILURE'
+  'ocsc-job/search/EDIT_PERSON_LETTER_DEGREE_FAILURE'
 
 const LOAD_PERSON_LETTER_CATEGORIES_REQUEST =
-  'ocsc-person-accredit/search/LOAD_PERSON_LETTER_CATEGORIES_REQUEST'
+  'ocsc-job/search/LOAD_PERSON_LETTER_CATEGORIES_REQUEST'
 const LOAD_PERSON_LETTER_CATEGORIES_SUCCESS =
-  'ocsc-person-accredit/search/LOAD_PERSON_LETTER_CATEGORIES_SUCCESS'
+  'ocsc-job/search/LOAD_PERSON_LETTER_CATEGORIES_SUCCESS'
 const LOAD_PERSON_LETTER_CATEGORIES_FAILURE =
-  'ocsc-person-accredit/search/LOAD_PERSON_LETTER_CATEGORIES_FAILURE'
+  'ocsc-job/search/LOAD_PERSON_LETTER_CATEGORIES_FAILURE'
 
 function getPersonLetter({
   letterNo,

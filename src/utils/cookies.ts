@@ -1,4 +1,4 @@
-const prefix = 'accreditation_admin_'
+const prefix = 'ocsc_job'
 
 function setCookie(name: string, value: string, hours: number) {
   var expires = ''

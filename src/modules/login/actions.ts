@@ -5,10 +5,10 @@ import { push } from 'connected-react-router'
 import { setCookie } from 'utils/cookies'
 import * as uiActions from 'modules/ui/actions'
 
-const LOAD_LOGIN_REQUEST = 'ocsc-person-accredit/login/LOAD_LOGIN_REQUEST'
-const LOAD_LOGIN_SUCCESS = 'ocsc-person-accredit/login/LOAD_LOGIN_SUCCESS'
-const LOAD_LOGIN_FAILURE = 'ocsc-person-accredit/login/LOAD_LOGIN_FAILURE'
-const CLEAR_MESSAGE_LOGIN = 'ocsc-person-accredit/login/CLEAR_MESSAGE_LOGIN'
+const LOAD_LOGIN_REQUEST = 'ocsc-job/login/LOAD_LOGIN_REQUEST'
+const LOAD_LOGIN_SUCCESS = 'ocsc-job/login/LOAD_LOGIN_SUCCESS'
+const LOAD_LOGIN_FAILURE = 'ocsc-job/login/LOAD_LOGIN_FAILURE'
+const CLEAR_MESSAGE_LOGIN = 'ocsc-job/login/CLEAR_MESSAGE_LOGIN'
 
 const PATH = process.env.REACT_APP_BASE_PATH
 

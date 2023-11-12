@@ -4,14 +4,11 @@ import { getCookie } from 'utils/cookies'
 import * as uiActions from 'modules/ui/actions'
 import { isLoginAsAdmin } from 'utils/isLogin'
 
-const CHANGE_PASSWORD_REQUEST =
-  'ocsc-person-accredit/edit/password/CHANGE_PASSWORD_REQUEST'
-const CHANGE_PASSWORD_SUCCESS =
-  'ocsc-person-accredit/edit/password/CHANGE_PASSWORD_SUCCESS'
-const CHANGE_PASSWORD_FAILURE =
-  'ocsc-person-accredit/edit/password/CHANGE_PASSWORD_FAILURE'
+const CHANGE_PASSWORD_REQUEST = 'ocsc-job/edit/password/CHANGE_PASSWORD_REQUEST'
+const CHANGE_PASSWORD_SUCCESS = 'ocsc-job/edit/password/CHANGE_PASSWORD_SUCCESS'
+const CHANGE_PASSWORD_FAILURE = 'ocsc-job/edit/password/CHANGE_PASSWORD_FAILURE'
 const CLEAR_MESSAGE_CHANGE_PASSWORD =
-  'ocsc-person-accredit/edit/password/CLEAR_MESSAGE_CHANGE_PASSWORD'
+  'ocsc-job/edit/password/CLEAR_MESSAGE_CHANGE_PASSWORD'
 
 function clearMessageChangePassword() {
   return {
