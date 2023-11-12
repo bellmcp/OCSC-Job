@@ -43,6 +43,8 @@ function loadLogin(userInfo: any) {
       setCookie('token', get(result, 'data.token', ''), 3)
       setCookie('firstName', get(result, 'data.firstName', ''), 3)
       setCookie('lastName', get(result, 'data.lastName', ''), 3)
+      setCookie('ministryId', get(result, 'data.ministryId', ''), 3)
+      setCookie('departmentId', get(result, 'data.departmentId', ''), 3)
       setCookie('id', String(get(result, 'data.id', 0)), 3)
       dispatch(push(`${PATH}`))
       dispatch(uiActions.setFlashMessage('เข้าสู่ระบบเรียบร้อยแล้ว', 'success'))
