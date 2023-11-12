@@ -17,7 +17,7 @@ import {
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import {
-  Email as EmailIcon,
+  Person as PersonIcon,
   Lock as LockIcon,
   Visibility as VisibilityIcon,
   VisibilityOff as VisibilityOffIcon,
@@ -49,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
 interface State {
   password: string
   showPassword: boolean
-  email: string
+  userId: string
 }
 
 export default function Login() {
@@ -59,7 +59,7 @@ export default function Login() {
   const [values, setValues] = useState({
     password: '',
     showPassword: false,
-    email: '',
+    userId: '',
   })
 
   const { messageLogin } = useSelector((state: any) => state.login)
@@ -82,37 +82,23 @@ export default function Login() {
   const { register, handleSubmit, errors } = useForm({
     mode: 'onSubmit',
     validationSchema: yup.object().shape({
-      email: yup.string().required(''),
+      userId: yup.string().required(''),
       password: yup.string().required(),
     }),
   })
 
-  const onLoginWorker = (loginInfo: any) => {
-    const actionLogin = actions.loadLogin(
-      {
-        userid: loginInfo.email,
-        password: loginInfo.password,
-      },
-      'worker'
-    )
-    dispatch(actionLogin)
-  }
-
-  const onLoginSupervisor = (loginInfo: any) => {
-    const actionLogin = actions.loadLogin(
-      {
-        userid: loginInfo.email,
-        password: loginInfo.password,
-      },
-      'supervisor'
-    )
+  const onLogin = (loginInfo: any) => {
+    const actionLogin = actions.loadLogin({
+      userId: loginInfo.userId,
+      password: loginInfo.password,
+    })
     dispatch(actionLogin)
   }
 
   return (
     <Container maxWidth='lg'>
       <Grid container direction='row' justify='center' alignItems='center'>
-        <Grid item xs={12} md={8} lg={6}>
+        <Grid item xs={12} md={8}>
           <Paper className={classes.paper} elevation={0}>
             <Toolbar />
             <Grid
@@ -128,9 +114,9 @@ export default function Login() {
                 color='secondary'
                 style={{ fontWeight: 600, marginBottom: 16 }}
               >
-                กลุ่มงานรับรองคุณวุฒิ
+                ระบบบริหารจัดการสมาชิก
                 <br />
-                สำนักงาน ก.พ.
+                และสิทธิ์การารใช้งานของส่วนราชการ
               </Typography>
             </Grid>
             <Typography
@@ -145,21 +131,23 @@ export default function Login() {
                 required
                 fullWidth
                 inputRef={register}
-                label='อีเมล'
-                name='email'
+                label='เลขประจำตัวประชาชน'
+                name='userId'
                 autoComplete='on'
-                helperText={errors.email ? 'กรุณากรอกอีเมล' : null}
-                error={!!errors.email}
+                helperText={
+                  errors.userId ? 'กรุณากรอกเลขประจำตัวประชาชน' : null
+                }
+                error={!!errors.userId}
                 style={{ letterSpacing: ' 0.05em' }}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position='start'>
-                      <EmailIcon />
+                      <PersonIcon />
                     </InputAdornment>
                   ),
                 }}
-                value={values.email}
-                onChange={handleChange('email')}
+                value={values.userId}
+                onChange={handleChange('userId')}
               />
               <TextField
                 variant='outlined'
@@ -207,23 +195,13 @@ export default function Login() {
               <Button
                 size='large'
                 color='secondary'
-                variant='outlined'
+                variant='contained'
                 className={classes.submit}
                 fullWidth
                 type='submit'
-                onClick={handleSubmit(onLoginWorker)}
+                onClick={handleSubmit(onLogin)}
               >
-                <b style={{ marginRight: 8 }}>เข้าสู่ระบบ</b> (ผู้ปฏิบัติงาน)
-              </Button>
-              <Button
-                size='large'
-                color='secondary'
-                variant='contained'
-                fullWidth
-                type='submit'
-                onClick={handleSubmit(onLoginSupervisor)}
-              >
-                <b style={{ marginRight: 8 }}>เข้าสู่ระบบ</b> (หัวหน้างาน)
+                เข้าสู่ระบบ
               </Button>
             </form>
           </Paper>
