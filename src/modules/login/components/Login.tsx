@@ -22,6 +22,7 @@ import {
   Lock as LockIcon,
   Visibility as VisibilityIcon,
   VisibilityOff as VisibilityOffIcon,
+  ChevronRight as ChevronRightIcon,
 } from '@material-ui/icons'
 
 import * as actions from '../actions'
@@ -123,7 +124,7 @@ export default function Login() {
               >
                 ระบบบริหารจัดการสมาชิก
                 <br />
-                และสิทธิ์การารใช้งานของส่วนราชการ
+                และสิทธิ์การใช้งานของส่วนราชการ
               </Typography>
             </Grid>
             <Typography
@@ -206,6 +207,7 @@ export default function Login() {
                 className={classes.submit}
                 fullWidth
                 type='submit'
+                endIcon={<ChevronRightIcon />}
                 onClick={handleSubmit(onLogin)}
               >
                 เข้าสู่ระบบ
