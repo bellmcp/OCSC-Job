@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
 import { useHistory } from 'react-router-dom'
+import MaskedInput from 'react-text-mask'
 
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
 import {
@@ -15,6 +16,7 @@ import {
   TextField,
   Paper,
   Toolbar,
+  Input,
 } from '@material-ui/core'
 import {
   ChevronRight as ChevronRightIcon,
@@ -52,6 +54,69 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 )
 
+function TextMaskCitizenID(props) {
+  const { inputRef, ...other } = props
+  return (
+    <MaskedInput
+      {...other}
+      ref={(ref) => {
+        inputRef(ref ? ref.inputElement : null)
+      }}
+      mask={[
+        /\d/,
+        '-',
+        /\d/,
+        /\d/,
+        /\d/,
+        /\d/,
+        '-',
+        /\d/,
+        /\d/,
+        /\d/,
+        /\d/,
+        /\d/,
+        '-',
+        /\d/,
+        /\d/,
+        '-',
+        /\d/,
+      ]}
+      placeholderChar='_'
+      placeholder='0-0000-00000-00-0'
+    />
+  )
+}
+
+function TextMaskLaserID(props) {
+  const { inputRef, ...other } = props
+  return (
+    <MaskedInput
+      {...other}
+      ref={(ref) => {
+        inputRef(ref ? ref.inputElement : null)
+      }}
+      mask={[
+        /^[A-Z]$/,
+        /^[A-Z]$/,
+        /\d/,
+        '-',
+        /\d/,
+        /\d/,
+        /\d/,
+        /\d/,
+        /\d/,
+        /\d/,
+        /\d/,
+        '-',
+        /\d/,
+        /\d/,
+      ]}
+      placeholderChar='_'
+      placeholder='AA-00000000-00'
+    />
+  )
+}
+
 export default function Register() {
   const classes = useStyles()
   const dispatch = useDispatch()
@@ -74,7 +139,7 @@ export default function Register() {
     onSubmit: (values) => {
       dispatch(
         registerActions.authenticateWithDota({
-          id: values.id,
+          id: values.id.replaceAll('-', '') || '',
           firstName: values.firstName,
           lastName: values.lastName,
           birthDate: birthDate.replaceAll('-', '') || '',
@@ -132,14 +197,14 @@ export default function Register() {
                     </Typography>
                   </Grid>
                   <Grid xs={12} md={6}>
-                    <TextField
+                    <Input
                       id='id'
                       name='id'
                       value={formik.values.id}
                       onChange={formik.handleChange}
-                      variant='outlined'
                       size='small'
                       fullWidth
+                      inputComponent={TextMaskCitizenID}
                     />
                   </Grid>
                 </Grid>
@@ -162,6 +227,7 @@ export default function Register() {
                       variant='outlined'
                       size='small'
                       fullWidth
+                      placeholder='สมชาย'
                     />
                   </Grid>
                 </Grid>
@@ -184,6 +250,7 @@ export default function Register() {
                       variant='outlined'
                       size='small'
                       fullWidth
+                      placeholder='รักเรียน'
                     />
                   </Grid>
                 </Grid>
@@ -212,7 +279,7 @@ export default function Register() {
                     </Typography>
                   </Grid>
                   <Grid xs={12} md={6}>
-                    <TextField
+                    <Input
                       id='laser'
                       name='laser'
                       value={formik.values.laser}
@@ -220,6 +287,7 @@ export default function Register() {
                       variant='outlined'
                       size='small'
                       fullWidth
+                      inputComponent={TextMaskLaserID}
                     />
                   </Grid>
                 </Grid>
