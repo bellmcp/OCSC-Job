@@ -143,7 +143,7 @@ export default function Register() {
           firstName: values.firstName,
           lastName: values.lastName,
           birthDate: birthDate.replaceAll('-', '') || '',
-          laser: values.laser,
+          laser: values.laser.replaceAll('-', '') || '',
         })
       )
     },
