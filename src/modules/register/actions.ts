@@ -1,114 +1,56 @@
 //@ts-nocheck
 import axios from 'axios'
 import { get } from 'lodash'
-import { push } from 'connected-react-router'
 import { setCookie } from 'utils/cookies'
 import * as uiActions from 'modules/ui/actions'
+import { handleApiError } from 'utils/error'
 
-const LOAD_LOGIN_REQUEST = 'ocsc-job/register/LOAD_LOGIN_REQUEST'
-const LOAD_LOGIN_SUCCESS = 'ocsc-job/register/LOAD_LOGIN_SUCCESS'
-const LOAD_LOGIN_FAILURE = 'ocsc-job/register/LOAD_LOGIN_FAILURE'
-const CLEAR_MESSAGE_LOGIN = 'ocsc-job/register/CLEAR_MESSAGE_LOGIN'
+const LOAD_AUTHENTICATE_WITH_DOPA_REQUEST =
+  'ocsc-job/register/LOAD_AUTHENTICATE_WITH_DOPA_REQUEST'
+const LOAD_AUTHENTICATE_WITH_DOPA_SUCCESS =
+  'ocsc-job/register/LOAD_AUTHENTICATE_WITH_DOPA_SUCCESS'
+const LOAD_AUTHENTICATE_WITH_DOPA_FAILURE =
+  'ocsc-job/register/LOAD_AUTHENTICATE_WITH_DOPA_FAILURE'
 
-const PATH = process.env.REACT_APP_BASE_PATH
-
-function clearMessageLogin() {
-  return {
-    type: CLEAR_MESSAGE_LOGIN,
-  }
-}
-
-function loadLogin(userInfo: any) {
+function authenticateWithDota(userInfo: any) {
   return async (dispatch: any) => {
-    dispatch({ type: LOAD_LOGIN_REQUEST })
+    dispatch({ type: LOAD_AUTHENTICATE_WITH_DOPA_REQUEST })
     try {
       const result = await axios.post(
-        '/tokens',
+        '/dopa',
         {
-          userId: userInfo.userId,
-          password: userInfo.password,
+          id: userInfo.id,
+          firstName: userInfo.firstName,
+          lastName: userInfo.lastName,
+          birthDate: userInfo.birthDate,
+          laser: userInfo.laser,
         },
         {
           baseURL: process.env.REACT_APP_PORTAL_API_URL,
         }
       )
       dispatch({
-        type: LOAD_LOGIN_SUCCESS,
+        type: LOAD_AUTHENTICATE_WITH_DOPA_SUCCESS,
         payload: {
-          user: result.data,
-          status: result.status,
-          messageLogin: null,
+          dopaToken: result.data.token,
         },
       })
-      setCookie('token', get(result, 'data.token', ''), 3)
-      setCookie('firstName', get(result, 'data.firstName', ''), 3)
-      setCookie('lastName', get(result, 'data.lastName', ''), 3)
-      setCookie('ministryId', get(result, 'data.ministryId', ''), 3)
-      setCookie('departmentId', get(result, 'data.departmentId', ''), 3)
-      setCookie('id', String(get(result, 'data.id', 0)), 3)
-      dispatch(push(`${PATH}`))
-      dispatch(uiActions.setFlashMessage('เข้าสู่ระบบเรียบร้อยแล้ว', 'success'))
-    } catch (err) {
-      if (err?.response?.status === 401) {
-        dispatch({
-          type: LOAD_LOGIN_FAILURE,
-          payload: {
-            status: err?.response?.status,
-            messageLogin: `รหัสผ่านไม่ถูกต้อง`,
-          },
-        })
-      } else if (err?.response?.status === 404) {
-        dispatch({
-          type: LOAD_LOGIN_FAILURE,
-          payload: {
-            status: err?.response?.status,
-            messageLogin: `ไม่พบบัญชีผู้ใช้งานนี้ โปรดลองใหม่อีกครั้ง`,
-          },
-        })
-      } else if (err?.response?.status === 500) {
-        dispatch({
-          type: LOAD_LOGIN_FAILURE,
-          payload: {
-            status: err?.response?.status,
-            messageLogin: `เกิดข้อผิดพลาด ${get(
-              err,
-              'response.status',
-              'บางอย่าง'
-            )} โปรดลองใหม่อีกครั้ง`,
-          },
-        })
-      } else {
-        dispatch({
-          type: LOAD_LOGIN_FAILURE,
-          payload: {
-            status: err?.response?.status,
-            messageLogin: `เกิดข้อผิดพลาด ${get(
-              err,
-              'response.status',
-              'บางอย่าง'
-            )} โปรดลองใหม่อีกครั้ง`,
-          },
-        })
-        dispatch(
-          uiActions.setFlashMessage(
-            `เข้าสู่ระบบไม่สำเร็จ เกิดข้อผิดพลาด ${get(
-              err,
-              'response.status',
-              'บางอย่าง'
-            )}`,
-            'error'
-          )
+      setCookie('token', get(result, 'data.token', ''), '')
+      dispatch(
+        uiActions.setFlashMessage(
+          'พิสูจน์ตัวจริงกับกรมการปกครองเรียบร้อยแล้ว',
+          'success'
         )
-      }
+      )
+    } catch (err) {
+      handleApiError(err, dispatch)
     }
   }
 }
 
 export {
-  LOAD_LOGIN_REQUEST,
-  LOAD_LOGIN_SUCCESS,
-  LOAD_LOGIN_FAILURE,
-  CLEAR_MESSAGE_LOGIN,
-  loadLogin,
-  clearMessageLogin,
+  LOAD_AUTHENTICATE_WITH_DOPA_REQUEST,
+  LOAD_AUTHENTICATE_WITH_DOPA_SUCCESS,
+  LOAD_AUTHENTICATE_WITH_DOPA_FAILURE,
+  authenticateWithDota,
 }

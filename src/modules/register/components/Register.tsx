@@ -1,6 +1,5 @@
 // @ts-nocheck
 import React, { useState } from 'react'
-import { get } from 'lodash'
 import { useDispatch } from 'react-redux'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
@@ -17,9 +16,12 @@ import {
   Paper,
   Toolbar,
 } from '@material-ui/core'
-import { ChevronRight as ChevronRightIcon } from '@material-ui/icons'
+import {
+  ChevronRight as ChevronRightIcon,
+  ChevronLeft as ChevronLeftIcon,
+} from '@material-ui/icons'
 
-import * as personLetterActions from 'modules/personLetter/actions'
+import * as registerActions from 'modules/register/actions'
 import DatePicker from './DatePicker'
 const PATH = process.env.REACT_APP_BASE_PATH
 
@@ -50,39 +52,35 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 )
 
-export default function PersonLetterSupervisor() {
+export default function Register() {
   const classes = useStyles()
   const dispatch = useDispatch()
   const history = useHistory()
 
-  const [startDate, setStartDate] = useState<string>(null)
+  const [birthDate, setBirthDate] = useState<string>(null)
 
   const validationSchema = yup.object({})
 
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
-      letterNo: '',
-      letterDate: '',
-      replyDate: '',
-      status1: true,
-      status2: true,
-      status3: true,
-      status4: true,
+      id: '',
+      firstName: '',
+      lastName: '',
+      birthDate: '',
+      laser: '',
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      const searchQuery = {
-        letterNo: encodeURIComponent(get(values, 'letterNo', '')),
-        letterDate: startDate,
-        replyDate: '',
-        status1: true,
-        status2: true,
-        status3: true,
-        status4: true,
-      }
-      setCurrentSearchQuery(searchQuery)
-      dispatch(personLetterActions.getPersonLetterAdmin(searchQuery))
+      dispatch(
+        registerActions.authenticateWithDota({
+          id: values.id,
+          firstName: values.firstName,
+          lastName: values.lastName,
+          birthDate: birthDate.replaceAll('-', '') || '',
+          laser: values.laser,
+        })
+      )
     },
   })
 
@@ -96,24 +94,23 @@ export default function PersonLetterSupervisor() {
       <Container maxWidth='sm' className={classes.content}>
         <form onSubmit={formik.handleSubmit}>
           <Box mt={2} mb={4}>
-            <Grid
-              container
-              direction='row'
-              justify='center'
-              alignItems='center'
-              style={{ marginBottom: 24 }}
-              spacing={2}
+            <Button
+              variant='text'
+              color='primary'
+              onClick={onBack}
+              style={{ marginLeft: '-8px', marginBottom: 24 }}
+              startIcon={<ChevronLeftIcon />}
             >
-              <Typography
-                component='h1'
-                variant='h4'
-                align='center'
-                color='secondary'
-                style={{ fontWeight: 600, marginBottom: 16 }}
-              >
-                ลงทะเบียน
-              </Typography>
-            </Grid>
+              กลับ
+            </Button>
+            <Typography
+              component='h1'
+              variant='h4'
+              color='secondary'
+              style={{ fontWeight: 600, marginBottom: 24 }}
+            >
+              สมัครสมาชิก
+            </Typography>
             <Paper
               elevation={0}
               style={{
@@ -136,9 +133,9 @@ export default function PersonLetterSupervisor() {
                   </Grid>
                   <Grid xs={12} md={6}>
                     <TextField
-                      id='letterNo'
-                      name='letterNo'
-                      value={formik.values.letterNo}
+                      id='id'
+                      name='id'
+                      value={formik.values.id}
                       onChange={formik.handleChange}
                       variant='outlined'
                       size='small'
@@ -158,9 +155,9 @@ export default function PersonLetterSupervisor() {
                   </Grid>
                   <Grid xs={12} md={6}>
                     <TextField
-                      id='letterNo'
-                      name='letterNo'
-                      value={formik.values.letterNo}
+                      id='firstName'
+                      name='firstName'
+                      value={formik.values.firstName}
                       onChange={formik.handleChange}
                       variant='outlined'
                       size='small'
@@ -180,9 +177,9 @@ export default function PersonLetterSupervisor() {
                   </Grid>
                   <Grid xs={12} md={6}>
                     <TextField
-                      id='letterNo'
-                      name='letterNo'
-                      value={formik.values.letterNo}
+                      id='lastName'
+                      name='lastName'
+                      value={formik.values.lastName}
                       onChange={formik.handleChange}
                       variant='outlined'
                       size='small'
@@ -201,7 +198,7 @@ export default function PersonLetterSupervisor() {
                     </Typography>
                   </Grid>
                   <Grid xs={12} md={6}>
-                    <DatePicker date={startDate} setDate={setStartDate} />
+                    <DatePicker date={birthDate} setDate={setBirthDate} />
                   </Grid>
                 </Grid>
                 <Grid container item direction='row' alignItems='center'>
@@ -216,9 +213,9 @@ export default function PersonLetterSupervisor() {
                   </Grid>
                   <Grid xs={12} md={6}>
                     <TextField
-                      id='letterNo'
-                      name='letterNo'
-                      value={formik.values.letterNo}
+                      id='laser'
+                      name='laser'
+                      value={formik.values.laser}
                       onChange={formik.handleChange}
                       variant='outlined'
                       size='small'
@@ -238,16 +235,6 @@ export default function PersonLetterSupervisor() {
               type='submit'
             >
               พิสูจน์ตัวจริงกับกรมการปกครอง
-            </Button>
-            <Button
-              fullWidth
-              variant='text'
-              color='secondary'
-              size='large'
-              style={{ marginTop: 8 }}
-              onClick={onBack}
-            >
-              กลับ
             </Button>
           </Box>
         </form>
