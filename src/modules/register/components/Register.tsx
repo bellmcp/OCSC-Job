@@ -6,7 +6,13 @@ import * as yup from 'yup'
 import { useHistory } from 'react-router-dom'
 import MaskedInput from 'react-text-mask'
 
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
+import {
+  createStyles,
+  makeStyles,
+  Theme,
+  useTheme,
+  withStyles,
+} from '@material-ui/core/styles'
 import {
   Container,
   Typography,
@@ -17,14 +23,19 @@ import {
   Paper,
   Toolbar,
   Input,
+  Tooltip,
 } from '@material-ui/core'
+import { Stack } from '@mui/material'
 import {
   ChevronRight as ChevronRightIcon,
   ChevronLeft as ChevronLeftIcon,
+  Help as HelpIcon,
 } from '@material-ui/icons'
 
 import * as registerActions from 'modules/register/actions'
 import DatePicker from './DatePicker'
+import laserID from 'assets/images/laser-id.png'
+
 const PATH = process.env.REACT_APP_BASE_PATH
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -117,10 +128,17 @@ function TextMaskLaserID(props) {
   )
 }
 
+const LaserIDTooltip = withStyles({
+  tooltip: {
+    backgroundColor: 'transparent',
+  },
+})(Tooltip)
+
 export default function Register() {
   const classes = useStyles()
   const dispatch = useDispatch()
   const history = useHistory()
+  const theme = useTheme()
 
   const [birthDate, setBirthDate] = useState<string>(null)
 
@@ -284,13 +302,40 @@ export default function Register() {
                 </Grid>
                 <Grid container item direction='row' alignItems='center'>
                   <Grid xs={12} md={6}>
-                    <Typography
-                      variant='body1'
-                      color='textPrimary'
-                      style={{ fontWeight: 600 }}
-                    >
-                      เลเซอร์ไอดี
-                    </Typography>
+                    <Stack direction='row' alignItems='center' gap={1}>
+                      <Typography
+                        variant='body1'
+                        color='textPrimary'
+                        style={{ fontWeight: 600 }}
+                      >
+                        เลเซอร์ไอดี
+                      </Typography>
+                      <LaserIDTooltip
+                        title={
+                          <div style={{ width: 1000, height: 200 }}>
+                            <img
+                              src={laserID}
+                              alt='ตัวอย่างเลเซอร์ไอดี'
+                              width='auto'
+                              height='auto'
+                              style={{
+                                borderRadius: 16,
+                                boxShadow:
+                                  '0 2px 4px -2px rgba(0,0,0,0.24), 0 4px 24px -2px rgba(0, 0, 0, 0.2)',
+                              }}
+                            />
+                          </div>
+                        }
+                        placement='top'
+                      >
+                        <HelpIcon
+                          style={{
+                            fontSize: 18,
+                            color: theme.palette.secondary.main,
+                          }}
+                        />
+                      </LaserIDTooltip>
+                    </Stack>
                   </Grid>
                   <Grid xs={12} md={6}>
                     <Input
