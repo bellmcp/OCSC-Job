@@ -153,6 +153,20 @@ export default function Register() {
     history.push(`${PATH}/login`)
   }
 
+  const isValid = () => {
+    return (
+      formik.values.id !== '' &&
+      formik.values.id.length === 17 &&
+      !formik.values.id.includes('_') &&
+      formik.values.laser !== '' &&
+      formik.values.laser.length === 14 &&
+      !formik.values.laser.includes('_') &&
+      formik.values.firstName !== '' &&
+      formik.values.lastName !== '' &&
+      birthDate !== null
+    )
+  }
+
   return (
     <>
       <Toolbar id='back-to-top-anchor' />
@@ -301,6 +315,7 @@ export default function Register() {
               endIcon={<ChevronRightIcon />}
               style={{ marginTop: 32 }}
               type='submit'
+              disabled={!isValid()}
             >
               พิสูจน์ตัวจริงกับกรมการปกครอง
             </Button>
