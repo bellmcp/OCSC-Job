@@ -1,10 +1,11 @@
 // @ts-nocheck
 import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
 import { useHistory } from 'react-router-dom'
 import MaskedInput from 'react-text-mask'
+import { format } from 'date-fns'
 
 import {
   createStyles,
@@ -24,6 +25,7 @@ import {
   Toolbar,
   Input,
   Tooltip,
+  Collapse,
 } from '@material-ui/core'
 import { Stack } from '@mui/material'
 import {
@@ -41,9 +43,9 @@ const PATH = process.env.REACT_APP_BASE_PATH
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     content: {
-      padding: theme.spacing(16, 0),
+      padding: theme.spacing(4, 0),
       [theme.breakpoints.down('sm')]: {
-        padding: theme.spacing(10, 4),
+        padding: theme.spacing(4, 4),
       },
     },
     sectionTitle: {
@@ -140,11 +142,14 @@ export default function Register() {
   const history = useHistory()
   const theme = useTheme()
 
+  const { isLoading = false, dopaToken = '' } = useSelector(
+    (state: any) => state.register
+  )
+
   const [birthDate, setBirthDate] = useState<string>(null)
 
   const validationSchema = yup.object({})
-
-  const formik = useFormik({
+  const authenticateForm = useFormik({
     enableReinitialize: true,
     initialValues: {
       id: '',
@@ -155,15 +160,39 @@ export default function Register() {
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
+      const buddhistYear = parseInt(birthDate.split('-')[0]) + 543
+      const buddhistBirthDate = `${buddhistYear}-${birthDate.split('-')[1]}-${
+        birthDate.split('-')[2]
+      }`
+
       dispatch(
         registerActions.authenticateWithDopa({
           id: values.id.replaceAll('-', '') || '',
           firstName: values.firstName,
           lastName: values.lastName,
-          birthDate: birthDate.replaceAll('-', '') || '',
+          birthDate: buddhistBirthDate.replaceAll('-', '') || '',
           laser: values.laser.replaceAll('-', '') || '',
         })
       )
+    },
+  })
+
+  const registerForm = useFormik({
+    enableReinitialize: true,
+    initialValues: {
+      gender: '',
+      ministryId: null,
+      departmentId: null,
+      division: '',
+      position: '',
+      email: '',
+      phone: '',
+      password1: '',
+      passwpord2: '',
+    },
+    validationSchema: validationSchema,
+    onSubmit: (values) => {
+      console.log('values :>> ', values)
     },
   })
 
@@ -173,199 +202,506 @@ export default function Register() {
 
   const isValid = () => {
     return (
-      formik.values.id !== '' &&
-      formik.values.id.length === 17 &&
-      !formik.values.id.includes('_') &&
-      formik.values.laser !== '' &&
-      formik.values.laser.length === 14 &&
-      !formik.values.laser.includes('_') &&
-      formik.values.firstName !== '' &&
-      formik.values.lastName !== '' &&
+      authenticateForm.values.id !== '' &&
+      authenticateForm.values.id.length === 17 &&
+      !authenticateForm.values.id.includes('_') &&
+      authenticateForm.values.laser !== '' &&
+      authenticateForm.values.laser.length === 14 &&
+      !authenticateForm.values.laser.includes('_') &&
+      authenticateForm.values.firstName !== '' &&
+      authenticateForm.values.lastName !== '' &&
       birthDate !== null
     )
   }
+
+  // setTimeout(() => {
+  //   setIsExpand(true)
+  // }, 1000)
 
   return (
     <>
       <Toolbar id='back-to-top-anchor' />
       <Container maxWidth='sm' className={classes.content}>
-        <form onSubmit={formik.handleSubmit}>
-          <Box mt={2} mb={4}>
-            <Button
-              variant='text'
-              color='primary'
-              onClick={onBack}
-              style={{ marginLeft: '-8px', marginBottom: 24 }}
-              startIcon={<ChevronLeftIcon />}
-            >
-              กลับ
-            </Button>
-            <Typography
-              component='h1'
-              variant='h4'
-              color='secondary'
-              style={{ fontWeight: 600, marginBottom: 24 }}
-            >
-              สมัครสมาชิก
-            </Typography>
-            <Paper
-              elevation={0}
-              style={{
-                borderRadius: 16,
-                padding: 24,
-                boxShadow: '0 0 20px 0 rgba(204,242,251,0.3)',
-                border: '1px solid rgb(204 242 251)',
-              }}
-            >
-              <Grid container item spacing={2}>
-                <Grid container item direction='row' alignItems='center'>
-                  <Grid xs={12} md={6}>
-                    <Typography
-                      variant='body1'
-                      color='textPrimary'
-                      style={{ fontWeight: 600 }}
-                    >
-                      เลขประจำตัวประชาชน
-                    </Typography>
-                  </Grid>
-                  <Grid xs={12} md={6}>
-                    <Input
-                      id='id'
-                      name='id'
-                      value={formik.values.id}
-                      onChange={formik.handleChange}
-                      size='small'
-                      fullWidth
-                      inputComponent={TextMaskCitizenID}
-                    />
-                  </Grid>
-                </Grid>
-                <Grid container item direction='row' alignItems='center'>
-                  <Grid xs={12} md={6}>
-                    <Typography
-                      variant='body1'
-                      color='textPrimary'
-                      style={{ fontWeight: 600 }}
-                    >
-                      ชื่อจริง (ไม่ต้องมีคำนำหน้า)
-                    </Typography>
-                  </Grid>
-                  <Grid xs={12} md={6}>
-                    <TextField
-                      id='firstName'
-                      name='firstName'
-                      value={formik.values.firstName}
-                      onChange={formik.handleChange}
-                      variant='outlined'
-                      size='small'
-                      fullWidth
-                      placeholder='สมชาย'
-                    />
-                  </Grid>
-                </Grid>
-                <Grid container item direction='row' alignItems='center'>
-                  <Grid xs={12} md={6}>
-                    <Typography
-                      variant='body1'
-                      color='textPrimary'
-                      style={{ fontWeight: 600 }}
-                    >
-                      นามสกุล
-                    </Typography>
-                  </Grid>
-                  <Grid xs={12} md={6}>
-                    <TextField
-                      id='lastName'
-                      name='lastName'
-                      value={formik.values.lastName}
-                      onChange={formik.handleChange}
-                      variant='outlined'
-                      size='small'
-                      fullWidth
-                      placeholder='รักเรียน'
-                    />
-                  </Grid>
-                </Grid>
-                <Grid container item direction='row' alignItems='center'>
-                  <Grid xs={12} md={6}>
-                    <Typography
-                      variant='body1'
-                      color='textPrimary'
-                      style={{ fontWeight: 600 }}
-                    >
-                      วัน/เดือน/ปีเกิด
-                    </Typography>
-                  </Grid>
-                  <Grid xs={12} md={6}>
-                    <DatePicker date={birthDate} setDate={setBirthDate} />
-                  </Grid>
-                </Grid>
-                <Grid container item direction='row' alignItems='center'>
-                  <Grid xs={12} md={6}>
-                    <Stack direction='row' alignItems='center' gap={1}>
+        <Button
+          variant='text'
+          color='primary'
+          onClick={onBack}
+          style={{ marginLeft: '-8px', marginBottom: 12 }}
+          startIcon={<ChevronLeftIcon />}
+        >
+          กลับ
+        </Button>
+        <Typography
+          component='h1'
+          variant='h4'
+          color='secondary'
+          style={{ fontWeight: 600, marginBottom: 24 }}
+        >
+          สมัครสมาชิก
+        </Typography>
+
+        <Collapse in={dopaToken === ''}>
+          <form onSubmit={authenticateForm.handleSubmit}>
+            <Box mt={2} mb={4}>
+              <Paper
+                elevation={0}
+                style={{
+                  borderRadius: 16,
+                  padding: 24,
+                  boxShadow: '0 0 20px 0 rgba(204,242,251,0.3)',
+                  border: '1px solid rgb(204 242 251)',
+                }}
+              >
+                <Grid container item spacing={2}>
+                  <Grid container item direction='row' alignItems='center'>
+                    <Grid xs={12} md={6}>
                       <Typography
                         variant='body1'
                         color='textPrimary'
                         style={{ fontWeight: 600 }}
                       >
-                        เลเซอร์ไอดี
+                        เลขประจำตัวประชาชน
                       </Typography>
-                      <LaserIDTooltip
-                        title={
-                          <div style={{ width: 1000, height: 200 }}>
-                            <img
-                              src={laserID}
-                              alt='ตัวอย่างเลเซอร์ไอดี'
-                              width='auto'
-                              height='auto'
-                              style={{
-                                borderRadius: 16,
-                                boxShadow:
-                                  '0 2px 4px -2px rgba(0,0,0,0.24), 0 4px 24px -2px rgba(0, 0, 0, 0.2)',
-                              }}
-                            />
-                          </div>
-                        }
-                        placement='top'
-                      >
-                        <HelpIcon
-                          style={{
-                            fontSize: 18,
-                            color: theme.palette.secondary.main,
-                          }}
-                        />
-                      </LaserIDTooltip>
-                    </Stack>
+                    </Grid>
+                    <Grid xs={12} md={6}>
+                      <Input
+                        id='id'
+                        name='id'
+                        value={authenticateForm.values.id}
+                        onChange={authenticateForm.handleChange}
+                        size='small'
+                        fullWidth
+                        inputComponent={TextMaskCitizenID}
+                      />
+                    </Grid>
                   </Grid>
-                  <Grid xs={12} md={6}>
-                    <Input
-                      id='laser'
-                      name='laser'
-                      value={formik.values.laser}
-                      onChange={formik.handleChange}
-                      variant='outlined'
-                      size='small'
-                      fullWidth
-                      inputComponent={TextMaskLaserID}
-                    />
+                  <Grid container item direction='row' alignItems='center'>
+                    <Grid xs={12} md={6}>
+                      <Typography
+                        variant='body1'
+                        color='textPrimary'
+                        style={{ fontWeight: 600 }}
+                      >
+                        ชื่อจริง (ไม่ต้องมีคำนำหน้า)
+                      </Typography>
+                    </Grid>
+                    <Grid xs={12} md={6}>
+                      <TextField
+                        id='firstName'
+                        name='firstName'
+                        value={authenticateForm.values.firstName}
+                        onChange={authenticateForm.handleChange}
+                        variant='outlined'
+                        size='small'
+                        fullWidth
+                        placeholder='สมชาย'
+                      />
+                    </Grid>
+                  </Grid>
+                  <Grid container item direction='row' alignItems='center'>
+                    <Grid xs={12} md={6}>
+                      <Typography
+                        variant='body1'
+                        color='textPrimary'
+                        style={{ fontWeight: 600 }}
+                      >
+                        นามสกุล
+                      </Typography>
+                    </Grid>
+                    <Grid xs={12} md={6}>
+                      <TextField
+                        id='lastName'
+                        name='lastName'
+                        value={authenticateForm.values.lastName}
+                        onChange={authenticateForm.handleChange}
+                        variant='outlined'
+                        size='small'
+                        fullWidth
+                        placeholder='รักเรียน'
+                      />
+                    </Grid>
+                  </Grid>
+                  <Grid container item direction='row' alignItems='center'>
+                    <Grid xs={12} md={6}>
+                      <Typography
+                        variant='body1'
+                        color='textPrimary'
+                        style={{ fontWeight: 600 }}
+                      >
+                        วัน/เดือน/ปีเกิด (พ.ศ.)
+                      </Typography>
+                    </Grid>
+                    <Grid xs={12} md={6}>
+                      <DatePicker date={birthDate} setDate={setBirthDate} />
+                    </Grid>
+                  </Grid>
+                  <Grid container item direction='row' alignItems='center'>
+                    <Grid xs={12} md={6}>
+                      <Stack direction='row' alignItems='center' gap={1}>
+                        <Typography
+                          variant='body1'
+                          color='textPrimary'
+                          style={{ fontWeight: 600 }}
+                        >
+                          เลเซอร์ไอดี
+                        </Typography>
+                        <LaserIDTooltip
+                          title={
+                            <div style={{ width: 1000, height: 200 }}>
+                              <img
+                                src={laserID}
+                                alt='ตัวอย่างเลเซอร์ไอดี'
+                                width='auto'
+                                height='auto'
+                                style={{
+                                  borderRadius: 16,
+                                  boxShadow:
+                                    '0 2px 4px -2px rgba(0,0,0,0.24), 0 4px 24px -2px rgba(0, 0, 0, 0.2)',
+                                }}
+                              />
+                            </div>
+                          }
+                          placement='top'
+                        >
+                          <HelpIcon
+                            style={{
+                              fontSize: 18,
+                              color: theme.palette.secondary.main,
+                            }}
+                          />
+                        </LaserIDTooltip>
+                      </Stack>
+                    </Grid>
+                    <Grid xs={12} md={6}>
+                      <Input
+                        id='laser'
+                        name='laser'
+                        value={authenticateForm.values.laser}
+                        onChange={authenticateForm.handleChange}
+                        variant='outlined'
+                        size='small'
+                        fullWidth
+                        inputComponent={TextMaskLaserID}
+                      />
+                    </Grid>
                   </Grid>
                 </Grid>
-              </Grid>
-            </Paper>
-            <Button
-              fullWidth
-              variant='contained'
-              color='secondary'
-              size='large'
-              endIcon={<ChevronRightIcon />}
-              style={{ marginTop: 32 }}
-              type='submit'
-              disabled={!isValid()}
-            >
-              พิสูจน์ตัวจริงกับกรมการปกครอง
-            </Button>
-          </Box>
-        </form>
+              </Paper>
+              <Button
+                fullWidth
+                variant='contained'
+                color='secondary'
+                size='large'
+                endIcon={<ChevronRightIcon />}
+                style={{ marginTop: 32 }}
+                type='submit'
+                disabled={!isValid()}
+              >
+                พิสูจน์ตัวจริงกับกรมการปกครอง
+              </Button>
+            </Box>
+          </form>
+        </Collapse>
+
+        <Collapse in={dopaToken !== ''}>
+          <form>
+            <Box mt={2} mb={4}>
+              <Paper
+                elevation={0}
+                style={{
+                  borderRadius: 16,
+                  padding: 24,
+                  boxShadow: '0 0 20px 0 rgba(204,242,251,0.3)',
+                  border: '1px solid rgb(204 242 251)',
+                }}
+              >
+                <Grid container item spacing={2}>
+                  <Grid container item direction='row' alignItems='center'>
+                    <Grid xs={12} md={6}>
+                      <Typography
+                        variant='body1'
+                        color='textPrimary'
+                        style={{ fontWeight: 600 }}
+                      >
+                        คำนำหน้า
+                      </Typography>
+                    </Grid>
+                    <Grid xs={12} md={6}>
+                      <TextField
+                        id='title'
+                        name='title'
+                        value={registerForm.values.title}
+                        onChange={registerForm.handleChange}
+                        variant='outlined'
+                        size='small'
+                        fullWidth
+                      />
+                    </Grid>
+                  </Grid>
+                  <Grid container item direction='row' alignItems='center'>
+                    <Grid xs={12} md={6}>
+                      <Typography
+                        variant='body1'
+                        color='textPrimary'
+                        style={{ fontWeight: 600 }}
+                      >
+                        ชื่อ
+                      </Typography>
+                    </Grid>
+                    <Grid xs={12} md={6}>
+                      <Typography variant='body1' color='textSecondary'>
+                        {authenticateForm.values.firstName}
+                      </Typography>
+                    </Grid>
+                  </Grid>
+                  <Grid container item direction='row' alignItems='center'>
+                    <Grid xs={12} md={6}>
+                      <Typography
+                        variant='body1'
+                        color='textPrimary'
+                        style={{ fontWeight: 600 }}
+                      >
+                        นามสกุล
+                      </Typography>
+                    </Grid>
+                    <Grid xs={12} md={6}>
+                      <Typography variant='body1' color='textSecondary'>
+                        {authenticateForm.values.lastName}
+                      </Typography>
+                    </Grid>
+                  </Grid>
+                  <Grid container item direction='row' alignItems='center'>
+                    <Grid xs={12} md={6}>
+                      <Typography
+                        variant='body1'
+                        color='textPrimary'
+                        style={{ fontWeight: 600 }}
+                      >
+                        วัน/เดือน/ปีเกิด (พ.ศ.)
+                      </Typography>
+                    </Grid>
+                    <Grid xs={12} md={6}>
+                      <Typography variant='body1' color='textSecondary'>
+                        {birthDate
+                          ? format(new Date(birthDate), 'dd/MM/yyyy').toString()
+                          : ''}
+                      </Typography>
+                    </Grid>
+                  </Grid>
+                  <Grid container item direction='row' alignItems='center'>
+                    <Grid xs={12} md={6}>
+                      <Typography
+                        variant='body1'
+                        color='textPrimary'
+                        style={{ fontWeight: 600 }}
+                      >
+                        เพศ
+                      </Typography>
+                    </Grid>
+                    <Grid xs={12} md={6}>
+                      <TextField
+                        id='gender'
+                        name='gender'
+                        value={registerForm.values.gender}
+                        onChange={registerForm.handleChange}
+                        variant='outlined'
+                        size='small'
+                        fullWidth
+                      />
+                    </Grid>
+                  </Grid>
+                  <Grid container item direction='row' alignItems='center'>
+                    <Grid xs={12} md={6}>
+                      <Typography
+                        variant='body1'
+                        color='textPrimary'
+                        style={{ fontWeight: 600 }}
+                      >
+                        กระทรวง
+                      </Typography>
+                    </Grid>
+                    <Grid xs={12} md={6}>
+                      <TextField
+                        id='ministryId'
+                        name='ministryId'
+                        value={registerForm.values.ministryId}
+                        onChange={registerForm.handleChange}
+                        variant='outlined'
+                        size='small'
+                        fullWidth
+                      />
+                    </Grid>
+                  </Grid>
+                  <Grid container item direction='row' alignItems='center'>
+                    <Grid xs={12} md={6}>
+                      <Typography
+                        variant='body1'
+                        color='textPrimary'
+                        style={{ fontWeight: 600 }}
+                      >
+                        กรมต้นสังกัด
+                      </Typography>
+                    </Grid>
+                    <Grid xs={12} md={6}>
+                      <TextField
+                        id='departmentId'
+                        name='departmentId'
+                        value={registerForm.values.departmentId}
+                        onChange={registerForm.handleChange}
+                        variant='outlined'
+                        size='small'
+                        fullWidth
+                      />
+                    </Grid>
+                  </Grid>
+                  <Grid container item direction='row' alignItems='center'>
+                    <Grid xs={12} md={6}>
+                      <Typography
+                        variant='body1'
+                        color='textPrimary'
+                        style={{ fontWeight: 600 }}
+                      >
+                        ชื่อส่วนราชการที่สังกัด
+                      </Typography>
+                    </Grid>
+                    <Grid xs={12} md={6}>
+                      <TextField
+                        id='division'
+                        name='division'
+                        value={registerForm.values.division}
+                        onChange={registerForm.handleChange}
+                        variant='outlined'
+                        size='small'
+                        fullWidth
+                      />
+                    </Grid>
+                  </Grid>
+                  <Grid container item direction='row' alignItems='center'>
+                    <Grid xs={12} md={6}>
+                      <Typography
+                        variant='body1'
+                        color='textPrimary'
+                        style={{ fontWeight: 600 }}
+                      >
+                        ตำแหน่ง
+                      </Typography>
+                    </Grid>
+                    <Grid xs={12} md={6}>
+                      <TextField
+                        id='position'
+                        name='position'
+                        value={registerForm.values.position}
+                        onChange={registerForm.handleChange}
+                        variant='outlined'
+                        size='small'
+                        fullWidth
+                      />
+                    </Grid>
+                  </Grid>
+                  <Grid container item direction='row' alignItems='center'>
+                    <Grid xs={12} md={6}>
+                      <Typography
+                        variant='body1'
+                        color='textPrimary'
+                        style={{ fontWeight: 600 }}
+                      >
+                        อีเมล
+                      </Typography>
+                    </Grid>
+                    <Grid xs={12} md={6}>
+                      <TextField
+                        id='email'
+                        name='email'
+                        value={registerForm.values.email}
+                        onChange={registerForm.handleChange}
+                        variant='outlined'
+                        size='small'
+                        fullWidth
+                      />
+                    </Grid>
+                  </Grid>
+                  <Grid container item direction='row' alignItems='center'>
+                    <Grid xs={12} md={6}>
+                      <Typography
+                        variant='body1'
+                        color='textPrimary'
+                        style={{ fontWeight: 600 }}
+                      >
+                        เบอร์โทรศัพท์
+                      </Typography>
+                    </Grid>
+                    <Grid xs={12} md={6}>
+                      <TextField
+                        id='phone'
+                        name='phone'
+                        value={registerForm.values.phone}
+                        onChange={registerForm.handleChange}
+                        variant='outlined'
+                        size='small'
+                        fullWidth
+                      />
+                    </Grid>
+                  </Grid>
+                  <Grid container item direction='row' alignItems='center'>
+                    <Grid xs={12} md={6}>
+                      <Typography
+                        variant='body1'
+                        color='textPrimary'
+                        style={{ fontWeight: 600 }}
+                      >
+                        รหัสผ่าน
+                      </Typography>
+                    </Grid>
+                    <Grid xs={12} md={6}>
+                      <TextField
+                        id='password1'
+                        name='password1'
+                        value={registerForm.values.password1}
+                        onChange={registerForm.handleChange}
+                        variant='outlined'
+                        size='small'
+                        fullWidth
+                      />
+                    </Grid>
+                  </Grid>
+                  <Grid container item direction='row' alignItems='center'>
+                    <Grid xs={12} md={6}>
+                      <Typography
+                        variant='body1'
+                        color='textPrimary'
+                        style={{ fontWeight: 600 }}
+                      >
+                        ยืนยันรหัสผ่าน
+                      </Typography>
+                    </Grid>
+                    <Grid xs={12} md={6}>
+                      <TextField
+                        id='password2'
+                        name='password2'
+                        value={registerForm.values.password2}
+                        onChange={registerForm.handleChange}
+                        variant='outlined'
+                        size='small'
+                        fullWidth
+                      />
+                    </Grid>
+                  </Grid>
+                </Grid>
+              </Paper>
+              <Button
+                fullWidth
+                variant='contained'
+                color='secondary'
+                size='large'
+                endIcon={<ChevronRightIcon />}
+                style={{ marginTop: 32 }}
+                type='submit'
+              >
+                สมัครสมาชิก
+              </Button>
+            </Box>
+          </form>
+        </Collapse>
       </Container>
     </>
   )
