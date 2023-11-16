@@ -6,7 +6,7 @@ import LocalizationProvider from '@mui/lab/LocalizationProvider'
 import { DatePicker } from '@mui/lab'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 
-import { format } from 'date-fns'
+import { format, isValid } from 'date-fns'
 import th from 'date-fns/locale/th'
 
 const theme = createTheme({
@@ -35,7 +35,11 @@ export default function CustomDatePicker({ date, setDate }) {
           disableFuture
           value={date}
           onChange={(newValue) => {
-            setDate(format(new Date(newValue), 'yyyy-MM-dd').toString())
+            if (isValid(new Date(newValue))) {
+              setDate(format(new Date(newValue), 'yyyy-MM-dd').toString())
+            } else {
+              setDate(format(new Date(), 'yyyy-MM-dd').toString())
+            }
           }}
           renderInput={(params) => (
             <TextField fullWidth size='small' {...params} color='primary' />
