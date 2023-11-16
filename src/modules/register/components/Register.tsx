@@ -156,7 +156,7 @@ export default function Register() {
     validationSchema: validationSchema,
     onSubmit: (values) => {
       dispatch(
-        registerActions.authenticateWithDota({
+        registerActions.authenticateWithDopa({
           id: values.id.replaceAll('-', '') || '',
           firstName: values.firstName,
           lastName: values.lastName,
