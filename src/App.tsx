@@ -8,9 +8,9 @@ import ScrollToTop from 'utils/ScrollToTop'
 import Layout from 'modules/ui/components/Layout'
 import META_IMAGE from './meta.jpg'
 
-const TITLE = 'กลุ่มงานรับรองคุณวุฒิ สำนักงาน ก.พ.'
+const TITLE = 'ระบบบริหารจัดการสมาชิก และสิทธิ์การใช้งานของส่วนราชการ'
 const URL = process.env.REACT_APP_PLATFORM_URL
-const DESCRIPTION = 'กลุ่มงานรับรองคุณวุฒิ สำนักงาน ก.พ.'
+const DESCRIPTION = 'ระบบบริหารจัดการสมาชิก และสิทธิ์การใช้งานของส่วนราชการ'
 
 const store = configureStore()
 
