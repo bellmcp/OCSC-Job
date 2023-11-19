@@ -20,6 +20,9 @@ import {
   LOAD_DEPARTMENTS_REQUEST,
   LOAD_DEPARTMENTS_SUCCESS,
   LOAD_DEPARTMENTS_FAILURE,
+  LOAD_ROLES_REQUEST,
+  LOAD_ROLES_SUCCESS,
+  LOAD_ROLES_FAILURE,
 } from './actions'
 
 const initialState = {
@@ -32,6 +35,7 @@ const initialState = {
   circularLetters: [],
   ministries: [],
   departments: [],
+  roles: [],
 }
 
 export default function (state = initialState, action: any) {
@@ -50,6 +54,8 @@ export default function (state = initialState, action: any) {
       return { ...state, isLoading: true, ministries: [] }
     case LOAD_DEPARTMENTS_REQUEST:
       return { ...state, isLoading: true, departments: [] }
+    case LOAD_ROLES_REQUEST:
+      return { ...state, isLoading: true, roles: [] }
     case LOAD_COUNTRIES_SUCCESS:
       return {
         ...state,
@@ -92,12 +98,19 @@ export default function (state = initialState, action: any) {
         isLoading: false,
         departments: action.payload.departments,
       }
+    case LOAD_ROLES_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        roles: action.payload.roles,
+      }
     case LOAD_COUNTRIES_FAILURE:
     case LOAD_SALARY_GROUPS_FAILURE:
     case LOAD_EDUCATION_LEVELS_FAILURE:
     case LOAD_CIRCULAR_LETTERS_FAILURE:
     case LOAD_MINISTRIES_FAILURE:
     case LOAD_DEPARTMENTS_FAILURE:
+    case LOAD_ROLES_FAILURE:
       return { ...state, isLoading: false }
     case LOAD_UNIVERSITIES_FAILURE:
       return { ...state, isUniversitiesLoading: false }

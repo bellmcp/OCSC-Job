@@ -12,24 +12,23 @@ export const isLogin = () => {
   return false
 }
 
-export const getRole = () => {
+export const getRoleFromToken = () => {
   const token = getCookie('token')
   return parseJwt(token).role
 }
 
 export const isLoginAsUser = () => {
-  // TODO: Remove
-  return isLogin() && getRole() === 'worker'
+  return isLogin()
 }
 
 export const isLoginAsOCSC = () => {
-  return isLogin() && getRole() === 'ocsc'
+  return isLogin()
 }
 
 export const isLoginAsAdmin = () => {
-  return isLogin() && getRole() === 'ocsc'
+  return isLogin()
 }
 
 export const isLoginAsWorker = () => {
-  return isLogin() && getRole() === 'worker'
+  return isLogin()
 }

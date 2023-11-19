@@ -1,7 +1,6 @@
 // @ts-nocheck
-import React, { useState } from 'react'
+import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { useLocation } from 'react-router-dom'
 import LoadingBar from 'react-redux-loading-bar'
 import { CssBaseline, Snackbar, IconButton } from '@material-ui/core'
 import {
@@ -17,15 +16,11 @@ import Routes from './Routes'
 import Footer from './Footer'
 
 export default function Layout() {
-  const { pathname } = useLocation()
-  const PATH = process.env.REACT_APP_BASE_PATH
   const dispatch = useDispatch()
   const { isSnackbarOpen, flashMessage, alertType } = useSelector(
     (state) => state.ui
   )
   const closeFlashMessage = () => dispatch(actions.clearFlashMessage())
-
-  const [activePage, setActivePage] = useState(0)
 
   const defaultTheme = createMuiTheme()
 
@@ -84,8 +79,6 @@ export default function Layout() {
     },
   })
 
-  const isPreviewPage = pathname.includes(`${PATH}/preview`)
-
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -100,9 +93,7 @@ export default function Layout() {
           position: 'fixed',
         }}
       />
-      {!isPreviewPage && (
-        <NavBar activePage={activePage} setActivePage={setActivePage} />
-      )}
+      <NavBar />
       <Routes />
       <Snackbar
         open={isSnackbarOpen}
@@ -133,7 +124,7 @@ export default function Layout() {
           ></div>
         </Alert>
       </Snackbar>
-      {!isPreviewPage && <Footer />}
+      <Footer />
     </ThemeProvider>
   )
 }

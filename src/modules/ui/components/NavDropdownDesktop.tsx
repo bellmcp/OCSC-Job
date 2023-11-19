@@ -12,10 +12,10 @@ import {
   Typography,
 } from '@material-ui/core'
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles'
-import { MeetingRoom as LogoutIcon, Lock as LockIcon } from '@material-ui/icons'
+import { amber } from '@material-ui/core/colors'
+import { MeetingRoom as LogoutIcon } from '@material-ui/icons'
 
 import { getCookie } from 'utils/cookies'
-import { isLoginAsAdmin, isLoginAsUser } from 'utils/isLogin'
 
 interface NavDropdownDesktopProps {
   isLoggedIn: boolean
@@ -41,6 +41,10 @@ const useStyles = makeStyles((theme: Theme) =>
       color: theme.palette.common.white,
       backgroundColor: process.env.REACT_APP_SECONDARY_COLOR_HEX,
     },
+    loggedInAsOCSC: {
+      color: theme.palette.common.white,
+      backgroundColor: amber[700],
+    },
     bold: {
       fontWeight: 600,
     },
@@ -50,30 +54,28 @@ const useStyles = makeStyles((theme: Theme) =>
 export default function NavDropdownDesktop({
   isLoggedIn,
   logout,
-  linkToHome,
-  linkToChangePassword,
   anchorEl,
   menuId,
   isMenuOpen,
   handleMenuClose,
+  role,
+  roleName,
 }: NavDropdownDesktopProps) {
   const classes = useStyles()
-  const isAdmin = isLoginAsAdmin()
-  const isUser = isLoginAsUser()
 
   const fullnameLabel = `${
     getCookie('firstName') ? getCookie('firstName') : ''
   } ${getCookie('lastName') ? getCookie('lastName') : ''}`
 
-  const getRoleLabel = () => {
-    if (isAdmin) return 'หัวหน้างาน'
-    else if (isUser) return 'ผู้ปฏิบัติงาน'
-    else return ''
-  }
-
   const getAvatarClassName = () => {
-    if (isAdmin) return classes.loggedInAsAdmin
-    else if (isUser) return classes.loggedIn
+    switch (role) {
+      case 'ocsc':
+        return classes.loggedInAsOCSC
+      case 'admin':
+        return classes.loggedInAsAdmin
+      case 'user':
+        return classes.loggedIn
+    }
   }
 
   return (
@@ -106,30 +108,19 @@ export default function NavDropdownDesktop({
           }
           secondary={
             <Typography variant='body2' color='textSecondary'>
-              {getRoleLabel()}
+              {roleName}
             </Typography>
           }
         />
       </ListItem>
       <Divider style={{ marginTop: 8 }} />
       {isLoggedIn && (
-        <MenuItem onClick={linkToChangePassword}>
+        <MenuItem onClick={logout}>
           <ListItemIcon className={classes.listItemIcon}>
-            <LockIcon />
+            <LogoutIcon />
           </ListItemIcon>
-          <ListItemText primary='เปลี่ยนรหัสผ่าน' />
+          <ListItemText primary='ออกจากระบบ' />
         </MenuItem>
-      )}
-      {isLoggedIn && (
-        <>
-          <Divider />
-          <MenuItem onClick={logout}>
-            <ListItemIcon className={classes.listItemIcon}>
-              <LogoutIcon />
-            </ListItemIcon>
-            <ListItemText primary='ออกจากระบบ' />
-          </MenuItem>
-        </>
       )}
     </Menu>
   )

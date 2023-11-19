@@ -1,6 +1,6 @@
 // @ts-nocheck
-import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import React, { useState, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { getCookie, eraseCookie } from 'utils/cookies'
 
@@ -16,13 +16,19 @@ import {
   Button,
 } from '@material-ui/core'
 import { KeyboardArrowDown as ArrowDownIcon } from '@material-ui/icons'
-import { grey } from '@material-ui/core/colors'
+import { grey, amber } from '@material-ui/core/colors'
 
 import NavDropdownMobile from './NavDropdownMobile'
 import NavDropdownDesktop from './NavDropdownDesktop'
 
 import * as uiActions from 'modules/ui/actions'
-import { isLoginAsAdmin, isLoginAsUser } from 'utils/isLogin'
+import * as infoActions from 'modules/info/actions'
+import {
+  isLogin,
+  isLoginAsAdmin,
+  isLoginAsUser,
+  getRoleFromToken,
+} from 'utils/isLogin'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -118,7 +124,7 @@ const useStyles = makeStyles((theme: Theme) =>
         display: 'none',
       },
     },
-    small: {
+    notLoggedIn: {
       width: theme.spacing(4),
       height: theme.spacing(4),
       backgroundColor: grey[700],
@@ -134,6 +140,12 @@ const useStyles = makeStyles((theme: Theme) =>
       width: theme.spacing(4),
       height: theme.spacing(4),
       backgroundColor: process.env.REACT_APP_SECONDARY_COLOR_HEX,
+    },
+    loggedInAsOCSC: {
+      color: theme.palette.common.white,
+      width: theme.spacing(4),
+      height: theme.spacing(4),
+      backgroundColor: amber[700],
     },
     noDecorationLink: {
       textDecoration: 'none',
@@ -168,31 +180,34 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 )
 
-interface NavigationBarProps {
-  activePage: number
-  setActivePage: (id: number) => void
-}
-
-export default function NavBar({
-  activePage,
-  setActivePage,
-}: NavigationBarProps) {
+export default function NavBar() {
   const classes = useStyles()
   const history = useHistory()
   const dispatch = useDispatch()
   const PATH = process.env.REACT_APP_BASE_PATH
   const LogoImage = require('assets/images/logo.png')
 
+  useEffect(() => {
+    dispatch(infoActions.loadRoles())
+  }, [dispatch])
+
+  const role = getRoleFromToken()
+  const { roles = [] } = useSelector((state: any) => state.info)
+  const getRoleByKey = (key: string) => {
+    return roles[key] || ''
+  }
+
+  const [roleName, setRoleName] = useState<string>('')
+  useEffect(() => {
+    setRoleName(getRoleByKey(role))
+  }, [roles]) //eslint-disable-line
+
   const menuId = 'primary-account-menu'
   const mobileMenuId = 'primary-account-menu-mobile'
 
+  const isLoggedIn = isLogin()
   const isAdmin = isLoginAsAdmin()
   const isUser = isLoginAsUser()
-
-  const checkIsLoggedIn = () => {
-    return isAdmin || isUser
-  }
-  const isLoggedIn = checkIsLoggedIn()
 
   const getUsernameLabel = () => {
     if (isLoggedIn) return getCookie('firstName')
@@ -201,9 +216,18 @@ export default function NavBar({
   const usernameLabel = getUsernameLabel()
 
   const getAvatarClassName = () => {
-    if (isAdmin) return classes.loggedInAsAdmin
-    else if (isUser) return classes.loggedIn
-    else return classes.small
+    if (isLoggedIn) {
+      switch (role) {
+        case 'ocsc':
+          return classes.loggedInAsOCSC
+        case 'admin':
+          return classes.loggedInAsAdmin
+        case 'user':
+          return classes.loggedIn
+      }
+    } else {
+      return classes.notLoggedIn
+    }
   }
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
@@ -319,19 +343,18 @@ export default function NavBar({
         mobileMoreAnchorEl={mobileMoreAnchorEl}
         isMobileMenuOpen={isMobileMenuOpen}
         handleMobileMenuClose={handleMobileMenuClose}
-        linkToHome={linkToHome}
-        linkToChangePassword={linkToChangePassword}
-        usernameLabel={usernameLabel}
+        role={role}
+        roleName={roleName}
       />
       <NavDropdownDesktop
         isLoggedIn={isLoggedIn}
         logout={logout}
-        linkToHome={linkToHome}
-        linkToChangePassword={linkToChangePassword}
         anchorEl={anchorEl}
         menuId={menuId}
         isMenuOpen={isMenuOpen}
         handleMenuClose={handleMenuClose}
+        role={role}
+        roleName={roleName}
       />
     </div>
   )

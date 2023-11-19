@@ -44,6 +44,10 @@ const LOAD_DEPARTMENTS_REQUEST = 'ocsc-job/info/LOAD_DEPARTMENTS_REQUEST'
 const LOAD_DEPARTMENTS_SUCCESS = 'ocsc-job/info/LOAD_DEPARTMENTS_SUCCESS'
 const LOAD_DEPARTMENTS_FAILURE = 'ocsc-job/info/LOAD_DEPARTMENTS_FAILURE'
 
+const LOAD_ROLES_REQUEST = 'ocsc-job/info/LOAD_ROLES_REQUEST'
+const LOAD_ROLES_SUCCESS = 'ocsc-job/info/LOAD_ROLES_SUCCESS'
+const LOAD_ROLES_FAILURE = 'ocsc-job/info/LOAD_ROLES_FAILURE'
+
 function loadMininstries() {
   return async (dispatch: any) => {
     dispatch({ type: LOAD_MINISTRIES_REQUEST })
@@ -93,6 +97,36 @@ function loadDepartments() {
       dispatch(
         uiActions.setFlashMessage(
           `โหลดรายชื่อกรมทั้งหมดไม่สำเร็จ เกิดข้อผิดพลาด ${get(
+            err,
+            'response.status',
+            'บางอย่าง'
+          )}`,
+          'error'
+        )
+      )
+    }
+  }
+}
+
+function loadRoles() {
+  return async (dispatch: any) => {
+    dispatch({ type: LOAD_ROLES_REQUEST })
+    try {
+      var { data } = await axios.get('/roles')
+      if (data.length === 0) {
+        data = []
+      }
+      dispatch({
+        type: LOAD_ROLES_SUCCESS,
+        payload: {
+          roles: data,
+        },
+      })
+    } catch (err) {
+      dispatch({ type: LOAD_ROLES_FAILURE })
+      dispatch(
+        uiActions.setFlashMessage(
+          `โหลดรายชื่อบทบาทไม่สำเร็จ เกิดข้อผิดพลาด ${get(
             err,
             'response.status',
             'บางอย่าง'
@@ -278,6 +312,9 @@ export {
   LOAD_DEPARTMENTS_REQUEST,
   LOAD_DEPARTMENTS_SUCCESS,
   LOAD_DEPARTMENTS_FAILURE,
+  LOAD_ROLES_REQUEST,
+  LOAD_ROLES_SUCCESS,
+  LOAD_ROLES_FAILURE,
   loadSalaryGroups,
   loadEducationLevels,
   loadCountries,
@@ -285,4 +322,5 @@ export {
   loadCircularLetters,
   loadMininstries,
   loadDepartments,
+  loadRoles,
 }
