@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
+import { getCookie } from 'utils/cookies'
 
 import {
   Button,
   Typography,
-  Paper,
+  Avatar,
   Toolbar,
   Grid,
   Container,
@@ -14,7 +15,12 @@ import {
 import { Stack } from '@mui/material'
 import { makeStyles, useTheme } from '@material-ui/core/styles'
 import { amber } from '@material-ui/core/colors'
+import {
+  ChevronRight as ChevronRightIcon,
+  Launch as LaunchIcon,
+} from '@material-ui/icons'
 
+import * as homeActions from 'modules/home/actions'
 import { getRoleFromToken } from 'utils/isLogin'
 
 const PATH = process.env.REACT_APP_BASE_PATH
@@ -46,19 +52,22 @@ export default function Login() {
   const history = useHistory()
   const theme = useTheme()
 
-  const role = getRoleFromToken()
   const { roles = [] } = useSelector((state: any) => state.info)
+  const { menuItems = [] } = useSelector((state: any) => state.home)
+
+  const role = getRoleFromToken()
   const getRoleByKey = (key: string) => {
     return roles[key] || ''
   }
   const [roleName, setRoleName] = useState<string>('')
+
   useEffect(() => {
     setRoleName(getRoleByKey(role))
   }, [roles, role]) //eslint-disable-line
 
-  const onLink = () => {
-    history.push(`${PATH}/somepath`)
-  }
+  useEffect(() => {
+    dispatch(homeActions.loadMenuItems())
+  }, [dispatch])
 
   const getChipColorByRole = (role: string) => {
     switch (role) {
@@ -71,28 +80,52 @@ export default function Login() {
     }
   }
 
+  const isExternalLink = (link: string) => {
+    return link.includes('http')
+  }
+
+  const handleClickMenuItem = (link: string) => {
+    if (isExternalLink(link)) {
+      return () => window.open(link, '_blank')
+    } else {
+      history.push(`${PATH}${link}`)
+    }
+  }
+
+  const fullnameLabel = `${getCookie('firstName') || ''} ${
+    getCookie('lastName') || ''
+  }`
+
+  const profileImage = getCookie('seal') || ''
+  const ministry = getCookie('ministry') || ''
+  const department = getCookie('department') || ''
+
   return (
-    <Container maxWidth='lg'>
-      <Grid container direction='row' justify='center' alignItems='center'>
-        <Grid item xs={12} md={8}>
-          <Paper className={classes.paper} elevation={0}>
-            <Toolbar />
-            <Stack
-              direction='column'
-              alignItems='center'
-              spacing={1}
-              sx={{ marginBottom: 4 }}
-            >
+    <Container maxWidth='md'>
+      <Grid container style={{ paddingBlock: 128 }} spacing={6}>
+        <Grid container item xs={12} md={4}>
+          <Stack direction='column' alignItems='flex-start' spacing={4}>
+            <Avatar
+              src={profileImage}
+              style={{
+                width: 180,
+                height: 180,
+                backgroundColor: theme.palette.common.white,
+                boxShadow:
+                  '0 2px 4px -2px rgba(0,0,0,0.24), 0 4px 24px -2px rgba(0, 0, 0, 0.2)',
+              }}
+            />
+            <Stack direction='column' spacing={1} alignItems='flex-start'>
               <Typography
                 component='h1'
-                variant='h4'
-                align='center'
-                color='secondary'
+                variant='h5'
+                color='textPrimary'
                 style={{ fontWeight: 600 }}
               >
-                หน้าหลัก
+                {fullnameLabel}
               </Typography>
               <Chip
+                size='small'
                 label={roleName}
                 variant='outlined'
                 style={{
@@ -102,27 +135,64 @@ export default function Login() {
                   color: getChipColorByRole(role),
                 }}
               />
+              <Typography variant='body1' color='textSecondary'>
+                {ministry}
+              </Typography>
+              <Typography
+                variant='body1'
+                color='textSecondary'
+                style={{ lineHeight: 1.2 }}
+              >
+                {department}
+              </Typography>
             </Stack>
-            <Button
-              size='large'
+          </Stack>
+        </Grid>
+        <Grid item xs={12} md={8}>
+          <Toolbar />
+          <Stack
+            direction='column'
+            alignItems='center'
+            spacing={1}
+            sx={{ marginBottom: 4 }}
+          >
+            <Typography
+              component='h1'
+              variant='h4'
+              align='center'
               color='secondary'
-              variant='contained'
-              fullWidth
-              onClick={onLink}
+              style={{ fontWeight: 600 }}
             >
-              หน้า 1
-            </Button>
-            <Button
-              size='large'
-              color='secondary'
-              variant='contained'
-              fullWidth
-              onClick={onLink}
-              style={{ marginTop: 8 }}
-            >
-              หน้า 2
-            </Button>
-          </Paper>
+              หน้าหลัก
+            </Typography>
+          </Stack>
+          <Stack direction='column' alignItems='center' spacing={2}>
+            {menuItems.map((menuItem: any, index: any) => (
+              <Button
+                key={index}
+                size='large'
+                color='secondary'
+                variant={
+                  isExternalLink(menuItem.url) ? 'outlined' : 'contained'
+                }
+                endIcon={
+                  isExternalLink(menuItem.url) ? (
+                    <LaunchIcon />
+                  ) : (
+                    <ChevronRightIcon />
+                  )
+                }
+                fullWidth
+                style={{
+                  textAlign: 'left',
+                  justifyContent: 'flex-start',
+                }}
+                onClick={() => handleClickMenuItem(menuItem.url)}
+              >
+                {menuItem.text}
+              </Button>
+            ))}
+          </Stack>
         </Grid>
       </Grid>
     </Container>

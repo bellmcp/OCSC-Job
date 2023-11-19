@@ -254,9 +254,12 @@ export default function NavBar() {
     eraseCookie('token')
     eraseCookie('firstName')
     eraseCookie('lastName')
+    eraseCookie('ministry')
     eraseCookie('ministryId')
+    eraseCookie('department')
     eraseCookie('departmentId')
     eraseCookie('id')
+    eraseCookie('seal')
     dispatch(uiActions.setFlashMessage('ออกจากระบบเรียบร้อยแล้ว', 'success'))
     setTimeout(() => {
       history.push(`${PATH}/login`)
