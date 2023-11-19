@@ -71,9 +71,9 @@ export default function NavDropdownDesktop({
     switch (role) {
       case 'ocsc':
         return classes.loggedInAsOCSC
-      case 'admin':
+      case 'administrator':
         return classes.loggedInAsAdmin
-      case 'user':
+      case 'worker':
         return classes.loggedIn
     }
   }

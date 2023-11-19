@@ -23,12 +23,7 @@ import NavDropdownDesktop from './NavDropdownDesktop'
 
 import * as uiActions from 'modules/ui/actions'
 import * as infoActions from 'modules/info/actions'
-import {
-  isLogin,
-  isLoginAsAdmin,
-  isLoginAsUser,
-  getRoleFromToken,
-} from 'utils/isLogin'
+import { isLogin, getRoleFromToken } from 'utils/isLogin'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -196,18 +191,15 @@ export default function NavBar() {
   const getRoleByKey = (key: string) => {
     return roles[key] || ''
   }
-
   const [roleName, setRoleName] = useState<string>('')
   useEffect(() => {
     setRoleName(getRoleByKey(role))
-  }, [roles]) //eslint-disable-line
+  }, [roles, role]) //eslint-disable-line
 
   const menuId = 'primary-account-menu'
   const mobileMenuId = 'primary-account-menu-mobile'
 
   const isLoggedIn = isLogin()
-  const isAdmin = isLoginAsAdmin()
-  const isUser = isLoginAsUser()
 
   const getUsernameLabel = () => {
     if (isLoggedIn) return getCookie('firstName')
@@ -220,9 +212,9 @@ export default function NavBar() {
       switch (role) {
         case 'ocsc':
           return classes.loggedInAsOCSC
-        case 'admin':
+        case 'administrator':
           return classes.loggedInAsAdmin
-        case 'user':
+        case 'worker':
           return classes.loggedIn
       }
     } else {
@@ -245,11 +237,6 @@ export default function NavBar() {
   }
   const handleMobileMenuClose = () => {
     setMobileMoreAnchorEl(null)
-  }
-
-  const linkToChangePassword = () => {
-    handleMenuClose()
-    history.push(`${PATH}/edit/password`)
   }
 
   const linkToHome = () => {

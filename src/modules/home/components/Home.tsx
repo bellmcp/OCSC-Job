@@ -1,5 +1,5 @@
-import React from 'react'
-import { useDispatch } from 'react-redux'
+import React, { useState, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 
 import {
@@ -9,8 +9,13 @@ import {
   Toolbar,
   Grid,
   Container,
+  Chip,
 } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
+import { Stack } from '@mui/material'
+import { makeStyles, useTheme } from '@material-ui/core/styles'
+import { amber } from '@material-ui/core/colors'
+
+import { getRoleFromToken } from 'utils/isLogin'
 
 const PATH = process.env.REACT_APP_BASE_PATH
 
@@ -39,9 +44,31 @@ export default function Login() {
   const classes = useStyles()
   const dispatch = useDispatch()
   const history = useHistory()
+  const theme = useTheme()
+
+  const role = getRoleFromToken()
+  const { roles = [] } = useSelector((state: any) => state.info)
+  const getRoleByKey = (key: string) => {
+    return roles[key] || ''
+  }
+  const [roleName, setRoleName] = useState<string>('')
+  useEffect(() => {
+    setRoleName(getRoleByKey(role))
+  }, [roles, role]) //eslint-disable-line
 
   const onLink = () => {
     history.push(`${PATH}/somepath`)
+  }
+
+  const getChipColorByRole = (role: string) => {
+    switch (role) {
+      case 'ocsc':
+        return amber[800]
+      case 'administrator':
+        return theme.palette.secondary.main
+      case 'worker':
+        return theme.palette.primary.main
+    }
   }
 
   return (
@@ -50,22 +77,32 @@ export default function Login() {
         <Grid item xs={12} md={8}>
           <Paper className={classes.paper} elevation={0}>
             <Toolbar />
-            <Grid
-              container
-              direction='row'
-              justify='center'
+            <Stack
+              direction='column'
               alignItems='center'
+              spacing={1}
+              sx={{ marginBottom: 4 }}
             >
               <Typography
                 component='h1'
                 variant='h4'
                 align='center'
                 color='secondary'
-                style={{ fontWeight: 600, marginBottom: 48 }}
+                style={{ fontWeight: 600 }}
               >
                 หน้าหลัก
               </Typography>
-            </Grid>
+              <Chip
+                label={roleName}
+                variant='outlined'
+                style={{
+                  marginBottom: 16,
+                  fontWeight: 500,
+                  borderColor: getChipColorByRole(role),
+                  color: getChipColorByRole(role),
+                }}
+              />
+            </Stack>
             <Button
               size='large'
               color='secondary'
