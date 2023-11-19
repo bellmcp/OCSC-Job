@@ -236,8 +236,6 @@ export default function Register() {
           dopaToken
         )
       )
-
-      dispatch(registerActions.clearDopaToken())
     },
   })
 

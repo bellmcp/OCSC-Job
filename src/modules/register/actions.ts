@@ -90,6 +90,7 @@ function register(userInfo: any, dopaToken: string) {
           'success'
         )
       )
+      dispatch({ type: CLEAR_DOPA_TOKEN })
       dispatch(push(`${PATH}`))
     } catch (err) {
       dispatch({ type: LOAD_REGISTER_FAILURE })
