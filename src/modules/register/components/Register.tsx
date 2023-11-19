@@ -33,12 +33,16 @@ import {
   FormControl,
   Select,
   MenuItem,
+  InputAdornment,
+  IconButton,
 } from '@material-ui/core'
 import { Stack } from '@mui/material'
 import {
   ChevronRight as ChevronRightIcon,
   ChevronLeft as ChevronLeftIcon,
   Help as HelpIcon,
+  Visibility as VisibilityIcon,
+  VisibilityOff as VisibilityOffIcon,
 } from '@material-ui/icons'
 
 import * as registerActions from 'modules/register/actions'
@@ -279,6 +283,25 @@ export default function Register() {
   const getDepartmentNameById = (id: any) => {
     const result = departments.find((department: any) => department.id === id)
     return get(result, 'department', '')
+  }
+
+  const [values, setValues] = useState({
+    showPassword: false,
+    showConfirmPassword: false,
+  })
+
+  const handleClickShowPassword = () => {
+    setValues({ ...values, showPassword: !values.showPassword })
+  }
+
+  const handleClickShowConfirmPassword = () => {
+    setValues({ ...values, showConfirmPassword: !values.showConfirmPassword })
+  }
+
+  const handleMouseDownPassword = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    event.preventDefault()
   }
 
   return (
@@ -828,9 +851,26 @@ export default function Register() {
                         variant='outlined'
                         size='small'
                         fullWidth
-                        type='password'
+                        type={values.showPassword ? 'text' : 'password'}
                         autoComplete='new-password'
                         placeholder='โปรดกำหนดรหัสผ่าน'
+                        InputProps={{
+                          endAdornment: (
+                            <InputAdornment position='end'>
+                              <IconButton
+                                size='small'
+                                onClick={handleClickShowPassword}
+                                onMouseDown={handleMouseDownPassword}
+                              >
+                                {values.showPassword ? (
+                                  <VisibilityIcon style={{ fontSize: 18 }} />
+                                ) : (
+                                  <VisibilityOffIcon style={{ fontSize: 18 }} />
+                                )}
+                              </IconButton>
+                            </InputAdornment>
+                          ),
+                        }}
                       />
                     </Grid>
                   </Grid>
@@ -853,9 +893,26 @@ export default function Register() {
                         variant='outlined'
                         size='small'
                         fullWidth
-                        type='password'
+                        type={values.showConfirmPassword ? 'text' : 'password'}
                         autoComplete='new-password'
                         placeholder='โปรดยืนยันรหัสผ่าน'
+                        InputProps={{
+                          endAdornment: (
+                            <InputAdornment position='end'>
+                              <IconButton
+                                size='small'
+                                onClick={handleClickShowConfirmPassword}
+                                onMouseDown={handleMouseDownPassword}
+                              >
+                                {values.showConfirmPassword ? (
+                                  <VisibilityIcon style={{ fontSize: 18 }} />
+                                ) : (
+                                  <VisibilityOffIcon style={{ fontSize: 18 }} />
+                                )}
+                              </IconButton>
+                            </InputAdornment>
+                          ),
+                        }}
                       />
                     </Grid>
                   </Grid>
