@@ -103,6 +103,10 @@ export default function Login() {
     history.push(`${PATH}/register`)
   }
 
+  const onForgot = () => {
+    history.push(`${PATH}/forgot`)
+  }
+
   return (
     <Container maxWidth='lg'>
       <Grid container direction='row' justify='center' alignItems='center'>
@@ -221,6 +225,17 @@ export default function Login() {
                 onClick={onRegister}
               >
                 สมัครสมาชิก
+              </Button>
+              <Button
+                size='large'
+                color='secondary'
+                variant='outlined'
+                fullWidth
+                type='submit'
+                onClick={onForgot}
+                style={{ marginTop: 8 }}
+              >
+                ลืมรหัสผ่าน
               </Button>
             </form>
           </Paper>

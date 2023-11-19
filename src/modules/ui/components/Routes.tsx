@@ -4,6 +4,7 @@ import PrivateRoute from 'modules/routes/PrivateRoute'
 
 import Login from 'modules/login/components/Login'
 import Register from 'modules/register/components/Register'
+import Forgot from 'modules/forgot/components/Forgot'
 import PersonLetterRoutes from 'modules/personLetter/Routes'
 import SearchRoutes from 'modules/search/Routes'
 import CurriculumRoutes from 'modules/curriculum/Routes'
@@ -22,6 +23,9 @@ export default function Routes() {
       </Route>
       <Route exact path={`${PATH}/register`}>
         <Register />
+      </Route>
+      <Route exact path={`${PATH}/forgot`}>
+        <Forgot />
       </Route>
       <PrivateRoute path={`${PATH}/search`} component={SearchRoutes} />
       <PrivateRoute path={`${PATH}/curriculum`} component={CurriculumRoutes} />
