@@ -257,7 +257,18 @@ export default function Register() {
   }
 
   const isRegisterFormValid = () => {
-    return true
+    return (
+      registerForm.values.title !== '' &&
+      registerForm.values.gender !== '' &&
+      registerForm.values.ministryId !== null &&
+      registerForm.values.departmentId !== null &&
+      registerForm.values.division !== '' &&
+      registerForm.values.position !== '' &&
+      registerForm.values.email !== '' &&
+      registerForm.values.phone !== '' &&
+      registerForm.values.password1 !== '' &&
+      registerForm.values.password2 !== ''
+    )
   }
 
   const getMinistryNameById = (id: any) => {
