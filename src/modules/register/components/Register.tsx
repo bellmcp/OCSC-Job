@@ -194,6 +194,7 @@ export default function Register() {
   const registerForm = useFormik({
     enableReinitialize: true,
     initialValues: {
+      title: '',
       gender: 'm',
       ministryId: null,
       departmentId: null,
@@ -202,16 +203,43 @@ export default function Register() {
       email: '',
       phone: '',
       password1: '',
-      passwpord2: '',
+      password2: '',
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      console.log('values :>> ', values)
+      const buddhistYear = parseInt(birthDate.split('-')[0]) + 543
+      const buddhistBirthDate = `${buddhistYear}-${birthDate.split('-')[1]}-${
+        birthDate.split('-')[2]
+      }`
+
+      dispatch(
+        registerActions.register(
+          {
+            title: values.title,
+            firstName: authenticateForm.values.firstName,
+            lastName: authenticateForm.values.lastName,
+            birthDate: buddhistBirthDate.replaceAll('-', '') || '',
+            gender: 'm',
+            ministryId: values.ministryId,
+            departmentId: values.departmentId,
+            division: values.division,
+            position: values.position,
+            email: values.email,
+            phone: values.phone,
+            password1: values.password1,
+            password2: values.password2,
+          },
+          dopaToken
+        )
+      )
+
+      dispatch(registerActions.clearDopaToken())
     },
   })
 
   const onBack = () => {
     history.push(`${PATH}/login`)
+    dispatch(registerActions.clearDopaToken())
   }
 
   const isAuthenticateFormValid = () => {
@@ -229,7 +257,7 @@ export default function Register() {
   }
 
   const isRegisterFormValid = () => {
-    return false
+    return true
   }
 
   const getMinistryNameById = (id: any) => {
@@ -462,7 +490,13 @@ export default function Register() {
                       />
                     </Grid>
                   </Grid>
-                  <Grid container item direction='row' alignItems='center'>
+                  <Grid
+                    container
+                    item
+                    direction='row'
+                    alignItems='center'
+                    style={{ minHeight: 48 }}
+                  >
                     <Grid xs={12} md={6}>
                       <Typography
                         variant='body1'
@@ -473,12 +507,22 @@ export default function Register() {
                       </Typography>
                     </Grid>
                     <Grid xs={12} md={6}>
-                      <Typography variant='body1' color='textSecondary'>
+                      <Typography
+                        variant='body1'
+                        color='secondary'
+                        style={{ fontWeight: 500 }}
+                      >
                         {authenticateForm.values.firstName}
                       </Typography>
                     </Grid>
                   </Grid>
-                  <Grid container item direction='row' alignItems='center'>
+                  <Grid
+                    container
+                    item
+                    direction='row'
+                    alignItems='center'
+                    style={{ minHeight: 48 }}
+                  >
                     <Grid xs={12} md={6}>
                       <Typography
                         variant='body1'
@@ -489,12 +533,22 @@ export default function Register() {
                       </Typography>
                     </Grid>
                     <Grid xs={12} md={6}>
-                      <Typography variant='body1' color='textSecondary'>
+                      <Typography
+                        variant='body1'
+                        color='secondary'
+                        style={{ fontWeight: 500 }}
+                      >
                         {authenticateForm.values.lastName}
                       </Typography>
                     </Grid>
                   </Grid>
-                  <Grid container item direction='row' alignItems='center'>
+                  <Grid
+                    container
+                    item
+                    direction='row'
+                    alignItems='center'
+                    style={{ minHeight: 48 }}
+                  >
                     <Grid xs={12} md={6}>
                       <Typography
                         variant='body1'
@@ -505,7 +559,11 @@ export default function Register() {
                       </Typography>
                     </Grid>
                     <Grid xs={12} md={6}>
-                      <Typography variant='body1' color='textSecondary'>
+                      <Typography
+                        variant='body1'
+                        color='secondary'
+                        style={{ fontWeight: 500 }}
+                      >
                         {birthDate
                           ? format(new Date(birthDate), 'dd/MM/yyyy').toString()
                           : ''}
