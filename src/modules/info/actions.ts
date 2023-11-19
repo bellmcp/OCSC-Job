@@ -34,6 +34,76 @@ const LOAD_CIRCULAR_LETTERS_SUCCESS =
 const LOAD_CIRCULAR_LETTERS_FAILURE =
   'ocsc-job/info/circular-letters/LOAD_CIRCULAR_LETTERS_FAILURE'
 
+// new
+
+const LOAD_MINISTRIES_REQUEST = 'ocsc-job/info/LOAD_MINISTRIES_REQUEST'
+const LOAD_MINISTRIES_SUCCESS = 'ocsc-job/info/LOAD_MINISTRIES_SUCCESS'
+const LOAD_MINISTRIES_FAILURE = 'ocsc-job/info/LOAD_MINISTRIES_FAILURE'
+
+const LOAD_DEPARTMENTS_REQUEST = 'ocsc-job/info/LOAD_DEPARTMENTS_REQUEST'
+const LOAD_DEPARTMENTS_SUCCESS = 'ocsc-job/info/LOAD_DEPARTMENTS_SUCCESS'
+const LOAD_DEPARTMENTS_FAILURE = 'ocsc-job/info/LOAD_DEPARTMENTS_FAILURE'
+
+function loadMininstries() {
+  return async (dispatch: any) => {
+    dispatch({ type: LOAD_MINISTRIES_REQUEST })
+    try {
+      var { data } = await axios.get('/ministries')
+      if (data.length === 0) {
+        data = []
+      }
+      dispatch({
+        type: LOAD_MINISTRIES_SUCCESS,
+        payload: {
+          ministries: data,
+        },
+      })
+    } catch (err) {
+      dispatch({ type: LOAD_MINISTRIES_FAILURE })
+      dispatch(
+        uiActions.setFlashMessage(
+          `โหลดรายชื่อกระทรวงทั้งหมดไม่สำเร็จ เกิดข้อผิดพลาด ${get(
+            err,
+            'response.status',
+            'บางอย่าง'
+          )}`,
+          'error'
+        )
+      )
+    }
+  }
+}
+
+function loadDepartments() {
+  return async (dispatch: any) => {
+    dispatch({ type: LOAD_DEPARTMENTS_REQUEST })
+    try {
+      var { data } = await axios.get('/departments')
+      if (data.length === 0) {
+        data = []
+      }
+      dispatch({
+        type: LOAD_DEPARTMENTS_SUCCESS,
+        payload: {
+          departments: data,
+        },
+      })
+    } catch (err) {
+      dispatch({ type: LOAD_DEPARTMENTS_FAILURE })
+      dispatch(
+        uiActions.setFlashMessage(
+          `โหลดรายชื่อกรมทั้งหมดไม่สำเร็จ เกิดข้อผิดพลาด ${get(
+            err,
+            'response.status',
+            'บางอย่าง'
+          )}`,
+          'error'
+        )
+      )
+    }
+  }
+}
+
 function loadCountries() {
   return async (dispatch: any) => {
     dispatch({ type: LOAD_COUNTRIES_REQUEST })
@@ -202,9 +272,17 @@ export {
   LOAD_CIRCULAR_LETTERS_REQUEST,
   LOAD_CIRCULAR_LETTERS_SUCCESS,
   LOAD_CIRCULAR_LETTERS_FAILURE,
+  LOAD_MINISTRIES_REQUEST,
+  LOAD_MINISTRIES_SUCCESS,
+  LOAD_MINISTRIES_FAILURE,
+  LOAD_DEPARTMENTS_REQUEST,
+  LOAD_DEPARTMENTS_SUCCESS,
+  LOAD_DEPARTMENTS_FAILURE,
   loadSalaryGroups,
   loadEducationLevels,
   loadCountries,
   loadUniversities,
   loadCircularLetters,
+  loadMininstries,
+  loadDepartments,
 }
