@@ -4,14 +4,7 @@ import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { getCookie, eraseCookie } from 'utils/cookies'
 
-import {
-  fade,
-  makeStyles,
-  Theme,
-  createStyles,
-  createMuiTheme,
-  ThemeProvider,
-} from '@material-ui/core/styles'
+import { fade, makeStyles, Theme, createStyles } from '@material-ui/core/styles'
 import {
   AppBar,
   Toolbar,
@@ -22,41 +15,14 @@ import {
   Avatar,
   Button,
 } from '@material-ui/core'
-import {
-  Menu as MenuIcon,
-  KeyboardArrowDown as ArrowDownIcon,
-} from '@material-ui/icons'
+import { KeyboardArrowDown as ArrowDownIcon } from '@material-ui/icons'
 import { grey } from '@material-ui/core/colors'
 
-import { NavMenu, NavItem } from '@mui-treasury/components/menu/navigation'
-import { useLineNavigationMenuStyles } from '@mui-treasury/styles/navigationMenu/line'
-import { usePopupState } from 'material-ui-popup-state/hooks'
-import NavDrawer from './NavDrawer'
-import PopUpMenu from './PopUpMenu'
-import PopUpMenuDropdown from './PopUpMenuDropdown'
 import NavDropdownMobile from './NavDropdownMobile'
 import NavDropdownDesktop from './NavDropdownDesktop'
 
 import * as uiActions from 'modules/ui/actions'
 import { isLoginAsAdmin, isLoginAsUser } from 'utils/isLogin'
-import {
-  mainItems,
-  searchItems,
-  menuItems,
-  curriculumItems,
-  infoItems,
-} from '../navigation'
-
-const darkTheme = createMuiTheme({
-  palette: {
-    primary: {
-      main: process.env.REACT_APP_PRIMARY_COLOR_HEX,
-    },
-  },
-  typography: {
-    fontFamily: ['Prompt', 'sans-serif'].join(','),
-  },
-})
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -240,7 +206,6 @@ export default function NavBar({
     else return classes.small
   }
 
-  const [mobileOpen, setMobileOpen] = useState(false)
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
     useState<null | HTMLElement>(null)
@@ -258,8 +223,6 @@ export default function NavBar({
     setMobileMoreAnchorEl(null)
   }
 
-  const isUserCurrentlyInLearn = false
-
   const linkToChangePassword = () => {
     handleMenuClose()
     history.push(`${PATH}/edit/password`)
@@ -269,27 +232,6 @@ export default function NavBar({
     handleMenuClose()
     history.push(`${PATH}`)
   }
-
-  const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen)
-  }
-
-  const infoPopUpState = usePopupState({
-    variant: 'popover',
-    popupId: 'infoPopUp',
-  })
-  const curriculumPopUpState = usePopupState({
-    variant: 'popover',
-    popupId: 'curriculumPopUp',
-  })
-  const searchPopUpState = usePopupState({
-    variant: 'popover',
-    popupId: 'searchPopUp',
-  })
-  const menuPopUpState = usePopupState({
-    variant: 'popover',
-    popupId: 'menuPopUp',
-  })
 
   const handleMenuClose = () => {
     setAnchorEl(null)
@@ -316,17 +258,6 @@ export default function NavBar({
       <AppBar position='fixed' className={classes.appBar} elevation={0}>
         <Container maxWidth='lg'>
           <Toolbar>
-            {/* DRAWER TOGGLE */}
-            <Hidden smUp implementation='css'>
-              <IconButton
-                edge='start'
-                color='primary'
-                className={classes.menuButton}
-                onClick={handleDrawerToggle}
-              >
-                <MenuIcon />
-              </IconButton>
-            </Hidden>
             {/* SITE LOGO */}
             <img
               src={LogoImage}
@@ -336,66 +267,6 @@ export default function NavBar({
               style={{ filter: 'saturate(1.3)' }}
             />
             <div className={classes.grow} />
-
-            {/* FULL DESKTOP NAVIGATION */}
-            <Hidden mdDown implementation='css'>
-              <ThemeProvider theme={darkTheme}>
-                <NavMenu
-                  useStyles={useLineNavigationMenuStyles}
-                  color='inherit'
-                  className={classes.navMenu}
-                >
-                  {mainItems.map((item) => (
-                    <NavItem
-                      active={activePage === item.id}
-                      className={
-                        activePage === item.id
-                          ? classes.navItemActive
-                          : classes.navItem
-                      }
-                      onClick={() => {
-                        history.push(item.url)
-                        setActivePage(item.id)
-                      }}
-                    >
-                      <Typography noWrap>{item.title}</Typography>
-                    </NavItem>
-                  ))}
-                  <PopUpMenu
-                    title='ค้นหาการรับรอง'
-                    popUpState={searchPopUpState}
-                  />
-                  <PopUpMenu
-                    title='หนังสือเวียน'
-                    popUpState={curriculumPopUpState}
-                  />
-                  <PopUpMenu
-                    title='ข้อมูลพื้นฐาน'
-                    popUpState={infoPopUpState}
-                  />
-                </NavMenu>
-              </ThemeProvider>
-            </Hidden>
-
-            {/* MEDIUM DESKTOP NAVIGATION */}
-            <Hidden xsDown lgUp implementation='css'>
-              <ThemeProvider theme={darkTheme}>
-                <NavMenu
-                  useStyles={useLineNavigationMenuStyles}
-                  color='inherit'
-                >
-                  <PopUpMenu title='เมนู' popUpState={menuPopUpState} />
-                  <PopUpMenu
-                    title='หนังสือเวียน'
-                    popUpState={curriculumPopUpState}
-                  />
-                  <PopUpMenu
-                    title='ข้อมูลพื้นฐาน'
-                    popUpState={infoPopUpState}
-                  />
-                </NavMenu>
-              </ThemeProvider>
-            </Hidden>
 
             {/* DESKTOP USER DROPDOWN */}
             <div className={classes.sectionDesktop}>
@@ -441,40 +312,6 @@ export default function NavBar({
         </Container>
       </AppBar>
 
-      <Hidden lgUp implementation='css'>
-        <PopUpMenuDropdown
-          popUpState={menuPopUpState}
-          menuItems={menuItems}
-          activePage={activePage}
-          setActivePage={setActivePage}
-        />
-      </Hidden>
-      <PopUpMenuDropdown
-        popUpState={searchPopUpState}
-        menuItems={searchItems}
-        activePage={activePage}
-        setActivePage={setActivePage}
-      />
-      <PopUpMenuDropdown
-        popUpState={curriculumPopUpState}
-        menuItems={curriculumItems}
-        activePage={activePage}
-        setActivePage={setActivePage}
-      />
-      <PopUpMenuDropdown
-        popUpState={infoPopUpState}
-        menuItems={infoItems}
-        activePage={activePage}
-        setActivePage={setActivePage}
-      />
-
-      <NavDrawer
-        mobileOpen={mobileOpen}
-        handleDrawerToggle={handleDrawerToggle}
-        active={activePage}
-        unreadNotificationCount={0}
-        isUserCurrentlyInLearn={isUserCurrentlyInLearn}
-      />
       <NavDropdownMobile
         isLoggedIn={isLoggedIn}
         logout={logout}

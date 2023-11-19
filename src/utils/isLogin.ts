@@ -27,7 +27,7 @@ export const isLoginAsOCSC = () => {
 }
 
 export const isLoginAsAdmin = () => {
-  return isLogin() && getRole() === 'administrator'
+  return isLogin() && getRole() === 'ocsc'
 }
 
 export const isLoginAsWorker = () => {

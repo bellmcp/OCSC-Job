@@ -6,10 +6,10 @@ import Login from 'modules/login/components/Login'
 import Register from 'modules/register/components/Register'
 import Forgot from 'modules/forgot/components/Forgot'
 import PersonLetterRoutes from 'modules/personLetter/Routes'
-import SearchRoutes from 'modules/search/Routes'
-import CurriculumRoutes from 'modules/curriculum/Routes'
-import InfoRoutes from 'modules/info/Routes'
-import PasswordRoutes from 'modules/edit/password/components/Routes'
+// import SearchRoutes from 'modules/search/Routes'
+// import CurriculumRoutes from 'modules/curriculum/Routes'
+// import InfoRoutes from 'modules/info/Routes'
+// import PasswordRoutes from 'modules/edit/password/components/Routes'
 
 import NotFound from './NotFound'
 
@@ -27,15 +27,15 @@ export default function Routes() {
       <Route exact path={`${PATH}/forgot`}>
         <Forgot />
       </Route>
-      <PrivateRoute path={`${PATH}/search`} component={SearchRoutes} />
+      {/* <PrivateRoute path={`${PATH}/search`} component={SearchRoutes} />
       <PrivateRoute path={`${PATH}/curriculum`} component={CurriculumRoutes} />
-      <PrivateRoute path={`${PATH}/info`} component={InfoRoutes} />
+      <PrivateRoute path={`${PATH}/info`} component={InfoRoutes} /> */}
       <PrivateRoute exact path={`${PATH}`} component={PersonLetterRoutes} />
-      <PrivateRoute
+      {/* <PrivateRoute
         exact
         component={PasswordRoutes}
         path={`${PATH}/edit/password`}
-      />
+      /> */}
       <Redirect to={`${PATH}`}></Redirect>
       <Route>
         <NotFound />

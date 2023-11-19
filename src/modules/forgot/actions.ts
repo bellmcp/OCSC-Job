@@ -59,7 +59,7 @@ function resetPassword(userInfo: any, dopaToken: string) {
   return async (dispatch: any) => {
     dispatch({ type: RESET_PASSWORD_REQUEST })
     try {
-      const _ = await axios.post(
+      const result = await axios.post(
         '/resetpassword',
         {
           password1: userInfo.password1,
@@ -79,6 +79,7 @@ function resetPassword(userInfo: any, dopaToken: string) {
           'success'
         )
       )
+      console.log('result :>> ', result)
       dispatch({ type: CLEAR_DOPA_TOKEN })
       dispatch(push(`${PATH}`))
     } catch (err) {

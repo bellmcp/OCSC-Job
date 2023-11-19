@@ -1,5 +1,5 @@
 // @ts-nocheck
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useLocation } from 'react-router-dom'
 import LoadingBar from 'react-redux-loading-bar'
@@ -16,8 +16,6 @@ import NavBar from './NavBar'
 import Routes from './Routes'
 import Footer from './Footer'
 
-import { navigationItems } from '../navigation'
-
 export default function Layout() {
   const { pathname } = useLocation()
   const PATH = process.env.REACT_APP_BASE_PATH
@@ -26,17 +24,6 @@ export default function Layout() {
     (state) => state.ui
   )
   const closeFlashMessage = () => dispatch(actions.clearFlashMessage())
-
-  useEffect(() => {
-    const currentNavigationItem = navigationItems.find(
-      (navigationItem: any) => {
-        return navigationItem.url === pathname
-      }
-    )
-    currentNavigationItem
-      ? setActivePage(currentNavigationItem.id)
-      : setActivePage(999)
-  }, [pathname]) //eslint-disable-line
 
   const [activePage, setActivePage] = useState(0)
 

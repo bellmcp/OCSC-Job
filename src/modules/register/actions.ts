@@ -59,7 +59,7 @@ function register(userInfo: any, dopaToken: string) {
   return async (dispatch: any) => {
     dispatch({ type: LOAD_REGISTER_REQUEST })
     try {
-      const _ = await axios.patch(
+      const result = await axios.patch(
         '/agencies',
         {
           title: userInfo.title,
@@ -83,6 +83,7 @@ function register(userInfo: any, dopaToken: string) {
           },
         }
       )
+      console.log('result :>> ', result)
       dispatch({ type: LOAD_REGISTER_SUCCESS })
       dispatch(
         uiActions.setFlashMessage(
