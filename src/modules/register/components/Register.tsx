@@ -1,11 +1,12 @@
 // @ts-nocheck
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
 import { useHistory } from 'react-router-dom'
 import MaskedInput from 'react-text-mask'
 import { format } from 'date-fns'
+import { get } from 'lodash'
 
 import {
   createStyles,
@@ -26,6 +27,12 @@ import {
   Input,
   Tooltip,
   Collapse,
+  RadioGroup,
+  FormControlLabel,
+  Radio,
+  FormControl,
+  Select,
+  MenuItem,
 } from '@material-ui/core'
 import { Stack } from '@mui/material'
 import {
@@ -35,6 +42,7 @@ import {
 } from '@material-ui/icons'
 
 import * as registerActions from 'modules/register/actions'
+import * as infoActions from 'modules/info/actions'
 import DatePicker from './DatePicker'
 import laserID from 'assets/images/laser-id.png'
 
@@ -142,8 +150,14 @@ export default function Register() {
   const history = useHistory()
   const theme = useTheme()
 
-  const { isLoading = false, dopaToken = '' } = useSelector(
-    (state: any) => state.register
+  useEffect(() => {
+    dispatch(infoActions.loadMininstries())
+    dispatch(infoActions.loadDepartments())
+  }, [dispatch])
+
+  const { dopaToken = '' } = useSelector((state: any) => state.register)
+  const { ministries = [], departments = [] } = useSelector(
+    (state: any) => state.info
   )
 
   const [birthDate, setBirthDate] = useState<string>(null)
@@ -180,7 +194,7 @@ export default function Register() {
   const registerForm = useFormik({
     enableReinitialize: true,
     initialValues: {
-      gender: '',
+      gender: 'm',
       ministryId: null,
       departmentId: null,
       division: '',
@@ -200,7 +214,7 @@ export default function Register() {
     history.push(`${PATH}/login`)
   }
 
-  const isValid = () => {
+  const isAuthenticateFormValid = () => {
     return (
       authenticateForm.values.id !== '' &&
       authenticateForm.values.id.length === 17 &&
@@ -214,9 +228,19 @@ export default function Register() {
     )
   }
 
-  // setTimeout(() => {
-  //   setIsExpand(true)
-  // }, 1000)
+  const isRegisterFormValid = () => {
+    return false
+  }
+
+  const getMinistryNameById = (id: any) => {
+    const result = ministries.find((ministry: any) => ministry.id === id)
+    return get(result, 'ministry', '')
+  }
+
+  const getDepartmentNameById = (id: any) => {
+    const result = departments.find((department: any) => department.id === id)
+    return get(result, 'department', '')
+  }
 
   return (
     <>
@@ -395,7 +419,7 @@ export default function Register() {
                 endIcon={<ChevronRightIcon />}
                 style={{ marginTop: 32 }}
                 type='submit'
-                disabled={!isValid()}
+                disabled={!isAuthenticateFormValid()}
               >
                 พิสูจน์ตัวจริงกับกรมการปกครอง
               </Button>
@@ -404,7 +428,7 @@ export default function Register() {
         </Collapse>
 
         <Collapse in={dopaToken !== ''}>
-          <form>
+          <form onSubmit={registerForm.handleSubmit}>
             <Box mt={2} mb={4}>
               <Paper
                 elevation={0}
@@ -499,15 +523,25 @@ export default function Register() {
                       </Typography>
                     </Grid>
                     <Grid xs={12} md={6}>
-                      <TextField
+                      <RadioGroup
+                        row
                         id='gender'
                         name='gender'
                         value={registerForm.values.gender}
                         onChange={registerForm.handleChange}
-                        variant='outlined'
-                        size='small'
-                        fullWidth
-                      />
+                      >
+                        <FormControlLabel
+                          value='m'
+                          control={<Radio size='small' />}
+                          label='ชาย'
+                          style={{ marginRight: 64 }}
+                        />
+                        <FormControlLabel
+                          value='f'
+                          control={<Radio size='small' />}
+                          label='หญิง'
+                        />
+                      </RadioGroup>
                     </Grid>
                   </Grid>
                   <Grid container item direction='row' alignItems='center'>
@@ -521,15 +555,47 @@ export default function Register() {
                       </Typography>
                     </Grid>
                     <Grid xs={12} md={6}>
-                      <TextField
-                        id='ministryId'
-                        name='ministryId'
-                        value={registerForm.values.ministryId}
-                        onChange={registerForm.handleChange}
-                        variant='outlined'
-                        size='small'
-                        fullWidth
-                      />
+                      <FormControl fullWidth size='small'>
+                        <Select
+                          id='ministryId'
+                          name='ministryId'
+                          value={registerForm.values.ministryId}
+                          onChange={registerForm.handleChange}
+                          variant='outlined'
+                          displayEmpty
+                          MenuProps={{
+                            anchorOrigin: {
+                              vertical: 'bottom',
+                              horizontal: 'left',
+                            },
+                            transformOrigin: {
+                              vertical: 'top',
+                              horizontal: 'left',
+                            },
+                            getContentAnchorEl: null,
+                          }}
+                          renderValue={(selected) => {
+                            if (selected === null) {
+                              return (
+                                <span
+                                  style={{
+                                    color: theme.palette.text.secondary,
+                                  }}
+                                >
+                                  โปรดเลือกกระทรวง
+                                </span>
+                              )
+                            }
+                            return getMinistryNameById(selected)
+                          }}
+                        >
+                          {ministries.map((ministry: any) => (
+                            <MenuItem value={get(ministry, 'id', '')}>
+                              {get(ministry, 'ministry', '')}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                      </FormControl>
                     </Grid>
                   </Grid>
                   <Grid container item direction='row' alignItems='center'>
@@ -543,15 +609,47 @@ export default function Register() {
                       </Typography>
                     </Grid>
                     <Grid xs={12} md={6}>
-                      <TextField
-                        id='departmentId'
-                        name='departmentId'
-                        value={registerForm.values.departmentId}
-                        onChange={registerForm.handleChange}
-                        variant='outlined'
-                        size='small'
-                        fullWidth
-                      />
+                      <FormControl fullWidth size='small'>
+                        <Select
+                          id='departmentId'
+                          name='departmentId'
+                          value={registerForm.values.departmentId}
+                          onChange={registerForm.handleChange}
+                          variant='outlined'
+                          displayEmpty
+                          MenuProps={{
+                            anchorOrigin: {
+                              vertical: 'bottom',
+                              horizontal: 'left',
+                            },
+                            transformOrigin: {
+                              vertical: 'top',
+                              horizontal: 'left',
+                            },
+                            getContentAnchorEl: null,
+                          }}
+                          renderValue={(selected) => {
+                            if (selected === null) {
+                              return (
+                                <span
+                                  style={{
+                                    color: theme.palette.text.secondary,
+                                  }}
+                                >
+                                  โปรดเลือกกรมต้นสังกัด
+                                </span>
+                              )
+                            }
+                            return getDepartmentNameById(selected)
+                          }}
+                        >
+                          {departments.map((department: any) => (
+                            <MenuItem value={get(department, 'id', '')}>
+                              {get(department, 'department', '')}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                      </FormControl>
                     </Grid>
                   </Grid>
                   <Grid container item direction='row' alignItems='center'>
@@ -661,6 +759,9 @@ export default function Register() {
                         variant='outlined'
                         size='small'
                         fullWidth
+                        type='password'
+                        autoComplete='new-password'
+                        placeholder='โปรดกำหนดรหัสผ่าน'
                       />
                     </Grid>
                   </Grid>
@@ -683,6 +784,9 @@ export default function Register() {
                         variant='outlined'
                         size='small'
                         fullWidth
+                        type='password'
+                        autoComplete='new-password'
+                        placeholder='โปรดยืนยันรหัสผ่าน'
                       />
                     </Grid>
                   </Grid>
@@ -690,6 +794,7 @@ export default function Register() {
               </Paper>
               <Button
                 fullWidth
+                disabled={!isRegisterFormValid()}
                 variant='contained'
                 color='secondary'
                 size='large'
