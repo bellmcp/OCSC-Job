@@ -62,8 +62,6 @@ function editUserInfo(userInfo: any) {
         {
           title: userInfo.title,
           gender: userInfo.gender,
-          ministryId: userInfo.ministryId,
-          departmentId: userInfo.departmentId,
           division: userInfo.division,
           position: userInfo.position,
           email: userInfo.email,

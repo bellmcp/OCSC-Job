@@ -105,8 +105,6 @@ export default function EditUserInfo() {
         userInfoActions.editUserInfo({
           title: values.title,
           gender: values.gender,
-          ministryId: values.ministryId,
-          departmentId: values.departmentId,
           division: values.division,
           position: values.position,
           email: values.email,
@@ -124,8 +122,6 @@ export default function EditUserInfo() {
     return (
       editUserInfoForm.values.title !== userInfo.title ||
       editUserInfoForm.values.gender !== userInfo.gender ||
-      editUserInfoForm.values.ministryId !== userInfo.ministryId ||
-      editUserInfoForm.values.departmentId !== userInfo.departmentId ||
       editUserInfoForm.values.division !== userInfo.division ||
       editUserInfoForm.values.position !== userInfo.position ||
       editUserInfoForm.values.email !== userInfo.email ||
@@ -327,6 +323,7 @@ export default function EditUserInfo() {
                   <Grid xs={12} md={6}>
                     <FormControl fullWidth size='small'>
                       <Select
+                        disabled
                         id='ministryId'
                         name='ministryId'
                         value={editUserInfoForm.values.ministryId}
@@ -381,6 +378,7 @@ export default function EditUserInfo() {
                   <Grid xs={12} md={6}>
                     <FormControl fullWidth size='small'>
                       <Select
+                        disabled
                         id='departmentId'
                         name='departmentId'
                         value={editUserInfoForm.values.departmentId}
