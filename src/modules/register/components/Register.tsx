@@ -230,7 +230,7 @@ export default function Register() {
             firstName: authenticateForm.values.firstName,
             lastName: authenticateForm.values.lastName,
             birthDate: buddhistBirthDate.replaceAll('-', '') || '',
-            gender: 'm',
+            gender: values.gender,
             ministryId: values.ministryId,
             departmentId: values.departmentId,
             division: values.division,
