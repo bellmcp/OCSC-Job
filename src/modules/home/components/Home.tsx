@@ -13,7 +13,7 @@ import {
   Chip,
 } from '@material-ui/core'
 import { Stack } from '@mui/material'
-import { makeStyles, useTheme } from '@material-ui/core/styles'
+import { useTheme } from '@material-ui/core/styles'
 import { amber } from '@material-ui/core/colors'
 import {
   ChevronRight as ChevronRightIcon,
@@ -25,29 +25,7 @@ import { getRoleFromToken } from 'utils/isLogin'
 
 const PATH = process.env.REACT_APP_BASE_PATH
 
-const useStyles = makeStyles((theme) => ({
-  paper: {
-    backgroundColor: theme.palette.background.default,
-    height: '100%',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'left',
-    padding: theme.spacing(16, 16),
-    [theme.breakpoints.down('sm')]: {
-      padding: theme.spacing(10, 4),
-    },
-  },
-  form: {
-    width: '100%',
-    marginTop: theme.spacing(1),
-  },
-  submit: {
-    margin: theme.spacing(3, 0, 1),
-  },
-}))
-
-export default function Login() {
-  const classes = useStyles()
+export default function Home() {
   const dispatch = useDispatch()
   const history = useHistory()
   const theme = useTheme()

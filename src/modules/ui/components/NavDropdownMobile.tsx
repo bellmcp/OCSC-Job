@@ -12,9 +12,7 @@ import {
   Typography,
 } from '@material-ui/core'
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles'
-import { amber } from '@material-ui/core/colors'
 import { MeetingRoom as LogoutIcon } from '@material-ui/icons'
-import { grey } from '@material-ui/core/colors'
 
 import { getCookie } from 'utils/cookies'
 
@@ -33,28 +31,9 @@ interface NavDropdownMobileProps {
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    small: {
+    profileAvatar: {
       width: theme.spacing(4),
       height: theme.spacing(4),
-      backgroundColor: grey[700],
-    },
-    loggedIn: {
-      color: theme.palette.common.white,
-      width: theme.spacing(4),
-      height: theme.spacing(4),
-      backgroundColor: process.env.REACT_APP_PRIMARY_COLOR_HEX,
-    },
-    loggedInAsAdmin: {
-      color: theme.palette.common.white,
-      width: theme.spacing(4),
-      height: theme.spacing(4),
-      backgroundColor: process.env.REACT_APP_SECONDARY_COLOR_HEX,
-    },
-    loggedInAsOCSC: {
-      color: theme.palette.common.white,
-      width: theme.spacing(4),
-      height: theme.spacing(4),
-      backgroundColor: amber[700],
     },
     bold: {
       fontWeight: 600,
@@ -69,25 +48,14 @@ export default function NavDropdownMobile({
   mobileMoreAnchorEl,
   isMobileMenuOpen,
   handleMobileMenuClose,
-  role,
   roleName,
+  profileImage,
 }: NavDropdownMobileProps) {
   const classes = useStyles()
 
-  const fullnameLabel = `${
-    getCookie('firstName') ? getCookie('firstName') : ''
-  } ${getCookie('lastName') ? getCookie('lastName') : ''}`
-
-  const getAvatarClassName = () => {
-    switch (role) {
-      case 'ocsc':
-        return classes.loggedInAsOCSC
-      case 'administrator':
-        return classes.loggedInAsAdmin
-      case 'worker':
-        return classes.loggedIn
-    }
-  }
+  const fullnameLabel = `${getCookie('firstName') || ''} ${
+    getCookie('lastName') || ''
+  }`
 
   return (
     <Menu
@@ -101,7 +69,7 @@ export default function NavDropdownMobile({
     >
       <ListItem dense>
         <ListItemIcon color='inherit'>
-          <Avatar className={getAvatarClassName()} />
+          <Avatar className={classes.profileAvatar} src={profileImage} />
         </ListItemIcon>
         <ListItemText
           className={classes.bold}

@@ -12,11 +12,11 @@ import {
   IconButton,
   Hidden,
   Container,
-  Avatar,
   Button,
+  Avatar,
 } from '@material-ui/core'
 import { KeyboardArrowDown as ArrowDownIcon } from '@material-ui/icons'
-import { grey, amber } from '@material-ui/core/colors'
+import { grey } from '@material-ui/core/colors'
 
 import NavDropdownMobile from './NavDropdownMobile'
 import NavDropdownDesktop from './NavDropdownDesktop'
@@ -119,28 +119,10 @@ const useStyles = makeStyles((theme: Theme) =>
         display: 'none',
       },
     },
-    notLoggedIn: {
+    profileAvatar: {
       width: theme.spacing(4),
       height: theme.spacing(4),
-      backgroundColor: grey[700],
-    },
-    loggedIn: {
-      color: theme.palette.common.white,
-      width: theme.spacing(4),
-      height: theme.spacing(4),
-      backgroundColor: process.env.REACT_APP_PRIMARY_COLOR_HEX,
-    },
-    loggedInAsAdmin: {
-      color: theme.palette.common.white,
-      width: theme.spacing(4),
-      height: theme.spacing(4),
-      backgroundColor: process.env.REACT_APP_SECONDARY_COLOR_HEX,
-    },
-    loggedInAsOCSC: {
-      color: theme.palette.common.white,
-      width: theme.spacing(4),
-      height: theme.spacing(4),
-      backgroundColor: amber[700],
+      background: theme.palette.common.white,
     },
     noDecorationLink: {
       textDecoration: 'none',
@@ -206,21 +188,7 @@ export default function NavBar() {
     else return 'เข้าสู่ระบบ'
   }
   const usernameLabel = getUsernameLabel()
-
-  const getAvatarClassName = () => {
-    if (isLoggedIn) {
-      switch (role) {
-        case 'ocsc':
-          return classes.loggedInAsOCSC
-        case 'administrator':
-          return classes.loggedInAsAdmin
-        case 'worker':
-          return classes.loggedIn
-      }
-    } else {
-      return classes.notLoggedIn
-    }
-  }
+  const profileImage = getCookie('seal') || ''
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
@@ -280,34 +248,61 @@ export default function NavBar() {
               onClick={linkToHome}
               style={{ filter: 'saturate(1.3)' }}
             />
-            <div className={classes.grow} />
-
-            {/* DESKTOP USER DROPDOWN */}
-            <div className={classes.sectionDesktop}>
-              <Button
-                onClick={handleProfileMenuOpen}
-                disabled={!isLoggedIn}
-                color='primary'
-                size='small'
-                style={{
-                  borderRadius: 50,
-                  padding: '5px 12px 5px 8px',
-                  margin: '6px 0',
-                  border: '1px solid rgba(224, 224, 224, 1)',
-                }}
-                startIcon={<Avatar className={getAvatarClassName()} />}
-                endIcon={
-                  isLoggedIn && (
-                    <ArrowDownIcon style={{ fontSize: 24 }} color='action' />
-                  )
-                }
+            <Hidden only={['sm']}>
+              <Typography
+                variant='body1'
+                color='textPrimary'
+                style={{ fontWeight: 600 }}
               >
-                <Typography color='textPrimary' className={classes.bold} noWrap>
-                  {usernameLabel}
-                </Typography>
-              </Button>
-            </div>
-
+                ระบบบริหารจัดการสมาชิก และสิทธิ์การใช้งานของส่วนราชการ
+              </Typography>
+            </Hidden>
+            <Hidden only={['md', 'lg', 'xl']}>
+              <Typography
+                variant='body1'
+                color='textPrimary'
+                style={{ fontWeight: 600 }}
+              >
+                ระบบบริหารจัดการสมาชิกฯ
+              </Typography>
+            </Hidden>
+            <div className={classes.grow} />
+            {/* DESKTOP USER DROPDOWN */}
+            {isLoggedIn && (
+              <div className={classes.sectionDesktop}>
+                <Button
+                  onClick={handleProfileMenuOpen}
+                  disabled={!isLoggedIn}
+                  color='primary'
+                  size='small'
+                  style={{
+                    borderRadius: 50,
+                    padding: '5px 12px 5px 8px',
+                    margin: '6px 0',
+                    border: '1px solid rgba(224, 224, 224, 1)',
+                  }}
+                  startIcon={
+                    <Avatar
+                      className={classes.profileAvatar}
+                      src={profileImage}
+                    />
+                  }
+                  endIcon={
+                    isLoggedIn && (
+                      <ArrowDownIcon style={{ fontSize: 24 }} color='action' />
+                    )
+                  }
+                >
+                  <Typography
+                    color='textPrimary'
+                    className={classes.bold}
+                    noWrap
+                  >
+                    {usernameLabel}
+                  </Typography>
+                </Button>
+              </div>
+            )}
             {/* MOBILE USER DROPDOWN */}
             <Hidden only={['xs', 'lg', 'md', 'xl']}>
               <div className={classes.grow} />
@@ -319,7 +314,7 @@ export default function NavBar() {
                 onClick={handleMobileMenuOpen}
                 color='inherit'
               >
-                <Avatar className={getAvatarClassName()} />
+                <Avatar className={classes.profileAvatar} src={profileImage} />
               </IconButton>
             </div>
           </Toolbar>
@@ -333,8 +328,8 @@ export default function NavBar() {
         mobileMoreAnchorEl={mobileMoreAnchorEl}
         isMobileMenuOpen={isMobileMenuOpen}
         handleMobileMenuClose={handleMobileMenuClose}
-        role={role}
         roleName={roleName}
+        profileImage={profileImage}
       />
       <NavDropdownDesktop
         isLoggedIn={isLoggedIn}
@@ -343,8 +338,8 @@ export default function NavBar() {
         menuId={menuId}
         isMenuOpen={isMenuOpen}
         handleMenuClose={handleMenuClose}
-        role={role}
         roleName={roleName}
+        profileImage={profileImage}
       />
     </div>
   )

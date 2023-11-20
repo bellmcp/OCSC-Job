@@ -33,18 +33,6 @@ const useStyles = makeStyles((theme: Theme) =>
     listItemIcon: {
       minWidth: 40,
     },
-    loggedIn: {
-      color: theme.palette.common.white,
-      backgroundColor: process.env.REACT_APP_PRIMARY_COLOR_HEX,
-    },
-    loggedInAsAdmin: {
-      color: theme.palette.common.white,
-      backgroundColor: process.env.REACT_APP_SECONDARY_COLOR_HEX,
-    },
-    loggedInAsOCSC: {
-      color: theme.palette.common.white,
-      backgroundColor: amber[700],
-    },
     bold: {
       fontWeight: 600,
     },
@@ -58,25 +46,14 @@ export default function NavDropdownDesktop({
   menuId,
   isMenuOpen,
   handleMenuClose,
-  role,
   roleName,
+  profileImage,
 }: NavDropdownDesktopProps) {
   const classes = useStyles()
 
   const fullnameLabel = `${
     getCookie('firstName') ? getCookie('firstName') : ''
   } ${getCookie('lastName') ? getCookie('lastName') : ''}`
-
-  const getAvatarClassName = () => {
-    switch (role) {
-      case 'ocsc':
-        return classes.loggedInAsOCSC
-      case 'administrator':
-        return classes.loggedInAsAdmin
-      case 'worker':
-        return classes.loggedIn
-    }
-  }
 
   return (
     <Menu
@@ -97,7 +74,7 @@ export default function NavDropdownDesktop({
     >
       <ListItem dense>
         <ListItemIcon color='inherit'>
-          <Avatar className={getAvatarClassName()} />
+          <Avatar src={profileImage} />
         </ListItemIcon>
         <ListItemText
           className={classes.bold}
