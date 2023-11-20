@@ -64,7 +64,7 @@ export default function Home() {
 
   const handleClickMenuItem = (link: string) => {
     if (isExternalLink(link)) {
-      return () => window.open(link, '_blank')
+      window.open(link, '_blank')
     } else {
       history.push(`${PATH}${link}`)
     }
