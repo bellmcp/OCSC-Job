@@ -56,7 +56,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 )
 
-export default function Register() {
+export default function ChangePassword() {
   const classes = useStyles()
   const dispatch = useDispatch()
   const history = useHistory()
