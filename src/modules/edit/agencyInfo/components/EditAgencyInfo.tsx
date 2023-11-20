@@ -286,9 +286,10 @@ export default function EditAgencyInfo() {
                   item
                   direction='row'
                   alignItems='center'
+                  justify='space-between'
                   style={{ paddingBlock: 24 }}
                 >
-                  <Grid xs={12} md={6}>
+                  <Grid md={6}>
                     <Typography
                       variant='body1'
                       color='textPrimary'
@@ -297,7 +298,7 @@ export default function EditAgencyInfo() {
                       ตราประจำกรม
                     </Typography>
                   </Grid>
-                  <Grid xs={12} md={6}>
+                  <Grid md={6}>
                     <Avatar
                       src={getDepartmentSealById(selectedDepartmentId)}
                       style={{
