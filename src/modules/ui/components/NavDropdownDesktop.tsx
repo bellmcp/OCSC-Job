@@ -12,7 +12,6 @@ import {
   Typography,
 } from '@material-ui/core'
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles'
-import { amber } from '@material-ui/core/colors'
 import { MeetingRoom as LogoutIcon } from '@material-ui/icons'
 
 import { getCookie } from 'utils/cookies'
