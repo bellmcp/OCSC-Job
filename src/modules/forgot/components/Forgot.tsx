@@ -1,10 +1,11 @@
 // @ts-nocheck
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
 import { useHistory } from 'react-router-dom'
 import MaskedInput from 'react-text-mask'
+import { isLogin } from 'utils/isLogin'
 
 import {
   createStyles,
@@ -144,6 +145,12 @@ export default function Register() {
   const dispatch = useDispatch()
   const history = useHistory()
   const theme = useTheme()
+
+  useEffect(() => {
+    if (isLogin()) {
+      history.push(`${PATH}`)
+    }
+  }, []) //eslint-disable-line
 
   const { dopaToken = '' } = useSelector((state: any) => state.forgot)
 

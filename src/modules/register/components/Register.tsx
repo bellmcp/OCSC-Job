@@ -7,6 +7,7 @@ import { useHistory } from 'react-router-dom'
 import MaskedInput from 'react-text-mask'
 import { format } from 'date-fns'
 import { get } from 'lodash'
+import { isLogin } from 'utils/isLogin'
 
 import {
   createStyles,
@@ -153,6 +154,12 @@ export default function Register() {
   const dispatch = useDispatch()
   const history = useHistory()
   const theme = useTheme()
+
+  useEffect(() => {
+    if (isLogin()) {
+      history.push(`${PATH}`)
+    }
+  }, []) //eslint-disable-line
 
   useEffect(() => {
     dispatch(infoActions.loadMininstries())

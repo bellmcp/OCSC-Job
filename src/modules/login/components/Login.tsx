@@ -1,8 +1,9 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
 import { useHistory } from 'react-router-dom'
+import { isLogin } from 'utils/isLogin'
 
 import {
   TextField,
@@ -59,6 +60,12 @@ export default function Login() {
   const classes = useStyles()
   const dispatch = useDispatch()
   const history = useHistory()
+
+  useEffect(() => {
+    if (isLogin()) {
+      history.push(`${PATH}`)
+    }
+  }, []) //eslint-disable-line
 
   const [values, setValues] = useState({
     password: '',
