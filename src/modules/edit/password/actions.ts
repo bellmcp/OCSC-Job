@@ -1,64 +1,47 @@
+//@ts-nocheck
 import axios from 'axios'
-import { get } from 'lodash'
-import { getCookie } from 'utils/cookies'
 import * as uiActions from 'modules/ui/actions'
-import { isLoginAsAdmin } from 'utils/isLogin'
+import { handleApiError } from 'utils/error'
+import { push } from 'connected-react-router'
+import { getCookie } from 'utils/cookies'
 
-const CHANGE_PASSWORD_REQUEST = 'ocsc-job/edit/password/CHANGE_PASSWORD_REQUEST'
-const CHANGE_PASSWORD_SUCCESS = 'ocsc-job/edit/password/CHANGE_PASSWORD_SUCCESS'
-const CHANGE_PASSWORD_FAILURE = 'ocsc-job/edit/password/CHANGE_PASSWORD_FAILURE'
-const CLEAR_MESSAGE_CHANGE_PASSWORD =
-  'ocsc-job/edit/password/CLEAR_MESSAGE_CHANGE_PASSWORD'
+const PATH = process.env.REACT_APP_BASE_PATH
 
-function clearMessageChangePassword() {
-  return {
-    type: CLEAR_MESSAGE_CHANGE_PASSWORD,
-  }
-}
+const CHANGE_PASSWORD_REQUEST =
+  'ocsc-job/change-password/CHANGE_PASSWORD_REQUEST'
+const CHANGE_PASSWORD_SUCCESS =
+  'ocsc-job/change-password/CHANGE_PASSWORD_SUCCESS'
+const CHANGE_PASSWORD_FAILURE =
+  'ocsc-job/change-password/CHANGE_PASSWORD_FAILURE'
 
-function changePassword(submitValues: any) {
+function changePassword(userInfo: any) {
   return async (dispatch: any) => {
     dispatch({ type: CHANGE_PASSWORD_REQUEST })
+    const token = getCookie('token')
     try {
-      const isAdmin = isLoginAsAdmin()
-      const token = getCookie('token')
-      const id = getCookie('id')
-
-      const path = isAdmin ? `/Supervisors/${id}` : `/Workers/${id}`
-      const baseURL = process.env.REACT_APP_API_URL
-
-      const result = await axios.patch(path, submitValues, {
-        baseURL,
-        headers: {
-          Authorization: `Bearer ${token}`,
+      const result = await axios.post(
+        'agencies/changepassword',
+        {
+          currentPassword: userInfo.currentPassword,
+          newPassword1: userInfo.password1,
+          newPassword2: userInfo.password2,
         },
-      })
-      dispatch({
-        type: CHANGE_PASSWORD_SUCCESS,
-        payload: {
-          user: result.data,
-          status: result.status,
-          message: null,
-        },
-      })
-      dispatch(uiActions.setFlashMessage('เปลี่ยนรหัสผ่านสำเร็จ', 'success'))
-      setTimeout(() => {
-        window.location.reload()
-      }, 2000)
-    } catch (err) {
-      dispatch({
-        type: CHANGE_PASSWORD_FAILURE,
-        payload: {
-          status: get(err, 'response.status', ''),
-          message: get(err, 'response.data.mesg', ''),
-        },
-      })
-      dispatch(
-        uiActions.setFlashMessage(
-          'เปลี่ยนรหัสผ่านไม่สำเร็จ โปรดลองใหม่อีกครั้ง',
-          'error'
-        )
+        {
+          baseURL: process.env.REACT_APP_PORTAL_API_URL,
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       )
+      dispatch({ type: CHANGE_PASSWORD_SUCCESS })
+      dispatch(
+        uiActions.setFlashMessage('เปลี่ยนรหัสผ่านสำเร็จแล้ว', 'success')
+      )
+      console.log('result :>> ', result)
+      dispatch(push(`${PATH}`))
+    } catch (err) {
+      dispatch({ type: CHANGE_PASSWORD_FAILURE })
+      handleApiError(err, dispatch)
     }
   }
 }
@@ -67,7 +50,5 @@ export {
   CHANGE_PASSWORD_REQUEST,
   CHANGE_PASSWORD_SUCCESS,
   CHANGE_PASSWORD_FAILURE,
-  CLEAR_MESSAGE_CHANGE_PASSWORD,
   changePassword,
-  clearMessageChangePassword,
 }

@@ -7,6 +7,7 @@ import Register from 'modules/register/components/Register'
 import Forgot from 'modules/forgot/components/Forgot'
 import Home from 'modules/home/components/Home'
 import EditUserInfo from 'modules/edit/userInfo/components/EditUserInfo'
+import ChangePassword from 'modules/edit/password/components/ChangePassword'
 // import PersonLetterRoutes from 'modules/personLetter/Routes'
 // import SearchRoutes from 'modules/search/Routes'
 // import CurriculumRoutes from 'modules/curriculum/Routes'
@@ -37,6 +38,11 @@ export default function Routes() {
         exact
         component={EditUserInfo}
         path={`${PATH}/edit-user-info`}
+      />
+      <PrivateRoute
+        exact
+        component={ChangePassword}
+        path={`${PATH}/change-password`}
       />
       <Redirect to={`${PATH}`}></Redirect>
       <Route>

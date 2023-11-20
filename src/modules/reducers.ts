@@ -9,6 +9,7 @@ import forgotReducer from 'modules/forgot/reducer'
 import infoReducer from 'modules/info/reducer'
 import homeReducer from 'modules/home/reducer'
 import userInfoReducer from 'modules/edit/userInfo/reducer'
+import changePasswordReducer from 'modules/edit/password/reducer'
 // import searchReducer from 'modules/search/reducer'
 // import personLetterReducer from 'modules/personLetter/reducer'
 // import passwordReducer from 'modules/edit/password/reducer'
@@ -25,6 +26,7 @@ export default (history: any) =>
     info: infoReducer,
     home: homeReducer,
     userInfo: userInfoReducer,
+    password: changePasswordReducer,
     // search: searchReducer,
     // personLetter: personLetterReducer,
     // password: passwordReducer,
