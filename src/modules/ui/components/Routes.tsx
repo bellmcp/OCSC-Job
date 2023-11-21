@@ -9,6 +9,7 @@ import Home from 'modules/home/components/Home'
 import EditUserInfo from 'modules/edit/userInfo/components/EditUserInfo'
 import EditAgencyInfo from 'modules/edit/agencyInfo/components/EditAgencyInfo'
 import ChangePassword from 'modules/edit/password/components/ChangePassword'
+import AdminPermission from 'modules/admin/permission/components/AdminPermission'
 // import PersonLetterRoutes from 'modules/personLetter/Routes'
 // import SearchRoutes from 'modules/search/Routes'
 // import CurriculumRoutes from 'modules/curriculum/Routes'
@@ -49,6 +50,11 @@ export default function Routes() {
         exact
         component={ChangePassword}
         path={`${PATH}/change-password`}
+      />
+      <PrivateRoute
+        exact
+        component={AdminPermission}
+        path={`${PATH}/administrator-permission`}
       />
       <Redirect to={`${PATH}`}></Redirect>
       <Route>

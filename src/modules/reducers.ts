@@ -11,6 +11,7 @@ import homeReducer from 'modules/home/reducer'
 import userInfoReducer from 'modules/edit/userInfo/reducer'
 import agencyInfoReducer from 'modules/edit/agencyInfo/reducer'
 import changePasswordReducer from 'modules/edit/password/reducer'
+import adminReducer from 'modules/admin/reducer'
 // import searchReducer from 'modules/search/reducer'
 // import personLetterReducer from 'modules/personLetter/reducer'
 // import passwordReducer from 'modules/edit/password/reducer'
@@ -29,6 +30,7 @@ export default (history: any) =>
     userInfo: userInfoReducer,
     agencyInfo: agencyInfoReducer,
     password: changePasswordReducer,
+    admin: adminReducer,
     // search: searchReducer,
     // personLetter: personLetterReducer,
     // password: passwordReducer,
