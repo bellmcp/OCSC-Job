@@ -36,7 +36,6 @@ import {
 
 import * as agencyInfoActions from 'modules/edit/agencyInfo/actions'
 import * as infoActions from 'modules/info/actions'
-import { de } from 'date-fns/locale'
 
 const PATH = process.env.REACT_APP_BASE_PATH
 
@@ -180,11 +179,6 @@ export default function EditAgencyInfo() {
   const getDepartmentNameById = (id: any) => {
     const result = departments.find((department: any) => department.id === id)
     return get(result, 'department', '')
-  }
-
-  const getDepartmentSealById = (id: any) => {
-    const result = departments.find((department: any) => department.id === id)
-    return get(result, 'seal', '')
   }
 
   return (
@@ -356,6 +350,7 @@ export default function EditAgencyInfo() {
                         width: 125,
                         height: 125,
                         backgroundColor: theme.palette.common.white,
+                        color: theme.palette.common.white,
                         boxShadow:
                           '0 2px 4px -2px rgba(0,0,0,0.24), 0 4px 24px -2px rgba(0, 0, 0, 0.2)',
                       }}
