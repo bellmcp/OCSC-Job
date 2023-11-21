@@ -23,6 +23,9 @@ import {
   LOAD_DEPARTMENTS_BY_MINISTRY_ID_REQUEST,
   LOAD_DEPARTMENTS_BY_MINISTRY_ID_SUCCESS,
   LOAD_DEPARTMENTS_BY_MINISTRY_ID_FAILURE,
+  LOAD_DEPARTMENT_REQUEST,
+  LOAD_DEPARTMENT_SUCCESS,
+  LOAD_DEPARTMENT_FAILURE,
   LOAD_ROLES_REQUEST,
   LOAD_ROLES_SUCCESS,
   LOAD_ROLES_FAILURE,
@@ -38,6 +41,7 @@ const initialState = {
   circularLetters: [],
   ministries: [],
   departments: [],
+  department: {},
   roles: [],
 }
 
@@ -58,6 +62,8 @@ export default function (state = initialState, action: any) {
     case LOAD_DEPARTMENTS_BY_MINISTRY_ID_REQUEST:
     case LOAD_DEPARTMENTS_REQUEST:
       return { ...state, isLoading: true, departments: [] }
+    case LOAD_DEPARTMENT_REQUEST:
+      return { ...state, isLoading: true, department: [] }
     case LOAD_ROLES_REQUEST:
       return { ...state, isLoading: true, roles: [] }
     case LOAD_COUNTRIES_SUCCESS:
@@ -103,6 +109,12 @@ export default function (state = initialState, action: any) {
         isLoading: false,
         departments: action.payload.departments,
       }
+    case LOAD_DEPARTMENT_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        department: action.payload.department,
+      }
     case LOAD_ROLES_SUCCESS:
       return {
         ...state,
@@ -116,6 +128,7 @@ export default function (state = initialState, action: any) {
     case LOAD_MINISTRIES_FAILURE:
     case LOAD_DEPARTMENTS_FAILURE:
     case LOAD_DEPARTMENTS_BY_MINISTRY_ID_FAILURE:
+    case LOAD_DEPARTMENT_FAILURE:
     case LOAD_ROLES_FAILURE:
       return { ...state, isLoading: false }
     case LOAD_UNIVERSITIES_FAILURE:

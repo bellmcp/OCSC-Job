@@ -36,6 +36,7 @@ import {
 
 import * as agencyInfoActions from 'modules/edit/agencyInfo/actions'
 import * as infoActions from 'modules/info/actions'
+import { de } from 'date-fns/locale'
 
 const PATH = process.env.REACT_APP_BASE_PATH
 
@@ -78,29 +79,28 @@ export default function EditAgencyInfo() {
 
   const [selectedDepartmentId, setSelectedDepartmentId] = useState(departmentId)
 
-  useEffect(() => {
-    dispatch(infoActions.loadMininstries())
-    dispatch(infoActions.loadDepartments())
-  }, [dispatch])
-
-  const { agencyInfo = {} } = useSelector((state: any) => state.agencyInfo)
-  const { ministries = [], departments = [] } = useSelector(
-    (state: any) => state.info
-  )
+  const {
+    ministries = [],
+    departments = [],
+    department = {},
+  } = useSelector((state: any) => state.info)
 
   const editAgencyInfoForm = useFormik({
     enableReinitialize: true,
     initialValues: {
-      ministryId: ministryId || '',
-      departmentId: departmentId || '',
-      phone: agencyInfo.phone || '',
-      address: agencyInfo.address || '',
-      website: agencyInfo.website || '',
+      ministryId: null,
+      departmentId: null,
+      phone: null,
+      address: null,
+      website: null,
+      seal: null,
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
       dispatch(
         agencyInfoActions.editAgencyInfo({
+          ministryId: values.ministryId,
+          departmentId: values.departmentId,
           phone: values.phone,
           address: values.address,
           website: values.website,
@@ -109,15 +109,66 @@ export default function EditAgencyInfo() {
     },
   })
 
+  useEffect(() => {
+    dispatch(infoActions.loadMininstries())
+    dispatch(infoActions.loadDepartmentsByMinistryId(ministryId))
+    editAgencyInfoForm.setFieldValue('ministryId', ministryId)
+    editAgencyInfoForm.setFieldValue('departmentId', departmentId)
+  }, []) //eslint-disable-line
+
+  useEffect(() => {
+    if (selectedDepartmentId !== null) {
+      dispatch(infoActions.loadDepartment(selectedDepartmentId))
+    }
+  }, [selectedDepartmentId]) //eslint-disable-line
+
+  useEffect(() => {
+    editAgencyInfoForm.setFieldValue('address', department.address || '')
+    editAgencyInfoForm.setFieldValue('phone', department.phone || '')
+    editAgencyInfoForm.setFieldValue('website', department.website || '')
+    editAgencyInfoForm.setFieldValue('seal', department.seal || '')
+  }, [department]) //eslint-disable-line
+
+  useEffect(() => {
+    // if user change ministryId
+    if (
+      editAgencyInfoForm.values.ministryId !== null &&
+      editAgencyInfoForm.values.ministryId !== ministryId
+    ) {
+      dispatch(
+        infoActions.loadDepartmentsByMinistryId(
+          editAgencyInfoForm.values.ministryId
+        )
+      )
+      editAgencyInfoForm.setFieldValue('departmentId', null)
+      setSelectedDepartmentId(null)
+      editAgencyInfoForm.setFieldValue('address', '')
+      editAgencyInfoForm.setFieldValue('phone', '')
+      editAgencyInfoForm.setFieldValue('website', '')
+      editAgencyInfoForm.setFieldValue('seal', '')
+    }
+
+    if (editAgencyInfoForm.values.ministryId === ministryId) {
+      dispatch(
+        infoActions.loadDepartmentsByMinistryId(
+          editAgencyInfoForm.values.ministryId
+        )
+      )
+    }
+  }, [editAgencyInfoForm.values.ministryId]) //eslint-disable-line
+
   const onBack = () => {
     history.push(`${PATH}/`)
   }
 
   const isEditAgencyInfoFormDirty = () => {
     return (
-      editAgencyInfoForm.values.phone !== agencyInfo.phone ||
-      editAgencyInfoForm.values.address !== agencyInfo.address ||
-      editAgencyInfoForm.values.website !== agencyInfo.website
+      (editAgencyInfoForm.values.phone !== department.phone ||
+        editAgencyInfoForm.values.address !== department.address ||
+        editAgencyInfoForm.values.website !== department.website) &&
+      (editAgencyInfoForm.values.phone !== '' ||
+        editAgencyInfoForm.values.address !== '' ||
+        editAgencyInfoForm.values.website !== '')
     )
   }
 
@@ -300,7 +351,7 @@ export default function EditAgencyInfo() {
                   </Grid>
                   <Grid md={6}>
                     <Avatar
-                      src={getDepartmentSealById(selectedDepartmentId)}
+                      src={editAgencyInfoForm.values.seal || ''}
                       style={{
                         width: 125,
                         height: 125,

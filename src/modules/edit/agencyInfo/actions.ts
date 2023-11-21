@@ -18,11 +18,9 @@ function editAgencyInfo(agencyInfo: any) {
   return async (dispatch: any) => {
     dispatch({ type: EDIT_AGENCY_INFO_REQUEST })
     const token = getCookie('token')
-    const ministryId = getCookie('ministryId')
-    const departmentId = getCookie('departmentId')
     try {
       const result = await axios.put(
-        `/ministries/${ministryId}/departments/${departmentId}`,
+        `/ministries/${agencyInfo.ministryId}/departments/${agencyInfo.departmentId}`,
         {
           phone: agencyInfo.phone,
           address: agencyInfo.address,

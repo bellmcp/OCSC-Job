@@ -51,6 +51,10 @@ const LOAD_DEPARTMENTS_BY_MINISTRY_ID_SUCCESS =
 const LOAD_DEPARTMENTS_BY_MINISTRY_ID_FAILURE =
   'ocsc-job/info/LOAD_DEPARTMENTS_BY_MINISTRY_ID_FAILURE'
 
+const LOAD_DEPARTMENT_REQUEST = 'ocsc-job/info/LOAD_DEPARTMENT_REQUEST'
+const LOAD_DEPARTMENT_SUCCESS = 'ocsc-job/info/LOAD_DEPARTMENT_SUCCESS'
+const LOAD_DEPARTMENT_FAILURE = 'ocsc-job/info/LOAD_DEPARTMENT_FAILURE'
+
 const LOAD_ROLES_REQUEST = 'ocsc-job/info/LOAD_ROLES_REQUEST'
 const LOAD_ROLES_SUCCESS = 'ocsc-job/info/LOAD_ROLES_SUCCESS'
 const LOAD_ROLES_FAILURE = 'ocsc-job/info/LOAD_ROLES_FAILURE'
@@ -134,6 +138,36 @@ function loadDepartmentsByMinistryId(ministryId: number) {
       dispatch(
         uiActions.setFlashMessage(
           `โหลดรายชื่อกรมทั้งหมดในกระทรวง ${ministryId} ไม่สำเร็จ เกิดข้อผิดพลาด ${get(
+            err,
+            'response.status',
+            'บางอย่าง'
+          )}`,
+          'error'
+        )
+      )
+    }
+  }
+}
+
+function loadDepartment(departmentId: number) {
+  return async (dispatch: any) => {
+    dispatch({ type: LOAD_DEPARTMENT_REQUEST })
+    try {
+      var { data } = await axios.get(`/departments/${departmentId}`)
+      if (data.length === 0) {
+        data = []
+      }
+      dispatch({
+        type: LOAD_DEPARTMENT_SUCCESS,
+        payload: {
+          department: data,
+        },
+      })
+    } catch (err) {
+      dispatch({ type: LOAD_DEPARTMENT_FAILURE })
+      dispatch(
+        uiActions.setFlashMessage(
+          `โหลดข้อมูลกรม ${departmentId} ไม่สำเร็จ เกิดข้อผิดพลาด ${get(
             err,
             'response.status',
             'บางอย่าง'
@@ -352,6 +386,9 @@ export {
   LOAD_DEPARTMENTS_BY_MINISTRY_ID_REQUEST,
   LOAD_DEPARTMENTS_BY_MINISTRY_ID_SUCCESS,
   LOAD_DEPARTMENTS_BY_MINISTRY_ID_FAILURE,
+  LOAD_DEPARTMENT_REQUEST,
+  LOAD_DEPARTMENT_SUCCESS,
+  LOAD_DEPARTMENT_FAILURE,
   LOAD_ROLES_REQUEST,
   LOAD_ROLES_SUCCESS,
   LOAD_ROLES_FAILURE,
@@ -363,5 +400,6 @@ export {
   loadMininstries,
   loadDepartments,
   loadDepartmentsByMinistryId,
+  loadDepartment,
   loadRoles,
 }
