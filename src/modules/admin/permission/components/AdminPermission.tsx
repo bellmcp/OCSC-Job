@@ -1,9 +1,8 @@
 // @ts-nocheck
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import * as yup from 'yup'
+
 import { useHistory } from 'react-router-dom'
-import { getCookie } from 'utils/cookies'
 
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
 import {
@@ -53,16 +52,14 @@ export default function AdminPermission() {
   const dispatch = useDispatch()
   const history = useHistory()
 
-  const validationSchema = yup.object({})
-
-  const ministryId = parseInt(getCookie('ministryId'))
-  const departmentId = parseInt(getCookie('departmentId'))
-
   useEffect(() => {
     dispatch(adminActions.loadOCSCServices())
+    dispatch(adminActions.loadAdminPermissions())
   }, [dispatch])
 
-  const { ocscServices = {} } = useSelector((state: any) => state.admin)
+  const { ocscServices = [], adminPermissions = [] } = useSelector(
+    (state: any) => state.admin
+  )
 
   const onBack = () => {
     history.push(`${PATH}/`)
@@ -71,7 +68,7 @@ export default function AdminPermission() {
   return (
     <>
       <Toolbar id='back-to-top-anchor' />
-      <Container maxWidth='sm' className={classes.content}>
+      <Container maxWidth='xl' className={classes.content}>
         <Button
           variant='text'
           color='primary'
@@ -100,7 +97,26 @@ export default function AdminPermission() {
               border: '1px solid rgb(204 242 251)',
             }}
           >
-            xxxx
+            <table>
+              <tr>
+                <th>กระทรวง</th>
+                <th>กรม</th>
+                {ocscServices.map((ocscService: any) => (
+                  <th>{ocscService.service}</th>
+                ))}
+              </tr>
+              {adminPermissions.map((adminPermission: any) => (
+                <tr>
+                  <td>{adminPermission.ministryName}</td>
+                  <td>{adminPermission.departmentName}</td>
+                  {adminPermission.permission.map((p: any) => (
+                    <td>
+                      <input type='checkbox' checked={p} />
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </table>
           </Paper>
         </Box>
       </Container>

@@ -12,6 +12,13 @@ const LOAD_OCSC_SEVICES_REQUEST = 'ocsc-job/admin/LOAD_OCSC_SEVICES_REQUEST'
 const LOAD_OCSC_SEVICES_SUCCESS = 'ocsc-job/admin/LOAD_OCSC_SEVICES_SUCCESS'
 const LOAD_OCSC_SEVICES_FAILURE = 'ocsc-job/admin/LOAD_OCSC_SEVICES_FAILURE'
 
+const LOAD_ADMIN_PERMISSIONS_REQUEST =
+  'ocsc-job/admin/LOAD_ADMIN_PERMISSIONS_REQUEST'
+const LOAD_ADMIN_PERMISSIONS_SUCCESS =
+  'ocsc-job/admin/LOAD_ADMIN_PERMISSIONS_SUCCESS'
+const LOAD_ADMIN_PERMISSIONS_FAILURE =
+  'ocsc-job/admin/LOAD_ADMIN_PERMISSIONS_FAILURE'
+
 const EDIT_USER_INFO_REQUEST = 'ocsc-job/admin/EDIT_USER_INFO_REQUEST'
 const EDIT_USER_INFO_SUCCESS = 'ocsc-job/admin/EDIT_USER_INFO_SUCCESS'
 const EDIT_USER_INFO_FAILURE = 'ocsc-job/admin/EDIT_USER_INFO_FAILURE'
@@ -41,6 +48,42 @@ function loadOCSCServices() {
       dispatch(
         uiActions.setFlashMessage(
           `โหลดรายชื่อบริการของสำนักงาน ก.พ. ไม่สำเร็จ เกิดข้อผิดพลาด ${get(
+            err,
+            'response.status',
+            'บางอย่าง'
+          )}`,
+          'error'
+        )
+      )
+    }
+  }
+}
+
+function loadAdminPermissions() {
+  return async (dispatch: any) => {
+    dispatch({ type: LOAD_ADMIN_PERMISSIONS_REQUEST })
+    const token = getCookie('token')
+    try {
+      var { data } = await axios.get('/adminpermissions', {
+        baseURL: process.env.REACT_APP_PORTAL_API_URL,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      if (data.length === 0) {
+        data = []
+      }
+      dispatch({
+        type: LOAD_ADMIN_PERMISSIONS_SUCCESS,
+        payload: {
+          adminPermissions: data,
+        },
+      })
+    } catch (err) {
+      dispatch({ type: LOAD_ADMIN_PERMISSIONS_FAILURE })
+      dispatch(
+        uiActions.setFlashMessage(
+          `โหลดรายชื่อสิทธิ์ของหน่วยงานไม่สำเร็จ เกิดข้อผิดพลาด ${get(
             err,
             'response.status',
             'บางอย่าง'
@@ -94,9 +137,13 @@ export {
   LOAD_OCSC_SEVICES_REQUEST,
   LOAD_OCSC_SEVICES_SUCCESS,
   LOAD_OCSC_SEVICES_FAILURE,
+  LOAD_ADMIN_PERMISSIONS_REQUEST,
+  LOAD_ADMIN_PERMISSIONS_SUCCESS,
+  LOAD_ADMIN_PERMISSIONS_FAILURE,
   EDIT_USER_INFO_REQUEST,
   EDIT_USER_INFO_SUCCESS,
   EDIT_USER_INFO_FAILURE,
   loadOCSCServices,
+  loadAdminPermissions,
   editUserInfo,
 }
