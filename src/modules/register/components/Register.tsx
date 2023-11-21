@@ -163,7 +163,6 @@ export default function Register() {
 
   useEffect(() => {
     dispatch(infoActions.loadMininstries())
-    dispatch(infoActions.loadDepartments())
   }, [dispatch])
 
   const { dopaToken = '' } = useSelector((state: any) => state.register)
@@ -245,6 +244,15 @@ export default function Register() {
       )
     },
   })
+
+  useEffect(() => {
+    if (registerForm.values.ministryId !== null) {
+      dispatch(
+        infoActions.loadDepartmentsByMinistryId(registerForm.values.ministryId)
+      )
+    }
+    registerForm.setFieldValue('departmentId', null)
+  }, [registerForm.values.ministryId]) //eslint-disable-line
 
   const onBack = () => {
     history.push(`${PATH}/login`)
@@ -708,6 +716,7 @@ export default function Register() {
                     <Grid xs={12} md={6}>
                       <FormControl fullWidth size='small'>
                         <Select
+                          disabled={registerForm.values.ministryId === null}
                           id='departmentId'
                           name='departmentId'
                           value={registerForm.values.departmentId}

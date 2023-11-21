@@ -20,6 +20,9 @@ import {
   LOAD_DEPARTMENTS_REQUEST,
   LOAD_DEPARTMENTS_SUCCESS,
   LOAD_DEPARTMENTS_FAILURE,
+  LOAD_DEPARTMENTS_BY_MINISTRY_ID_REQUEST,
+  LOAD_DEPARTMENTS_BY_MINISTRY_ID_SUCCESS,
+  LOAD_DEPARTMENTS_BY_MINISTRY_ID_FAILURE,
   LOAD_ROLES_REQUEST,
   LOAD_ROLES_SUCCESS,
   LOAD_ROLES_FAILURE,
@@ -52,6 +55,7 @@ export default function (state = initialState, action: any) {
       return { ...state, isLoading: true, circularLetters: [] }
     case LOAD_MINISTRIES_REQUEST:
       return { ...state, isLoading: true, ministries: [] }
+    case LOAD_DEPARTMENTS_BY_MINISTRY_ID_REQUEST:
     case LOAD_DEPARTMENTS_REQUEST:
       return { ...state, isLoading: true, departments: [] }
     case LOAD_ROLES_REQUEST:
@@ -92,6 +96,7 @@ export default function (state = initialState, action: any) {
         isLoading: false,
         ministries: action.payload.ministries,
       }
+    case LOAD_DEPARTMENTS_BY_MINISTRY_ID_SUCCESS:
     case LOAD_DEPARTMENTS_SUCCESS:
       return {
         ...state,
@@ -110,6 +115,7 @@ export default function (state = initialState, action: any) {
     case LOAD_CIRCULAR_LETTERS_FAILURE:
     case LOAD_MINISTRIES_FAILURE:
     case LOAD_DEPARTMENTS_FAILURE:
+    case LOAD_DEPARTMENTS_BY_MINISTRY_ID_FAILURE:
     case LOAD_ROLES_FAILURE:
       return { ...state, isLoading: false }
     case LOAD_UNIVERSITIES_FAILURE:

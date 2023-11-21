@@ -44,6 +44,13 @@ const LOAD_DEPARTMENTS_REQUEST = 'ocsc-job/info/LOAD_DEPARTMENTS_REQUEST'
 const LOAD_DEPARTMENTS_SUCCESS = 'ocsc-job/info/LOAD_DEPARTMENTS_SUCCESS'
 const LOAD_DEPARTMENTS_FAILURE = 'ocsc-job/info/LOAD_DEPARTMENTS_FAILURE'
 
+const LOAD_DEPARTMENTS_BY_MINISTRY_ID_REQUEST =
+  'ocsc-job/info/LOAD_DEPARTMENTS_BY_MINISTRY_ID_REQUEST'
+const LOAD_DEPARTMENTS_BY_MINISTRY_ID_SUCCESS =
+  'ocsc-job/info/LOAD_DEPARTMENTS_BY_MINISTRY_ID_SUCCESS'
+const LOAD_DEPARTMENTS_BY_MINISTRY_ID_FAILURE =
+  'ocsc-job/info/LOAD_DEPARTMENTS_BY_MINISTRY_ID_FAILURE'
+
 const LOAD_ROLES_REQUEST = 'ocsc-job/info/LOAD_ROLES_REQUEST'
 const LOAD_ROLES_SUCCESS = 'ocsc-job/info/LOAD_ROLES_SUCCESS'
 const LOAD_ROLES_FAILURE = 'ocsc-job/info/LOAD_ROLES_FAILURE'
@@ -97,6 +104,36 @@ function loadDepartments() {
       dispatch(
         uiActions.setFlashMessage(
           `โหลดรายชื่อกรมทั้งหมดไม่สำเร็จ เกิดข้อผิดพลาด ${get(
+            err,
+            'response.status',
+            'บางอย่าง'
+          )}`,
+          'error'
+        )
+      )
+    }
+  }
+}
+
+function loadDepartmentsByMinistryId(ministryId: number) {
+  return async (dispatch: any) => {
+    dispatch({ type: LOAD_DEPARTMENTS_BY_MINISTRY_ID_REQUEST })
+    try {
+      var { data } = await axios.get(`/ministries/${ministryId}/departments`)
+      if (data.length === 0) {
+        data = []
+      }
+      dispatch({
+        type: LOAD_DEPARTMENTS_BY_MINISTRY_ID_SUCCESS,
+        payload: {
+          departments: data,
+        },
+      })
+    } catch (err) {
+      dispatch({ type: LOAD_DEPARTMENTS_BY_MINISTRY_ID_FAILURE })
+      dispatch(
+        uiActions.setFlashMessage(
+          `โหลดรายชื่อกรมทั้งหมดในกระทรวง ${ministryId} ไม่สำเร็จ เกิดข้อผิดพลาด ${get(
             err,
             'response.status',
             'บางอย่าง'
@@ -312,6 +349,9 @@ export {
   LOAD_DEPARTMENTS_REQUEST,
   LOAD_DEPARTMENTS_SUCCESS,
   LOAD_DEPARTMENTS_FAILURE,
+  LOAD_DEPARTMENTS_BY_MINISTRY_ID_REQUEST,
+  LOAD_DEPARTMENTS_BY_MINISTRY_ID_SUCCESS,
+  LOAD_DEPARTMENTS_BY_MINISTRY_ID_FAILURE,
   LOAD_ROLES_REQUEST,
   LOAD_ROLES_SUCCESS,
   LOAD_ROLES_FAILURE,
@@ -322,5 +362,6 @@ export {
   loadCircularLetters,
   loadMininstries,
   loadDepartments,
+  loadDepartmentsByMinistryId,
   loadRoles,
 }
