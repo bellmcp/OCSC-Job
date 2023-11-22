@@ -139,19 +139,16 @@ function disableAdminPermission(departmentId: number, ocscServiceId: number) {
     dispatch({ type: DISABLE_ADMIN_PERMISSION_REQUEST })
     const token = getCookie('token')
     try {
-      const result = await axios.delete(
-        '/adminpermissions',
-        {
+      const result = await axios.delete('/adminpermissions', {
+        baseURL: process.env.REACT_APP_PORTAL_API_URL,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        data: {
           departmentId,
           ocscServiceId,
         },
-        {
-          baseURL: process.env.REACT_APP_PORTAL_API_URL,
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      )
+      })
       console.log('result :>> ', result)
       dispatch({ type: DISABLE_ADMIN_PERMISSION_SUCCESS })
       dispatch(
