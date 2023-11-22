@@ -5,18 +5,12 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
-import {
-  Container,
-  Typography,
-  Box,
-  Button,
-  Paper,
-  Toolbar,
-} from '@material-ui/core'
-
+import { Container, Typography, Box, Button, Toolbar } from '@material-ui/core'
 import { ChevronLeft as ChevronLeftIcon } from '@material-ui/icons'
 
+import DataTable from './DataTable'
 import * as adminActions from 'modules/admin/actions'
+import * as infoActions from 'modules/info/actions'
 
 const PATH = process.env.REACT_APP_BASE_PATH
 
@@ -55,10 +49,16 @@ export default function AdminPermission() {
   useEffect(() => {
     dispatch(adminActions.loadOCSCServices())
     dispatch(adminActions.loadAdminPermissions())
+    dispatch(infoActions.loadMininstries())
+    dispatch(infoActions.loadDepartments())
   }, [dispatch])
 
   const { ocscServices = [], adminPermissions = [] } = useSelector(
     (state: any) => state.admin
+  )
+
+  const { ministries = [], departments = [] } = useSelector(
+    (state: any) => state.info
   )
 
   const onBack = () => {
@@ -68,7 +68,11 @@ export default function AdminPermission() {
   return (
     <>
       <Toolbar id='back-to-top-anchor' />
-      <Container maxWidth='xl' className={classes.content}>
+      <Container
+        maxWidth='lg'
+        className={classes.content}
+        style={{ paddingBottom: 0 }}
+      >
         <Button
           variant='text'
           color='primary'
@@ -82,42 +86,19 @@ export default function AdminPermission() {
           component='h1'
           variant='h4'
           color='secondary'
-          style={{ fontWeight: 600, marginBottom: 24 }}
+          style={{ fontWeight: 600 }}
         >
           สิทธิ์ของหน่วยงาน
         </Typography>
-
+      </Container>
+      <Container maxWidth='xl' className={classes.content}>
         <Box mt={2} mb={4}>
-          <Paper
-            elevation={0}
-            style={{
-              borderRadius: 16,
-              padding: 24,
-              boxShadow: '0 0 20px 0 rgba(204,242,251,0.3)',
-              border: '1px solid rgb(204 242 251)',
-            }}
-          >
-            <table>
-              <tr>
-                <th>กระทรวง</th>
-                <th>กรม</th>
-                {ocscServices.map((ocscService: any) => (
-                  <th>{ocscService.service}</th>
-                ))}
-              </tr>
-              {adminPermissions.map((adminPermission: any) => (
-                <tr>
-                  <td>{adminPermission.ministryName}</td>
-                  <td>{adminPermission.departmentName}</td>
-                  {adminPermission.permission.map((p: any) => (
-                    <td>
-                      <input type='checkbox' checked={p} />
-                    </td>
-                  ))}
-                </tr>
-              ))}
-            </table>
-          </Paper>
+          <DataTable
+            ocscServices={ocscServices}
+            adminPermissions={adminPermissions}
+            ministries={ministries}
+            departments={departments}
+          />
         </Box>
       </Container>
     </>
