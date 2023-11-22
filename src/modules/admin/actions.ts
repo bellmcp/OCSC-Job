@@ -19,9 +19,19 @@ const LOAD_ADMIN_PERMISSIONS_SUCCESS =
 const LOAD_ADMIN_PERMISSIONS_FAILURE =
   'ocsc-job/admin/LOAD_ADMIN_PERMISSIONS_FAILURE'
 
-const EDIT_USER_INFO_REQUEST = 'ocsc-job/admin/EDIT_USER_INFO_REQUEST'
-const EDIT_USER_INFO_SUCCESS = 'ocsc-job/admin/EDIT_USER_INFO_SUCCESS'
-const EDIT_USER_INFO_FAILURE = 'ocsc-job/admin/EDIT_USER_INFO_FAILURE'
+const ENABLE_ADMIN_PERMISSION_REQUEST =
+  'ocsc-job/admin/ENABLE_ADMIN_PERMISSION_REQUEST'
+const ENABLE_ADMIN_PERMISSION_SUCCESS =
+  'ocsc-job/admin/ENABLE_ADMIN_PERMISSION_SUCCESS'
+const ENABLE_ADMIN_PERMISSION_FAILURE =
+  'ocsc-job/admin/ENABLE_ADMIN_PERMISSION_FAILURE'
+
+const DISABLE_ADMIN_PERMISSION_REQUEST =
+  'ocsc-job/admin/DISABLE_ADMIN_PERMISSION_REQUEST'
+const DISABLE_ADMIN_PERMISSION_SUCCESS =
+  'ocsc-job/admin/DISABLE_ADMIN_PERMISSION_SUCCESS'
+const DISABLE_ADMIN_PERMISSION_FAILURE =
+  'ocsc-job/admin/DISABLE_ADMIN_PERMISSION_FAILURE'
 
 function loadOCSCServices() {
   return async (dispatch: any) => {
@@ -95,20 +105,16 @@ function loadAdminPermissions() {
   }
 }
 
-function editUserInfo(userInfo: any) {
+function enableAdminPermission(departmentId: number, ocscServiceId: number) {
   return async (dispatch: any) => {
-    dispatch({ type: EDIT_USER_INFO_REQUEST })
+    dispatch({ type: ENABLE_ADMIN_PERMISSION_REQUEST })
     const token = getCookie('token')
     try {
-      const result = await axios.put(
-        '/agencyprofiles',
+      const result = await axios.post(
+        '/adminpermissions',
         {
-          title: userInfo.title,
-          gender: userInfo.gender,
-          division: userInfo.division,
-          position: userInfo.position,
-          email: userInfo.email,
-          phone: userInfo.phone,
+          departmentId,
+          ocscServiceId,
         },
         {
           baseURL: process.env.REACT_APP_PORTAL_API_URL,
@@ -118,17 +124,43 @@ function editUserInfo(userInfo: any) {
         }
       )
       console.log('result :>> ', result)
-      dispatch({ type: EDIT_USER_INFO_SUCCESS })
-      dispatch(
-        uiActions.setFlashMessage(
-          'แก้ไขข้อมูลส่วนบุคคลเรียบร้อยแล้ว',
-          'success'
-        )
-      )
-      dispatch(push(`${PATH}`))
+      dispatch({ type: ENABLE_ADMIN_PERMISSION_SUCCESS })
+      dispatch(uiActions.setFlashMessage('เพิ่มสิทธิ์เรียบร้อยแล้ว', 'success'))
     } catch (err) {
-      dispatch({ type: EDIT_USER_INFO_FAILURE })
+      dispatch({ type: ENABLE_ADMIN_PERMISSION_FAILURE })
       handleApiError(err, dispatch)
+      dispatch(push(`${PATH}`))
+    }
+  }
+}
+
+function disableAdminPermission(departmentId: number, ocscServiceId: number) {
+  return async (dispatch: any) => {
+    dispatch({ type: DISABLE_ADMIN_PERMISSION_REQUEST })
+    const token = getCookie('token')
+    try {
+      const result = await axios.delete(
+        '/adminpermissions',
+        {
+          departmentId,
+          ocscServiceId,
+        },
+        {
+          baseURL: process.env.REACT_APP_PORTAL_API_URL,
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+      console.log('result :>> ', result)
+      dispatch({ type: DISABLE_ADMIN_PERMISSION_SUCCESS })
+      dispatch(
+        uiActions.setFlashMessage('ยกเลิกสิทธิ์เรียบร้อยแล้ว', 'success')
+      )
+    } catch (err) {
+      dispatch({ type: DISABLE_ADMIN_PERMISSION_FAILURE })
+      handleApiError(err, dispatch)
+      dispatch(push(`${PATH}`))
     }
   }
 }
@@ -140,10 +172,14 @@ export {
   LOAD_ADMIN_PERMISSIONS_REQUEST,
   LOAD_ADMIN_PERMISSIONS_SUCCESS,
   LOAD_ADMIN_PERMISSIONS_FAILURE,
-  EDIT_USER_INFO_REQUEST,
-  EDIT_USER_INFO_SUCCESS,
-  EDIT_USER_INFO_FAILURE,
+  ENABLE_ADMIN_PERMISSION_REQUEST,
+  ENABLE_ADMIN_PERMISSION_SUCCESS,
+  ENABLE_ADMIN_PERMISSION_FAILURE,
+  DISABLE_ADMIN_PERMISSION_REQUEST,
+  DISABLE_ADMIN_PERMISSION_SUCCESS,
+  DISABLE_ADMIN_PERMISSION_FAILURE,
   loadOCSCServices,
   loadAdminPermissions,
-  editUserInfo,
+  enableAdminPermission,
+  disableAdminPermission,
 }

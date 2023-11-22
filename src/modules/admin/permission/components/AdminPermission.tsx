@@ -9,6 +9,7 @@ import { Container, Typography, Box, Button, Toolbar } from '@material-ui/core'
 import { ChevronLeft as ChevronLeftIcon } from '@material-ui/icons'
 
 import DataTable from './DataTable'
+import Loading from 'modules/ui/components/Loading'
 import * as adminActions from 'modules/admin/actions'
 import * as infoActions from 'modules/info/actions'
 
@@ -53,16 +54,37 @@ export default function AdminPermission() {
     dispatch(infoActions.loadDepartments())
   }, [dispatch])
 
-  const { ocscServices = [], adminPermissions = [] } = useSelector(
-    (state: any) => state.admin
-  )
+  const {
+    ocscServices = [],
+    adminPermissions = [],
+    isLoading: isAdminLoading,
+    isPermissionLoading,
+  } = useSelector((state: any) => state.admin)
 
-  const { ministries = [], departments = [] } = useSelector(
-    (state: any) => state.info
-  )
+  const {
+    ministries = [],
+    departments = [],
+    isLoading: isInfoLoading,
+  } = useSelector((state: any) => state.info)
 
   const onBack = () => {
     history.push(`${PATH}/`)
+  }
+
+  const renderResult = () => {
+    if (isAdminLoading || isInfoLoading || isPermissionLoading) {
+      return <Loading height={300} />
+    } else {
+      return (
+        <DataTable
+          ocscServices={ocscServices}
+          adminPermissions={adminPermissions}
+          ministries={ministries}
+          departments={departments}
+          isPermissionLoading={isPermissionLoading}
+        />
+      )
+    }
   }
 
   return (
@@ -93,12 +115,7 @@ export default function AdminPermission() {
       </Container>
       <Container maxWidth='xl' className={classes.content}>
         <Box mt={2} mb={4}>
-          <DataTable
-            ocscServices={ocscServices}
-            adminPermissions={adminPermissions}
-            ministries={ministries}
-            departments={departments}
-          />
+          {renderResult()}
         </Box>
       </Container>
     </>

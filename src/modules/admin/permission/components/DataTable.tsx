@@ -15,10 +15,11 @@ import {
   TableHead,
   TableRow,
   Paper,
-  Checkbox,
   Avatar,
 } from '@material-ui/core'
 import { Stack } from '@mui/material'
+
+import CheckBox from './CheckBox'
 
 const StyledTableCell = withStyles((theme: Theme) =>
   createStyles({
@@ -53,16 +54,21 @@ export default function DataTable({
   adminPermissions,
   ministries,
   departments,
+  isPermissionLoading,
 }: any) {
   const classes = useStyles()
 
-  const getMinistrySealById = (id: any) => {
+  const getMinistrySealById = (id: number) => {
     const result = ministries.find((ministry: any) => ministry.id === id)
     return get(result, 'seal', '')
   }
-  const getDepartmentSealById = (id: any) => {
+  const getDepartmentSealById = (id: number) => {
     const result = departments.find((department: any) => department.id === id)
     return get(result, 'seal', '')
+  }
+  const getOCSCServiceIdByIndex = (index: number) => {
+    const result = ocscServices[index]
+    return get(result, 'id', null)
   }
 
   return (
@@ -88,8 +94,9 @@ export default function DataTable({
             >
               กรม
             </StyledTableCell>
-            {ocscServices.map((ocscService: any) => (
+            {ocscServices.map((ocscService: any, index: number) => (
               <StyledTableCell
+                key={`service-${index}`}
                 align='center'
                 style={{ lineHeight: 1.3, verticalAlign: 'top' }}
               >
@@ -122,11 +129,18 @@ export default function DataTable({
                   <div>{adminPermission.departmentName}</div>
                 </Stack>
               </StyledTableCell>
-              {adminPermission.permission.map((p: any) => (
-                <StyledTableCell align='center'>
-                  <Checkbox checked={p} />
-                </StyledTableCell>
-              ))}
+              {adminPermission.permission.map(
+                (permission: any, index: number) => (
+                  <StyledTableCell align='center' key={`permission-${index}`}>
+                    <CheckBox
+                      isLoading={isPermissionLoading}
+                      permission={permission}
+                      departmentId={adminPermission.departmentId}
+                      ocscServiceId={getOCSCServiceIdByIndex(index)}
+                    />
+                  </StyledTableCell>
+                )
+              )}
             </StyledTableRow>
           ))}
         </TableBody>
