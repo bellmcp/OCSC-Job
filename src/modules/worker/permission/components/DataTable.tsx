@@ -16,6 +16,9 @@ import {
   TableRow,
   Paper,
 } from '@material-ui/core'
+import { Stack } from '@mui/material'
+import { CheckCircle as CheckIcon } from '@material-ui/icons'
+import { green } from '@material-ui/core/colors'
 
 import CheckBox from './CheckBox'
 
@@ -127,8 +130,19 @@ export default function DataTable({
               <StyledTableCell style={{ fontWeight: 500 }}>
                 {workerPermission.lastName}
               </StyledTableCell>
-              <StyledTableCell>
-                {workerPermission.isActivated ? 'ใช่' : 'ไม่'}
+              <StyledTableCell align='center'>
+                <Stack alignItems='center'>
+                  {workerPermission.isActivated ? (
+                    <CheckIcon
+                      style={{
+                        fontSize: 28,
+                        color: green[800],
+                      }}
+                    />
+                  ) : (
+                    <></>
+                  )}
+                </Stack>
               </StyledTableCell>
               {workerPermission.permission.map(
                 (permission: any, index: number) => (

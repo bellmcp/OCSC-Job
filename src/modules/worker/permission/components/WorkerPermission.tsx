@@ -113,7 +113,7 @@ export default function WorkerPermission() {
   const {
     ocscServices = [],
     workerPermissions = [],
-    isLoading: isAdminLoading,
+    isLoading,
     isPermissionLoading,
   } = useSelector((state: any) => state.worker)
 
@@ -122,7 +122,7 @@ export default function WorkerPermission() {
   }
 
   const renderResult = () => {
-    if (isAdminLoading || isPermissionLoading) {
+    if (isLoading || isPermissionLoading) {
       return <Loading height={800} />
     } else {
       return (
