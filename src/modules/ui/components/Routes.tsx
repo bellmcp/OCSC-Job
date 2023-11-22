@@ -10,6 +10,7 @@ import EditUserInfo from 'modules/edit/userInfo/components/EditUserInfo'
 import EditAgencyInfo from 'modules/edit/agencyInfo/components/EditAgencyInfo'
 import ChangePassword from 'modules/edit/password/components/ChangePassword'
 import AdminPermission from 'modules/admin/permission/components/AdminPermission'
+import WorkerAccount from 'modules/worker/account/components/WorkerAccount'
 import WorkerPermission from 'modules/worker/permission/components/WorkerPermission'
 
 import NotFound from './NotFound'
@@ -49,6 +50,7 @@ export default function Routes() {
         component={AdminPermission}
         path={`${PATH}/administrator-permission`}
       />
+      <PrivateRoute exact component={WorkerAccount} path={`${PATH}/worker`} />
       <PrivateRoute
         exact
         component={WorkerPermission}
