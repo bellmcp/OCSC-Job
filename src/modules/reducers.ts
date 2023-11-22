@@ -12,6 +12,7 @@ import userInfoReducer from 'modules/edit/userInfo/reducer'
 import agencyInfoReducer from 'modules/edit/agencyInfo/reducer'
 import changePasswordReducer from 'modules/edit/password/reducer'
 import adminReducer from 'modules/admin/reducer'
+import workerReducer from 'modules/worker/reducer'
 // import searchReducer from 'modules/search/reducer'
 // import personLetterReducer from 'modules/personLetter/reducer'
 // import passwordReducer from 'modules/edit/password/reducer'
@@ -31,6 +32,7 @@ export default (history: any) =>
     agencyInfo: agencyInfoReducer,
     password: changePasswordReducer,
     admin: adminReducer,
+    worker: workerReducer,
     // search: searchReducer,
     // personLetter: personLetterReducer,
     // password: passwordReducer,

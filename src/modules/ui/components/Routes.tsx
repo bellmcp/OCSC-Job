@@ -10,11 +10,7 @@ import EditUserInfo from 'modules/edit/userInfo/components/EditUserInfo'
 import EditAgencyInfo from 'modules/edit/agencyInfo/components/EditAgencyInfo'
 import ChangePassword from 'modules/edit/password/components/ChangePassword'
 import AdminPermission from 'modules/admin/permission/components/AdminPermission'
-// import PersonLetterRoutes from 'modules/personLetter/Routes'
-// import SearchRoutes from 'modules/search/Routes'
-// import CurriculumRoutes from 'modules/curriculum/Routes'
-// import InfoRoutes from 'modules/info/Routes'
-// import PasswordRoutes from 'modules/edit/password/components/Routes'
+import WorkerPermission from 'modules/worker/permission/components/WorkerPermission'
 
 import NotFound from './NotFound'
 
@@ -32,9 +28,6 @@ export default function Routes() {
       <Route exact path={`${PATH}/forgot`}>
         <Forgot />
       </Route>
-      {/* <PrivateRoute path={`${PATH}/search`} component={SearchRoutes} />
-      <PrivateRoute path={`${PATH}/curriculum`} component={CurriculumRoutes} />
-      <PrivateRoute path={`${PATH}/info`} component={InfoRoutes} /> */}
       <PrivateRoute exact path={`${PATH}`} component={Home} />
       <PrivateRoute
         exact
@@ -55,6 +48,11 @@ export default function Routes() {
         exact
         component={AdminPermission}
         path={`${PATH}/administrator-permission`}
+      />
+      <PrivateRoute
+        exact
+        component={WorkerPermission}
+        path={`${PATH}/worker-permission`}
       />
       <Redirect to={`${PATH}`}></Redirect>
       <Route>

@@ -10,8 +10,7 @@ import { ChevronLeft as ChevronLeftIcon } from '@material-ui/icons'
 
 import DataTable from './DataTable'
 import Loading from 'modules/ui/components/Loading'
-import * as adminActions from 'modules/admin/actions'
-import * as infoActions from 'modules/info/actions'
+import * as workerActions from 'modules/worker/actions'
 
 const PATH = process.env.REACT_APP_BASE_PATH
 
@@ -42,45 +41,35 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 )
 
-export default function AdminPermission() {
+export default function WorkerPermission() {
   const classes = useStyles()
   const dispatch = useDispatch()
   const history = useHistory()
 
   useEffect(() => {
-    dispatch(adminActions.loadOCSCServices())
-    dispatch(adminActions.loadAdminPermissions())
-    dispatch(infoActions.loadMininstries())
-    dispatch(infoActions.loadDepartments())
+    dispatch(workerActions.loadOCSCServices())
+    dispatch(workerActions.loadWorkerPermissions())
   }, [dispatch])
 
   const {
     ocscServices = [],
-    adminPermissions = [],
+    workerPermissions = [],
     isLoading: isAdminLoading,
     isPermissionLoading,
-  } = useSelector((state: any) => state.admin)
-
-  const {
-    ministries = [],
-    departments = [],
-    isLoading: isInfoLoading,
-  } = useSelector((state: any) => state.info)
+  } = useSelector((state: any) => state.worker)
 
   const onBack = () => {
     history.push(`${PATH}/`)
   }
 
   const renderResult = () => {
-    if (isAdminLoading || isInfoLoading || isPermissionLoading) {
+    if (isAdminLoading || isPermissionLoading) {
       return <Loading height={800} />
     } else {
       return (
         <DataTable
           ocscServices={ocscServices}
-          adminPermissions={adminPermissions}
-          ministries={ministries}
-          departments={departments}
+          workerPermissions={workerPermissions}
           isPermissionLoading={isPermissionLoading}
         />
       )
@@ -110,7 +99,7 @@ export default function AdminPermission() {
           color='secondary'
           style={{ fontWeight: 600 }}
         >
-          สิทธิ์ของหน่วยงาน
+          สิทธิ์ของผู้ปฏิบัติงาน
         </Typography>
       </Container>
       <Container maxWidth='xl' className={classes.content}>
