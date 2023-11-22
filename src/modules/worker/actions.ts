@@ -69,15 +69,15 @@ function loadOCSCServices() {
   }
 }
 
-function loadWorkerPermissions() {
+function loadWorkerPermissions(ministryid: number, departmentid: number) {
   return async (dispatch: any) => {
     dispatch({ type: LOAD_WORKER_PERMISSIONS_REQUEST })
     const token = getCookie('token')
     try {
       var { data } = await axios.get('/workerpermissions', {
         params: {
-          ministryid: 1,
-          departmentid: 10,
+          ministryid,
+          departmentid,
         },
         baseURL: process.env.REACT_APP_PORTAL_API_URL,
         headers: {
