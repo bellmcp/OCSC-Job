@@ -216,7 +216,7 @@ export default function EditAgencyInfo() {
             >
               <Grid container item spacing={2}>
                 <Grid container item direction='row' alignItems='center'>
-                  <Grid xs={12} md={6}>
+                  <Grid xs={12} md={4}>
                     <Typography
                       variant='body1'
                       color='textPrimary'
@@ -225,7 +225,7 @@ export default function EditAgencyInfo() {
                       กระทรวง
                     </Typography>
                   </Grid>
-                  <Grid xs={12} md={6}>
+                  <Grid xs={12} md={8}>
                     <FormControl fullWidth size='small'>
                       <Select
                         disabled={role !== 'ocsc'}
@@ -271,7 +271,7 @@ export default function EditAgencyInfo() {
                   </Grid>
                 </Grid>
                 <Grid container item direction='row' alignItems='center'>
-                  <Grid xs={12} md={6}>
+                  <Grid xs={12} md={4}>
                     <Typography
                       variant='body1'
                       color='textPrimary'
@@ -280,7 +280,7 @@ export default function EditAgencyInfo() {
                       กรมต้นสังกัด
                     </Typography>
                   </Grid>
-                  <Grid xs={12} md={6}>
+                  <Grid xs={12} md={8}>
                     <FormControl fullWidth size='small'>
                       <Select
                         disabled={role !== 'ocsc'}
@@ -334,7 +334,7 @@ export default function EditAgencyInfo() {
                   justify='space-between'
                   style={{ paddingBlock: 24 }}
                 >
-                  <Grid md={6}>
+                  <Grid md={4}>
                     <Typography
                       variant='body1'
                       color='textPrimary'
@@ -343,7 +343,7 @@ export default function EditAgencyInfo() {
                       ตราประจำกรม
                     </Typography>
                   </Grid>
-                  <Grid md={6}>
+                  <Grid md={8}>
                     <Avatar
                       src={editAgencyInfoForm.values.seal || ''}
                       style={{
@@ -358,7 +358,7 @@ export default function EditAgencyInfo() {
                   </Grid>
                 </Grid>
                 <Grid container item direction='row' alignItems='center'>
-                  <Grid xs={12} md={6}>
+                  <Grid xs={12} md={4}>
                     <Typography
                       variant='body1'
                       color='textPrimary'
@@ -367,7 +367,7 @@ export default function EditAgencyInfo() {
                       ที่อยู่
                     </Typography>
                   </Grid>
-                  <Grid xs={12} md={6}>
+                  <Grid xs={12} md={8}>
                     <TextField
                       id='address'
                       name='address'
@@ -380,7 +380,7 @@ export default function EditAgencyInfo() {
                   </Grid>
                 </Grid>
                 <Grid container item direction='row' alignItems='center'>
-                  <Grid xs={12} md={6}>
+                  <Grid xs={12} md={4}>
                     <Typography
                       variant='body1'
                       color='textPrimary'
@@ -389,7 +389,7 @@ export default function EditAgencyInfo() {
                       เบอร์โทรศัพท์
                     </Typography>
                   </Grid>
-                  <Grid xs={12} md={6}>
+                  <Grid xs={12} md={8}>
                     <TextField
                       id='phone'
                       name='phone'
@@ -402,7 +402,7 @@ export default function EditAgencyInfo() {
                   </Grid>
                 </Grid>
                 <Grid container item direction='row' alignItems='center'>
-                  <Grid xs={12} md={6}>
+                  <Grid xs={12} md={4}>
                     <Typography
                       variant='body1'
                       color='textPrimary'
@@ -411,7 +411,7 @@ export default function EditAgencyInfo() {
                       เว็บไซต์
                     </Typography>
                   </Grid>
-                  <Grid xs={12} md={6}>
+                  <Grid xs={12} md={8}>
                     <TextField
                       id='website'
                       name='website'
