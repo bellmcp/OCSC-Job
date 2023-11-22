@@ -87,9 +87,7 @@ export default function WorkerAccount() {
     event: React.ChangeEvent<{ value: unknown }>
   ) => {
     setDepartmentId(event.target.value as number)
-    dispatch(
-      workerActions.loadWorkerPermissions(ministryId, event.target.value)
-    )
+    dispatch(workerActions.loadWorkerAccounts(ministryId, event.target.value))
   }
 
   useEffect(() => {
@@ -98,7 +96,7 @@ export default function WorkerAccount() {
     setMinistryId(cookieMinistryId)
     setDepartmentId(cookieDepartmentId)
     dispatch(
-      workerActions.loadWorkerPermissions(cookieMinistryId, cookieDepartmentId)
+      workerActions.loadWorkerAccounts(cookieMinistryId, cookieDepartmentId)
     )
   }, []) //eslint-disable-line
 
@@ -110,28 +108,19 @@ export default function WorkerAccount() {
     }
   }, [ministryId]) //eslint-disable-line
 
-  const {
-    ocscServices = [],
-    workerPermissions = [],
-    isLoading,
-    isPermissionLoading,
-  } = useSelector((state: any) => state.worker)
+  const { workerAccounts = [], isLoading } = useSelector(
+    (state: any) => state.worker
+  )
 
   const onBack = () => {
     history.push(`${PATH}/`)
   }
 
   const renderResult = () => {
-    if (isLoading || isPermissionLoading) {
+    if (isLoading) {
       return <Loading height={800} />
     } else {
-      return (
-        <DataTable
-          ocscServices={ocscServices}
-          workerPermissions={workerPermissions}
-          isPermissionLoading={isPermissionLoading}
-        />
-      )
+      return <DataTable workerAccounts={workerAccounts} />
     }
   }
 

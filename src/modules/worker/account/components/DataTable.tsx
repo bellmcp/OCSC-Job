@@ -1,5 +1,5 @@
 import React from 'react'
-import { get } from 'lodash'
+import { useSelector } from 'react-redux'
 import {
   withStyles,
   Theme,
@@ -54,12 +54,13 @@ const useStyles = makeStyles({
   },
 })
 
-export default function DataTable({
-  ocscServices,
-  workerPermissions,
-  isPermissionLoading,
-}: any) {
+export default function DataTable({ workerAccounts }: any) {
   const classes = useStyles()
+
+  const { roles = [] } = useSelector((state: any) => state.info)
+  const getRoleByKey = (key: string) => {
+    return roles[key] || ''
+  }
 
   return (
     <TableContainer
@@ -80,34 +81,19 @@ export default function DataTable({
             >
               ลำดับ
             </StyledTableCell>
-            <StyledTableCell
-              align='center'
-              style={{ lineHeight: 1.3, verticalAlign: 'top' }}
-            >
+            <StyledTableCell style={{ lineHeight: 1.3, verticalAlign: 'top' }}>
               บทบาท
             </StyledTableCell>
-            <StyledTableCell
-              align='center'
-              style={{ lineHeight: 1.3, verticalAlign: 'top' }}
-            >
+            <StyledTableCell style={{ lineHeight: 1.3, verticalAlign: 'top' }}>
               เลขประจำตัวประชาชน
             </StyledTableCell>
-            <StyledTableCell
-              align='center'
-              style={{ lineHeight: 1.3, verticalAlign: 'top' }}
-            >
+            <StyledTableCell style={{ lineHeight: 1.3, verticalAlign: 'top' }}>
               คำนำหน้า
             </StyledTableCell>
-            <StyledTableCell
-              align='center'
-              style={{ lineHeight: 1.3, verticalAlign: 'top' }}
-            >
+            <StyledTableCell style={{ lineHeight: 1.3, verticalAlign: 'top' }}>
               ชื่อ
             </StyledTableCell>
-            <StyledTableCell
-              align='center'
-              style={{ lineHeight: 1.3, verticalAlign: 'top' }}
-            >
+            <StyledTableCell style={{ lineHeight: 1.3, verticalAlign: 'top' }}>
               นามสกุล
             </StyledTableCell>
             <StyledTableCell
@@ -120,25 +106,27 @@ export default function DataTable({
           </TableRow>
         </TableHead>
         <TableBody>
-          {workerPermissions.map((workerPermission: any, index: number) => (
-            <StyledTableRow key={workerPermission.departmentName}>
+          {workerAccounts.map((workerAccount: any, index: number) => (
+            <StyledTableRow key={workerAccount.departmentName}>
               <StyledTableCell component='th' scope='row' align='center'>
                 {index + 1}
               </StyledTableCell>
-              <StyledTableCell>Role</StyledTableCell>
-              <StyledTableCell>{workerPermission.nationalId}</StyledTableCell>
+              <StyledTableCell>
+                {getRoleByKey(workerAccount.role)}
+              </StyledTableCell>
+              <StyledTableCell>{workerAccount.nationalId}</StyledTableCell>
               <StyledTableCell style={{ fontWeight: 500 }}>
-                {workerPermission.title}
+                {workerAccount.title}
               </StyledTableCell>
               <StyledTableCell style={{ fontWeight: 500 }}>
-                {workerPermission.firstName}
+                {workerAccount.firstName}
               </StyledTableCell>
               <StyledTableCell style={{ fontWeight: 500 }}>
-                {workerPermission.lastName}
+                {workerAccount.lastName}
               </StyledTableCell>
               <StyledTableCell align='center'>
                 <Stack alignItems='center'>
-                  {workerPermission.isActivated ? (
+                  {workerAccount.isActivated ? (
                     <CheckIcon
                       style={{
                         fontSize: 28,

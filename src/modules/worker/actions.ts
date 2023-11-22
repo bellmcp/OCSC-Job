@@ -33,6 +33,13 @@ const DISABLE_WORKER_PERMISSION_SUCCESS =
 const DISABLE_WORKER_PERMISSION_FAILURE =
   'ocsc-job/worker/DISABLE_WORKER_PERMISSION_FAILURE'
 
+const LOAD_WORKER_ACCOUNTS_REQUEST =
+  'ocsc-job/worker/LOAD_WORKER_ACCOUNTS_REQUEST'
+const LOAD_WORKER_ACCOUNTS_SUCCESS =
+  'ocsc-job/worker/LOAD_WORKER_ACCOUNTS_SUCCESS'
+const LOAD_WORKER_ACCOUNTS_FAILURE =
+  'ocsc-job/worker/LOAD_WORKER_ACCOUNTS_FAILURE'
+
 function loadOCSCServices() {
   return async (dispatch: any) => {
     dispatch({ type: LOAD_OCSC_SEVICES_REQUEST })
@@ -166,6 +173,47 @@ function disableWorkerPermission(agencyId: number, ocscServiceId: number) {
   }
 }
 
+function loadWorkerAccounts(ministryid: number, departmentid: number) {
+  return async (dispatch: any) => {
+    dispatch({ type: LOAD_WORKER_ACCOUNTS_REQUEST })
+    const token = getCookie('token')
+    try {
+      var { data } = await axios.get('/agencies', {
+        params: {
+          ministryid,
+          departmentid,
+          role: 'worker',
+        },
+        baseURL: process.env.REACT_APP_PORTAL_API_URL,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      if (data.length === 0) {
+        data = []
+      }
+      dispatch({
+        type: LOAD_WORKER_ACCOUNTS_SUCCESS,
+        payload: {
+          workerAccounts: data,
+        },
+      })
+    } catch (err) {
+      dispatch({ type: LOAD_WORKER_ACCOUNTS_FAILURE })
+      dispatch(
+        uiActions.setFlashMessage(
+          `โหลดรายชื่อผู้ปฏิบัติงานไม่สำเร็จ เกิดข้อผิดพลาด ${get(
+            err,
+            'response.status',
+            'บางอย่าง'
+          )}`,
+          'error'
+        )
+      )
+    }
+  }
+}
+
 export {
   LOAD_OCSC_SEVICES_REQUEST,
   LOAD_OCSC_SEVICES_SUCCESS,
@@ -179,8 +227,12 @@ export {
   DISABLE_WORKER_PERMISSION_REQUEST,
   DISABLE_WORKER_PERMISSION_SUCCESS,
   DISABLE_WORKER_PERMISSION_FAILURE,
+  LOAD_WORKER_ACCOUNTS_REQUEST,
+  LOAD_WORKER_ACCOUNTS_SUCCESS,
+  LOAD_WORKER_ACCOUNTS_FAILURE,
   loadOCSCServices,
   loadWorkerPermissions,
   enableWorkerPermission,
   disableWorkerPermission,
+  loadWorkerAccounts,
 }
