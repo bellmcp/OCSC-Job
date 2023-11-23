@@ -21,19 +21,19 @@ import Stack from '@mui/material/Stack'
 
 import * as workerActions from 'modules/worker/actions'
 
-interface AddPersonLetterModalProps {
+interface AddWorkerModalProps {
   open: boolean
   handleClose: () => void
   ministryId: number
   departmentId: number
 }
 
-export default function AddPersonLetterModal({
+export default function AddWorkerModal({
   open,
   handleClose,
   ministryId,
   departmentId,
-}: AddPersonLetterModalProps) {
+}: AddWorkerModalProps) {
   const dispatch = useDispatch()
   const theme = useTheme()
 

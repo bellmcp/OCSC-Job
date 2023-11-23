@@ -151,9 +151,7 @@ function disableAdminPermission(departmentId: number, ocscServiceId: number) {
       })
       console.log('result :>> ', result)
       dispatch({ type: DISABLE_ADMIN_PERMISSION_SUCCESS })
-      dispatch(
-        uiActions.setFlashMessage('ยกเลิกสิทธิ์เรียบร้อยแล้ว', 'success')
-      )
+      dispatch(uiActions.setFlashMessage('ยกเลิกสิทธิ์เรียบร้อยแล้ว', 'info'))
     } catch (err) {
       dispatch({ type: DISABLE_ADMIN_PERMISSION_FAILURE })
       handleApiError(err, dispatch)

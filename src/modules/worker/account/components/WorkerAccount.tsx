@@ -4,6 +4,7 @@ import { get } from 'lodash'
 import { useDispatch, useSelector } from 'react-redux'
 import { getRoleFromToken } from 'utils/isLogin'
 import { getCookie } from 'utils/cookies'
+import { useHistory } from 'react-router-dom'
 
 import {
   createStyles,
@@ -27,10 +28,11 @@ import {
   Select,
   MenuItem,
 } from '@material-ui/core'
-import Stack from '@mui/material/Stack'
+
 import {
   KeyboardArrowUp as KeyboardArrowUpIcon,
   Add as AddIcon,
+  ChevronLeft as ChevronLeftIcon,
 } from '@material-ui/icons'
 
 import * as infoActions from 'modules/info/actions'
@@ -38,9 +40,10 @@ import * as workerActions from 'modules/worker/actions'
 
 import Loading from 'modules/ui/components/Loading'
 import DataTable from './DataTable'
-import AddPersonLetterModal from './AddPersonLetterModal'
-import EditPersonLetterModal from './EditPersonLetterModal'
-import PreviewModal from 'modules/preview/components/PreviewModal'
+import AddWorkerModal from './AddWorkerModal'
+import EditWorkerModal from './EditWorkerModal'
+
+const PATH = process.env.REACT_APP_BASE_PATH
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -93,29 +96,19 @@ function ScrollTop(props: any) {
   )
 }
 
-export default function PersonLetterSupervisor() {
+export default function WorkerAccount() {
   const classes = useStyles()
   const theme = useTheme()
   const matches = useMediaQuery(theme.breakpoints.up('sm'))
   const dispatch = useDispatch()
   const role = getRoleFromToken()
+  const history = useHistory()
 
   const [searchResults, setSearchResults] = useState([])
 
   const [open, setOpen] = React.useState<boolean>(false)
   const [openEditModal, setOpenEditModal] = useState<boolean>(false)
   const [currentEditData, setCurrentEditData] = useState<any>({})
-
-  const [open2, setOpen2] = useState(false)
-  const [currentFilePath, setCurrentFilePath] = useState('')
-
-  const handleClickOpen2 = (filePath: string) => {
-    setOpen2(true)
-    setCurrentFilePath(filePath)
-  }
-  const handleClose2 = () => {
-    setOpen2(false)
-  }
 
   const handleClickOpen = () => {
     setOpen(true)
@@ -153,6 +146,10 @@ export default function PersonLetterSupervisor() {
 
   const [departmentId, setDepartmentId] = useState(null)
   const [ministryId, setMinistryId] = useState(null)
+
+  const onBack = () => {
+    history.push(`${PATH}/`)
+  }
 
   const handleChangeMinistryId = (
     event: React.ChangeEvent<{ value: unknown }>
@@ -226,26 +223,35 @@ export default function PersonLetterSupervisor() {
             spacing={2}
           >
             <Grid item xs={6}>
-              <Stack direction='row' spacing={2} alignItems='center'>
-                <Typography
-                  component='h2'
-                  variant='h6'
-                  align={matches ? 'left' : 'center'}
-                  className={classes.sectionTitle}
-                >
-                  ผู้ปฏิบัติงาน
-                </Typography>
-              </Stack>
+              <Button
+                variant='text'
+                color='primary'
+                onClick={onBack}
+                style={{ marginLeft: '-8px', marginBottom: 12 }}
+                startIcon={<ChevronLeftIcon />}
+              >
+                กลับ
+              </Button>
+              <Typography
+                component='h1'
+                variant='h4'
+                color='secondary'
+                style={{ fontWeight: 600 }}
+              >
+                ผู้ปฏิบัติงาน
+              </Typography>
             </Grid>
-            <Button
-              disabled={departmentId === null}
-              color='secondary'
-              variant='contained'
-              startIcon={<AddIcon />}
-              onClick={handleClickOpen}
-            >
-              เพิ่มผู้ปฏิบัติงาน
-            </Button>
+            <div>
+              <Button
+                disabled={departmentId === null}
+                color='secondary'
+                variant='contained'
+                startIcon={<AddIcon />}
+                onClick={handleClickOpen}
+              >
+                เพิ่มผู้ปฏิบัติงาน
+              </Button>
+            </div>
           </Grid>
           <Paper
             elevation={0}
@@ -379,23 +385,16 @@ export default function PersonLetterSupervisor() {
           <KeyboardArrowUpIcon style={{ color: 'white' }} />
         </Fab>
       </ScrollTop>
-      <AddPersonLetterModal
+      <AddWorkerModal
         open={open}
         handleClose={handleClose}
         ministryId={ministryId}
         departmentId={departmentId}
       />
-      <EditPersonLetterModal
+      <EditWorkerModal
         open={openEditModal}
         handleClose={handleCloseEditModal}
         data={currentEditData}
-        currentSearchQuery={''}
-        handleClickLink={handleClickOpen2}
-      />
-      <PreviewModal
-        open={open2}
-        handleClose={handleClose2}
-        filePath={currentFilePath}
       />
     </>
   )

@@ -21,17 +21,17 @@ import Stack from '@mui/material/Stack'
 
 import * as workerActions from 'modules/worker/actions'
 
-interface EditPersonLetterModalProps {
+interface EditWorkerModalProps {
   data: any
   open: boolean
   handleClose: () => void
 }
 
-export default function EditPersonLetterModal({
+export default function EditWorkerModal({
   data,
   open,
   handleClose,
-}: EditPersonLetterModalProps) {
+}: EditWorkerModalProps) {
   const dispatch = useDispatch()
   const theme = useTheme()
 

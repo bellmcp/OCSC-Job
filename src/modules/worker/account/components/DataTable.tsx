@@ -204,6 +204,11 @@ export default function DataTable({
     handleOpenEditModal()
   }
 
+  const handleClickDelete = (row: any) => {
+    // setCurrentEditData(row)
+    // handleOpenEditModal()
+  }
+
   const { roles = [] } = useSelector((state: any) => state.info)
   const getRoleByKey = (key: string) => {
     return roles[key] || ''
@@ -325,12 +330,12 @@ export default function DataTable({
         return (
           <Stack direction='row' alignItems='center' spacing={1}>
             <Tooltip title='แก้ไข'>
-              <IconButton size='small'>
-                <EditIcon onClick={() => handleClickEdit(row)} />
+              <IconButton size='small' onClick={() => handleClickEdit(row)}>
+                <EditIcon />
               </IconButton>
             </Tooltip>
             <Tooltip title='ลบ'>
-              <IconButton size='small'>
+              <IconButton size='small' onClick={() => handleClickDelete(row)}>
                 <DeleteIcon />
               </IconButton>
             </Tooltip>
