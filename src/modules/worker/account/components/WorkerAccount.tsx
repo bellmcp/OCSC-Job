@@ -1,10 +1,9 @@
 // @ts-nocheck
 import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
 import { get } from 'lodash'
+import { useDispatch, useSelector } from 'react-redux'
+import { getRoleFromToken } from 'utils/isLogin'
 import { getCookie } from 'utils/cookies'
-
-import { useHistory } from 'react-router-dom'
 
 import {
   createStyles,
@@ -13,34 +12,40 @@ import {
   useTheme,
 } from '@material-ui/core/styles'
 import {
+  useMediaQuery,
   Container,
   Typography,
+  Grid,
   Box,
   Button,
-  Toolbar,
   Paper,
-  Select,
-  Grid,
-  MenuItem,
+  Fab,
+  Zoom,
+  useScrollTrigger,
+  Toolbar,
   FormControl,
+  Select,
+  MenuItem,
 } from '@material-ui/core'
-import { ChevronLeft as ChevronLeftIcon } from '@material-ui/icons'
+import Stack from '@mui/material/Stack'
+import {
+  KeyboardArrowUp as KeyboardArrowUpIcon,
+  Add as AddIcon,
+} from '@material-ui/icons'
 
-import { getRoleFromToken } from 'utils/isLogin'
-import DataTable from './DataTable'
-import Loading from 'modules/ui/components/Loading'
-import * as workerActions from 'modules/worker/actions'
 import * as infoActions from 'modules/info/actions'
+import * as workerActions from 'modules/worker/actions'
 
-const PATH = process.env.REACT_APP_BASE_PATH
+import Loading from 'modules/ui/components/Loading'
+import DataTable from './DataTable'
+import AddPersonLetterModal from './AddPersonLetterModal'
+import EditPersonLetterModal from './EditPersonLetterModal'
+import PreviewModal from 'modules/preview/components/PreviewModal'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     content: {
-      padding: theme.spacing(4, 0),
-      [theme.breakpoints.down('sm')]: {
-        padding: theme.spacing(4, 4),
-      },
+      paddingTop: theme.spacing(3),
     },
     sectionTitle: {
       fontSize: '1.7rem',
@@ -61,21 +66,93 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 )
 
-export default function WorkerAccount() {
+function ScrollTop(props: any) {
+  const { children } = props
   const classes = useStyles()
-  const dispatch = useDispatch()
-  const history = useHistory()
+  const trigger = useScrollTrigger({
+    disableHysteresis: true,
+    threshold: 100,
+  })
+
+  const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
+    const anchor = (
+      (event.target as HTMLDivElement).ownerDocument || document
+    ).querySelector('#back-to-top-anchor')
+
+    if (anchor) {
+      anchor.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    }
+  }
+
+  return (
+    <Zoom in={trigger}>
+      <div onClick={handleClick} role='presentation' className={classes.root}>
+        {children}
+      </div>
+    </Zoom>
+  )
+}
+
+export default function PersonLetterSupervisor() {
+  const classes = useStyles()
   const theme = useTheme()
+  const matches = useMediaQuery(theme.breakpoints.up('sm'))
+  const dispatch = useDispatch()
   const role = getRoleFromToken()
+
+  const [searchResults, setSearchResults] = useState([])
+
+  const [open, setOpen] = React.useState<boolean>(false)
+  const [openEditModal, setOpenEditModal] = useState<boolean>(false)
+  const [currentEditData, setCurrentEditData] = useState<any>({})
+
+  const [open2, setOpen2] = useState(false)
+  const [currentFilePath, setCurrentFilePath] = useState('')
+
+  const handleClickOpen2 = (filePath: string) => {
+    setOpen2(true)
+    setCurrentFilePath(filePath)
+  }
+  const handleClose2 = () => {
+    setOpen2(false)
+  }
+
+  const handleClickOpen = () => {
+    setOpen(true)
+  }
+  const handleClose = () => {
+    setOpen(false)
+  }
+  const handleClickOpenEditModal = () => {
+    setOpenEditModal(true)
+  }
+  const handleCloseEditModal = () => {
+    setOpenEditModal(false)
+  }
+
+  const { ministries = [], departments = [] } = useSelector(
+    (state: any) => state.info
+  )
+  const { workerAccounts = [], isLoading } = useSelector(
+    (state: any) => state.worker
+  )
+
+  useEffect(() => {
+    const parsed = workerAccounts.map((item: any, index: number) => {
+      return {
+        order: index + 1,
+        edit: null,
+        ...item,
+      }
+    })
+    setSearchResults(parsed)
+  }, [workerAccounts]) //eslint-disable-line
+
   const cookieMinistryId = parseInt(getCookie('ministryId'))
   const cookieDepartmentId = parseInt(getCookie('departmentId'))
 
   const [departmentId, setDepartmentId] = useState<>(null)
   const [ministryId, setMinistryId] = useState<>(null)
-
-  const { ministries = [], departments = [] } = useSelector(
-    (state: any) => state.info
-  )
 
   const handleChangeMinistryId = (
     event: React.ChangeEvent<{ value: unknown }>
@@ -108,22 +185,6 @@ export default function WorkerAccount() {
     }
   }, [ministryId]) //eslint-disable-line
 
-  const { workerAccounts = [], isLoading } = useSelector(
-    (state: any) => state.worker
-  )
-
-  const onBack = () => {
-    history.push(`${PATH}/`)
-  }
-
-  const renderResult = () => {
-    if (isLoading) {
-      return <Loading height={800} />
-    } else {
-      return <DataTable workerAccounts={workerAccounts} />
-    }
-  }
-
   const getMinistryNameById = (id: any) => {
     const result = ministries.find((ministry: any) => ministry.id === id)
     return get(result, 'ministry', '')
@@ -134,32 +195,57 @@ export default function WorkerAccount() {
     return get(result, 'department', '')
   }
 
+  const renderSearchResult = () => {
+    if (isLoading) {
+      return <Loading height={300}></Loading>
+    } else {
+      return (
+        <Box mb={4}>
+          <DataTable
+            data={searchResults}
+            loading={isLoading}
+            handleOpenEditModal={handleClickOpenEditModal}
+            setCurrentEditData={setCurrentEditData}
+          />
+        </Box>
+      )
+    }
+  }
+
   return (
     <>
       <Toolbar id='back-to-top-anchor' />
-      <Container
-        maxWidth='lg'
-        className={classes.content}
-        style={{ paddingBottom: 0 }}
-      >
-        <Button
-          variant='text'
-          color='primary'
-          onClick={onBack}
-          style={{ marginLeft: '-8px', marginBottom: 12 }}
-          startIcon={<ChevronLeftIcon />}
-        >
-          กลับ
-        </Button>
-        <Typography
-          component='h1'
-          variant='h4'
-          color='secondary'
-          style={{ fontWeight: 600 }}
-        >
-          ผู้ปฏิบัติงาน
-        </Typography>
-        <Box mt={4}>
+      <Container maxWidth='lg' className={classes.content}>
+        <Box mt={2} mb={4}>
+          <Grid
+            container
+            direction={matches ? 'row' : 'column'}
+            justify={matches ? 'space-between' : 'center'}
+            alignItems='center'
+            style={{ marginBottom: 24 }}
+            spacing={2}
+          >
+            <Grid item xs={6}>
+              <Stack direction='row' spacing={2} alignItems='center'>
+                <Typography
+                  component='h2'
+                  variant='h6'
+                  align={matches ? 'left' : 'center'}
+                  className={classes.sectionTitle}
+                >
+                  ผู้ปฏิบัติงาน
+                </Typography>
+              </Stack>
+            </Grid>
+            <Button
+              color='secondary'
+              variant='contained'
+              startIcon={<AddIcon />}
+              onClick={handleClickOpen}
+            >
+              เพิ่มผู้ปฏิบัติงาน
+            </Button>
+          </Grid>
           <Paper
             elevation={0}
             style={{
@@ -167,12 +253,11 @@ export default function WorkerAccount() {
               padding: 24,
               boxShadow: '0 0 20px 0 rgba(204,242,251,0.3)',
               border: '1px solid rgb(204 242 251)',
-              width: '50%',
             }}
           >
-            <Grid container spacing={2}>
+            <Grid container item spacing={2}>
               <Grid container item direction='row' alignItems='center'>
-                <Grid xs={12} md={4}>
+                <Grid xs={12} md={2}>
                   <Typography
                     variant='body1'
                     color='textPrimary'
@@ -181,7 +266,7 @@ export default function WorkerAccount() {
                     กระทรวง
                   </Typography>
                 </Grid>
-                <Grid xs={12} md={8}>
+                <Grid xs={12} md={4}>
                   <FormControl fullWidth size='small'>
                     <Select
                       disabled={role !== 'ocsc'}
@@ -227,7 +312,7 @@ export default function WorkerAccount() {
                 </Grid>
               </Grid>
               <Grid container item direction='row' alignItems='center'>
-                <Grid xs={12} md={4}>
+                <Grid xs={12} md={2}>
                   <Typography
                     variant='body1'
                     color='textPrimary'
@@ -236,7 +321,7 @@ export default function WorkerAccount() {
                     กรมต้นสังกัด
                   </Typography>
                 </Grid>
-                <Grid xs={12} md={8}>
+                <Grid xs={12} md={4}>
                   <FormControl fullWidth size='small'>
                     <Select
                       disabled={role !== 'ocsc'}
@@ -285,11 +370,31 @@ export default function WorkerAccount() {
           </Paper>
         </Box>
       </Container>
-      <Container maxWidth='lg' className={classes.content}>
-        <Box mt={2} mb={4}>
-          {renderResult()}
-        </Box>
+      <Container maxWidth='xl' style={{ marginBottom: 36 }}>
+        {renderSearchResult()}
       </Container>
+      <ScrollTop>
+        <Fab color='primary' size='medium'>
+          <KeyboardArrowUpIcon style={{ color: 'white' }} />
+        </Fab>
+      </ScrollTop>
+      <AddPersonLetterModal
+        open={open}
+        handleClose={handleClose}
+        currentSearchQuery={''}
+      />
+      <EditPersonLetterModal
+        open={openEditModal}
+        handleClose={handleCloseEditModal}
+        data={currentEditData}
+        currentSearchQuery={''}
+        handleClickLink={handleClickOpen2}
+      />
+      <PreviewModal
+        open={open2}
+        handleClose={handleClose2}
+        filePath={currentFilePath}
+      />
     </>
   )
 }
