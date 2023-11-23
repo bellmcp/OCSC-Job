@@ -44,6 +44,13 @@ const ADD_WORKER_ACCOUNT_REQUEST = 'ocsc-job/worker/ADD_WORKER_ACCOUNT_REQUEST'
 const ADD_WORKER_ACCOUNT_SUCCESS = 'ocsc-job/worker/ADD_WORKER_ACCOUNT_SUCCESS'
 const ADD_WORKER_ACCOUNT_FAILURE = 'ocsc-job/worker/ADD_WORKER_ACCOUNT_FAILURE'
 
+const EDIT_WORKER_ACCOUNT_REQUEST =
+  'ocsc-job/worker/EDIT_WORKER_ACCOUNT_REQUEST'
+const EDIT_WORKER_ACCOUNT_SUCCESS =
+  'ocsc-job/worker/EDIT_WORKER_ACCOUNT_SUCCESS'
+const EDIT_WORKER_ACCOUNT_FAILURE =
+  'ocsc-job/worker/EDIT_WORKER_ACCOUNT_FAILURE'
+
 function loadOCSCServices() {
   return async (dispatch: any) => {
     dispatch({ type: LOAD_OCSC_SEVICES_REQUEST })
@@ -253,6 +260,39 @@ function addWorkerAccount(userInfo: any) {
   }
 }
 
+function editWorkerAccount(userInfo: any, workerId: number) {
+  return async (dispatch: any) => {
+    dispatch({ type: EDIT_WORKER_ACCOUNT_REQUEST })
+    const token = getCookie('token')
+    try {
+      const result = await axios.put(
+        `/agencies/${workerId}`,
+        {
+          role: userInfo.role,
+          nationalId: userInfo.nationalId,
+          title: userInfo.title,
+          firstName: userInfo.firstName,
+          lastName: userInfo.lastName,
+        },
+        {
+          baseURL: process.env.REACT_APP_PORTAL_API_URL,
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+      console.log('result :>> ', result)
+      dispatch({ type: EDIT_WORKER_ACCOUNT_SUCCESS })
+      dispatch(
+        uiActions.setFlashMessage('แก้ไขผู้ปฏิบัติงานเรียบร้อยแล้ว', 'success')
+      )
+    } catch (err) {
+      dispatch({ type: EDIT_WORKER_ACCOUNT_FAILURE })
+      handleApiError(err, dispatch)
+    }
+  }
+}
+
 export {
   LOAD_OCSC_SEVICES_REQUEST,
   LOAD_OCSC_SEVICES_SUCCESS,
@@ -272,10 +312,14 @@ export {
   ADD_WORKER_ACCOUNT_REQUEST,
   ADD_WORKER_ACCOUNT_SUCCESS,
   ADD_WORKER_ACCOUNT_FAILURE,
+  EDIT_WORKER_ACCOUNT_REQUEST,
+  EDIT_WORKER_ACCOUNT_SUCCESS,
+  EDIT_WORKER_ACCOUNT_FAILURE,
   loadOCSCServices,
   loadWorkerPermissions,
   enableWorkerPermission,
   disableWorkerPermission,
   loadWorkerAccounts,
   addWorkerAccount,
+  editWorkerAccount,
 }

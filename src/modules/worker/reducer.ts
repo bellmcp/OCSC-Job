@@ -11,6 +11,9 @@ import {
   ADD_WORKER_ACCOUNT_REQUEST,
   ADD_WORKER_ACCOUNT_SUCCESS,
   ADD_WORKER_ACCOUNT_FAILURE,
+  EDIT_WORKER_ACCOUNT_REQUEST,
+  EDIT_WORKER_ACCOUNT_SUCCESS,
+  EDIT_WORKER_ACCOUNT_FAILURE,
 } from './actions'
 const initialState = {
   isLoading: false,
@@ -29,6 +32,8 @@ export default function (state = initialState, action: any) {
     case LOAD_WORKER_ACCOUNTS_REQUEST:
       return { ...state, isLoading: true, workerAccounts: [] }
     case ADD_WORKER_ACCOUNT_REQUEST:
+      return { ...state, isLoading: true }
+    case EDIT_WORKER_ACCOUNT_REQUEST:
       return { ...state, isLoading: true }
     case LOAD_OCSC_SEVICES_SUCCESS:
       return {
@@ -50,6 +55,8 @@ export default function (state = initialState, action: any) {
       }
     case ADD_WORKER_ACCOUNT_SUCCESS:
       return { ...state, isLoading: false }
+    case EDIT_WORKER_ACCOUNT_SUCCESS:
+      return { ...state, isLoading: false }
     case LOAD_WORKER_PERMISSIONS_FAILURE:
       return { ...state, isPermissionLoading: false }
     case LOAD_WORKER_ACCOUNTS_FAILURE:
@@ -58,6 +65,11 @@ export default function (state = initialState, action: any) {
         isLoading: false,
       }
     case ADD_WORKER_ACCOUNT_FAILURE:
+      return {
+        ...state,
+        isLoading: false,
+      }
+    case EDIT_WORKER_ACCOUNT_FAILURE:
       return {
         ...state,
         isLoading: false,

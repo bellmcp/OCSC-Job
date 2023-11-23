@@ -19,6 +19,8 @@ import {
 } from '@material-ui/core'
 import Stack from '@mui/material/Stack'
 
+import * as workerActions from 'modules/worker/actions'
+
 interface EditPersonLetterModalProps {
   data: any
   open: boolean
@@ -45,7 +47,7 @@ export default function EditPersonLetterModal({
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      console.log('values :>> ', values)
+      dispatch(workerActions.editWorkerAccount(values, get(data, 'id', '')))
       onCloseModal()
     },
   })
