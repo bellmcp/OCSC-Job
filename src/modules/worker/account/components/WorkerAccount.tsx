@@ -238,6 +238,7 @@ export default function PersonLetterSupervisor() {
               </Stack>
             </Grid>
             <Button
+              disabled={departmentId === null}
               color='secondary'
               variant='contained'
               startIcon={<AddIcon />}
