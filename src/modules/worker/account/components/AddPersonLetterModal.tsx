@@ -19,14 +19,20 @@ import {
 } from '@material-ui/core'
 import Stack from '@mui/material/Stack'
 
+import * as workerActions from 'modules/worker/actions'
+
 interface AddPersonLetterModalProps {
   open: boolean
   handleClose: () => void
+  ministryId: number
+  departmentId: number
 }
 
 export default function AddPersonLetterModal({
   open,
   handleClose,
+  ministryId,
+  departmentId,
 }: AddPersonLetterModalProps) {
   const dispatch = useDispatch()
   const theme = useTheme()
@@ -51,7 +57,9 @@ export default function AddPersonLetterModal({
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      console.log('values :>> ', values)
+      dispatch(
+        workerActions.addWorkerAccount({ ...values, ministryId, departmentId })
+      )
       onCloseModal()
     },
   })

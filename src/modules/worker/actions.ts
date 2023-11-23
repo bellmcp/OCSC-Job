@@ -40,6 +40,10 @@ const LOAD_WORKER_ACCOUNTS_SUCCESS =
 const LOAD_WORKER_ACCOUNTS_FAILURE =
   'ocsc-job/worker/LOAD_WORKER_ACCOUNTS_FAILURE'
 
+const ADD_WORKER_ACCOUNT_REQUEST = 'ocsc-job/worker/ADD_WORKER_ACCOUNT_REQUEST'
+const ADD_WORKER_ACCOUNT_SUCCESS = 'ocsc-job/worker/ADD_WORKER_ACCOUNT_SUCCESS'
+const ADD_WORKER_ACCOUNT_FAILURE = 'ocsc-job/worker/ADD_WORKER_ACCOUNT_FAILURE'
+
 function loadOCSCServices() {
   return async (dispatch: any) => {
     dispatch({ type: LOAD_OCSC_SEVICES_REQUEST })
@@ -214,6 +218,41 @@ function loadWorkerAccounts(ministryid: number, departmentid: number) {
   }
 }
 
+function addWorkerAccount(userInfo: any) {
+  return async (dispatch: any) => {
+    dispatch({ type: ADD_WORKER_ACCOUNT_REQUEST })
+    const token = getCookie('token')
+    try {
+      const result = await axios.post(
+        '/agencies',
+        {
+          role: userInfo.role,
+          nationalId: userInfo.nationalId,
+          title: userInfo.title,
+          firstName: userInfo.firstName,
+          lastName: userInfo.lastName,
+          ministryId: userInfo.ministryId,
+          departmentId: userInfo.departmentId,
+        },
+        {
+          baseURL: process.env.REACT_APP_PORTAL_API_URL,
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+      console.log('result :>> ', result)
+      dispatch({ type: ADD_WORKER_ACCOUNT_SUCCESS })
+      dispatch(
+        uiActions.setFlashMessage('เพิ่มผู้ปฏิบัติงานเรียบร้อยแล้ว', 'success')
+      )
+    } catch (err) {
+      dispatch({ type: ADD_WORKER_ACCOUNT_FAILURE })
+      handleApiError(err, dispatch)
+    }
+  }
+}
+
 export {
   LOAD_OCSC_SEVICES_REQUEST,
   LOAD_OCSC_SEVICES_SUCCESS,
@@ -230,9 +269,13 @@ export {
   LOAD_WORKER_ACCOUNTS_REQUEST,
   LOAD_WORKER_ACCOUNTS_SUCCESS,
   LOAD_WORKER_ACCOUNTS_FAILURE,
+  ADD_WORKER_ACCOUNT_REQUEST,
+  ADD_WORKER_ACCOUNT_SUCCESS,
+  ADD_WORKER_ACCOUNT_FAILURE,
   loadOCSCServices,
   loadWorkerPermissions,
   enableWorkerPermission,
   disableWorkerPermission,
   loadWorkerAccounts,
+  addWorkerAccount,
 }

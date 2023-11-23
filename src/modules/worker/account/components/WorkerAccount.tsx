@@ -151,8 +151,8 @@ export default function PersonLetterSupervisor() {
   const cookieMinistryId = parseInt(getCookie('ministryId'))
   const cookieDepartmentId = parseInt(getCookie('departmentId'))
 
-  const [departmentId, setDepartmentId] = useState<>(null)
-  const [ministryId, setMinistryId] = useState<>(null)
+  const [departmentId, setDepartmentId] = useState(null)
+  const [ministryId, setMinistryId] = useState(null)
 
   const handleChangeMinistryId = (
     event: React.ChangeEvent<{ value: unknown }>
@@ -175,7 +175,7 @@ export default function PersonLetterSupervisor() {
     dispatch(
       workerActions.loadWorkerAccounts(cookieMinistryId, cookieDepartmentId)
     )
-  }, []) //eslint-disable-line
+  }, [cookieMinistryId, cookieDepartmentId]) //eslint-disable-line
 
   useEffect(() => {
     if (ministryId !== null && ministryId !== cookieMinistryId) {
@@ -381,7 +381,8 @@ export default function PersonLetterSupervisor() {
       <AddPersonLetterModal
         open={open}
         handleClose={handleClose}
-        currentSearchQuery={''}
+        ministryId={ministryId}
+        departmentId={departmentId}
       />
       <EditPersonLetterModal
         open={openEditModal}
