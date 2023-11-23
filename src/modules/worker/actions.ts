@@ -51,6 +51,13 @@ const EDIT_WORKER_ACCOUNT_SUCCESS =
 const EDIT_WORKER_ACCOUNT_FAILURE =
   'ocsc-job/worker/EDIT_WORKER_ACCOUNT_FAILURE'
 
+const DELETE_WORKER_ACCOUNT_REQUEST =
+  'ocsc-job/worker/DELETE_WORKER_ACCOUNT_REQUEST'
+const DELETE_WORKER_ACCOUNT_SUCCESS =
+  'ocsc-job/worker/DELETE_WORKER_ACCOUNT_SUCCESS'
+const DELETE_WORKER_ACCOUNT_FAILURE =
+  'ocsc-job/worker/DELETE_WORKER_ACCOUNT_FAILURE'
+
 function loadOCSCServices() {
   return async (dispatch: any) => {
     dispatch({ type: LOAD_OCSC_SEVICES_REQUEST })
@@ -291,6 +298,29 @@ function editWorkerAccount(userInfo: any, workerId: number) {
   }
 }
 
+function deleteWorkerAccount(workerId: number) {
+  return async (dispatch: any) => {
+    dispatch({ type: DELETE_WORKER_ACCOUNT_REQUEST })
+    const token = getCookie('token')
+    try {
+      const result = await axios.delete(`/agencies/${workerId}`, {
+        baseURL: process.env.REACT_APP_PORTAL_API_URL,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      console.log('result :>> ', result)
+      dispatch({ type: DELETE_WORKER_ACCOUNT_SUCCESS })
+      dispatch(
+        uiActions.setFlashMessage('ลบผู้ปฏิบัติงานเรียบร้อยแล้ว', 'success')
+      )
+    } catch (err) {
+      dispatch({ type: DELETE_WORKER_ACCOUNT_FAILURE })
+      handleApiError(err, dispatch)
+    }
+  }
+}
+
 export {
   LOAD_OCSC_SEVICES_REQUEST,
   LOAD_OCSC_SEVICES_SUCCESS,
@@ -313,6 +343,9 @@ export {
   EDIT_WORKER_ACCOUNT_REQUEST,
   EDIT_WORKER_ACCOUNT_SUCCESS,
   EDIT_WORKER_ACCOUNT_FAILURE,
+  DELETE_WORKER_ACCOUNT_REQUEST,
+  DELETE_WORKER_ACCOUNT_SUCCESS,
+  DELETE_WORKER_ACCOUNT_FAILURE,
   loadOCSCServices,
   loadWorkerPermissions,
   enableWorkerPermission,
@@ -320,4 +353,5 @@ export {
   loadWorkerAccounts,
   addWorkerAccount,
   editWorkerAccount,
+  deleteWorkerAccount,
 }

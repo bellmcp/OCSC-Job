@@ -1,6 +1,6 @@
 import React from 'react'
 import { get } from 'lodash'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 
 import {
   DataGrid,
@@ -22,6 +22,8 @@ import {
 } from '@material-ui/icons'
 import { createTheme, alpha, styled, ThemeProvider } from '@mui/material/styles'
 import { green } from '@material-ui/core/colors'
+
+import * as workerActions from 'modules/worker/actions'
 
 const ODD_OPACITY = 0.07
 
@@ -199,14 +201,15 @@ export default function DataTable({
   handleOpenEditModal,
   setCurrentEditData,
 }: DataTableProps) {
+  const dispatch = useDispatch()
+
   const handleClickEdit = (row: any) => {
     setCurrentEditData(row)
     handleOpenEditModal()
   }
 
   const handleClickDelete = (row: any) => {
-    // setCurrentEditData(row)
-    // handleOpenEditModal()
+    dispatch(workerActions.deleteWorkerAccount(get(row, 'id', '')))
   }
 
   const { roles = [] } = useSelector((state: any) => state.info)
