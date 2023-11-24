@@ -25,12 +25,16 @@ interface EditWorkerModalProps {
   data: any
   open: boolean
   handleClose: () => void
+  ministryId: number
+  departmentId: number
 }
 
 export default function EditWorkerModal({
   data,
   open,
   handleClose,
+  ministryId,
+  departmentId,
 }: EditWorkerModalProps) {
   const dispatch = useDispatch()
   const theme = useTheme()
@@ -47,7 +51,14 @@ export default function EditWorkerModal({
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      dispatch(workerActions.editWorkerAccount(values, get(data, 'id', '')))
+      dispatch(
+        workerActions.editWorkerAccount(
+          values,
+          get(data, 'id', ''),
+          ministryId,
+          departmentId
+        )
+      )
       onCloseModal()
     },
   })

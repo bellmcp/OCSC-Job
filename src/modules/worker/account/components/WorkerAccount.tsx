@@ -42,6 +42,7 @@ import Loading from 'modules/ui/components/Loading'
 import DataTable from './DataTable'
 import AddWorkerModal from './AddWorkerModal'
 import EditWorkerModal from './EditWorkerModal'
+import DeleteWorkerModal from './DeleteWorkerModal'
 
 const PATH = process.env.REACT_APP_BASE_PATH
 
@@ -108,6 +109,7 @@ export default function WorkerAccount() {
 
   const [open, setOpen] = React.useState<boolean>(false)
   const [openEditModal, setOpenEditModal] = useState<boolean>(false)
+  const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false)
   const [currentEditData, setCurrentEditData] = useState<any>({})
 
   const handleClickOpen = () => {
@@ -121,6 +123,12 @@ export default function WorkerAccount() {
   }
   const handleCloseEditModal = () => {
     setOpenEditModal(false)
+  }
+  const handleClickOpenDeleteModal = () => {
+    setOpenDeleteModal(true)
+  }
+  const handleCloseDeleteModal = () => {
+    setOpenDeleteModal(false)
   }
 
   const { ministries = [], departments = [] } = useSelector(
@@ -202,6 +210,7 @@ export default function WorkerAccount() {
             data={searchResults}
             loading={isLoading}
             handleOpenEditModal={handleClickOpenEditModal}
+            handleOpenDeleteModal={handleClickOpenDeleteModal}
             setCurrentEditData={setCurrentEditData}
           />
         </Box>
@@ -395,6 +404,15 @@ export default function WorkerAccount() {
         open={openEditModal}
         handleClose={handleCloseEditModal}
         data={currentEditData}
+        ministryId={ministryId}
+        departmentId={departmentId}
+      />
+      <DeleteWorkerModal
+        open={openDeleteModal}
+        handleClose={handleCloseDeleteModal}
+        data={currentEditData}
+        ministryId={ministryId}
+        departmentId={departmentId}
       />
     </>
   )

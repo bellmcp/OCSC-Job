@@ -258,6 +258,7 @@ function addWorkerAccount(userInfo: any) {
       dispatch(
         uiActions.setFlashMessage('เพิ่มผู้ปฏิบัติงานเรียบร้อยแล้ว', 'success')
       )
+      dispatch(loadWorkerAccounts(userInfo.ministryId, userInfo.departmentId))
     } catch (err) {
       dispatch({ type: ADD_WORKER_ACCOUNT_FAILURE })
       handleApiError(err, dispatch)
@@ -265,7 +266,12 @@ function addWorkerAccount(userInfo: any) {
   }
 }
 
-function editWorkerAccount(userInfo: any, workerId: number) {
+function editWorkerAccount(
+  userInfo: any,
+  workerId: number,
+  ministryId: number,
+  departmentId: number
+) {
   return async (dispatch: any) => {
     dispatch({ type: EDIT_WORKER_ACCOUNT_REQUEST })
     const token = getCookie('token')
@@ -291,6 +297,7 @@ function editWorkerAccount(userInfo: any, workerId: number) {
       dispatch(
         uiActions.setFlashMessage('แก้ไขผู้ปฏิบัติงานเรียบร้อยแล้ว', 'success')
       )
+      dispatch(loadWorkerAccounts(ministryId, departmentId))
     } catch (err) {
       dispatch({ type: EDIT_WORKER_ACCOUNT_FAILURE })
       handleApiError(err, dispatch)
@@ -298,7 +305,11 @@ function editWorkerAccount(userInfo: any, workerId: number) {
   }
 }
 
-function deleteWorkerAccount(workerId: number) {
+function deleteWorkerAccount(
+  workerId: number,
+  ministryId: number,
+  departmentId: number
+) {
   return async (dispatch: any) => {
     dispatch({ type: DELETE_WORKER_ACCOUNT_REQUEST })
     const token = getCookie('token')
@@ -314,6 +325,7 @@ function deleteWorkerAccount(workerId: number) {
       dispatch(
         uiActions.setFlashMessage('ลบผู้ปฏิบัติงานเรียบร้อยแล้ว', 'success')
       )
+      dispatch(loadWorkerAccounts(ministryId, departmentId))
     } catch (err) {
       dispatch({ type: DELETE_WORKER_ACCOUNT_FAILURE })
       handleApiError(err, dispatch)
