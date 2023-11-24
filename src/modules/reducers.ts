@@ -13,10 +13,6 @@ import agencyInfoReducer from 'modules/edit/agencyInfo/reducer'
 import changePasswordReducer from 'modules/edit/password/reducer'
 import adminReducer from 'modules/admin/reducer'
 import workerReducer from 'modules/worker/reducer'
-// import searchReducer from 'modules/search/reducer'
-// import personLetterReducer from 'modules/personLetter/reducer'
-// import passwordReducer from 'modules/edit/password/reducer'
-// import curriculumReducer from 'modules/curriculum/reducer'
 
 export default (history: any) =>
   combineReducers({
@@ -33,8 +29,4 @@ export default (history: any) =>
     password: changePasswordReducer,
     admin: adminReducer,
     worker: workerReducer,
-    // search: searchReducer,
-    // personLetter: personLetterReducer,
-    // password: passwordReducer,
-    // curriculum: curriculumReducer,
   })
