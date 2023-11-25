@@ -16,6 +16,8 @@ import {
   Toolbar,
   Grid,
   Container,
+  Box,
+  Divider,
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import {
@@ -205,6 +207,9 @@ export default function Login() {
                 value={values.password}
                 onChange={handleChange('password')}
               />
+              <Button color='secondary' onClick={onForgot}>
+                ลืมรหัสผ่าน
+              </Button>
               <FormHelperText
                 error
                 style={{ fontSize: '0.9rem', textAlign: 'center' }}
@@ -218,33 +223,30 @@ export default function Login() {
                 className={classes.submit}
                 fullWidth
                 type='submit'
-                endIcon={<ChevronRightIcon />}
+                style={{ fontWeight: 600 }}
                 onClick={handleSubmit(onLogin)}
               >
                 เข้าสู่ระบบ
               </Button>
-              <Button
-                size='large'
-                color='secondary'
-                variant='outlined'
-                fullWidth
-                type='submit'
-                onClick={onRegister}
-              >
-                สมัครสมาชิก
-              </Button>
-              <Button
-                size='large'
-                color='secondary'
-                variant='outlined'
-                fullWidth
-                type='submit'
-                onClick={onForgot}
-                style={{ marginTop: 8 }}
-              >
-                ลืมรหัสผ่าน
-              </Button>
             </form>
+            <Box mt={4}>
+              <Divider />
+            </Box>
+            <Box my={3}>
+              <Grid container justify='space-between' alignItems='center'>
+                <Typography variant='body2' color='textPrimary'>
+                  ยังไม่มีบัญชีใช่ไหม?
+                </Typography>
+                <Button
+                  onClick={onRegister}
+                  variant='text'
+                  color='secondary'
+                  endIcon={<ChevronRightIcon />}
+                >
+                  สมัครสมาชิก
+                </Button>
+              </Grid>
+            </Box>
           </Paper>
         </Grid>
       </Grid>
