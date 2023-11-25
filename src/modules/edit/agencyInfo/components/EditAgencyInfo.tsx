@@ -34,6 +34,7 @@ import {
   ChevronLeft as ChevronLeftIcon,
 } from '@material-ui/icons'
 
+import Loading from 'modules/ui/components/Loading'
 import * as agencyInfoActions from 'modules/edit/agencyInfo/actions'
 import * as infoActions from 'modules/info/actions'
 
@@ -82,6 +83,7 @@ export default function EditAgencyInfo() {
     ministries = [],
     departments = [],
     department = {},
+    isLoading = false,
   } = useSelector((state: any) => state.info)
 
   const editAgencyInfoForm = useFormik({
@@ -181,28 +183,11 @@ export default function EditAgencyInfo() {
     return get(result, 'department', '')
   }
 
-  return (
-    <>
-      <Toolbar id='back-to-top-anchor' />
-      <Container maxWidth='sm' className={classes.content}>
-        <Button
-          variant='text'
-          color='primary'
-          onClick={onBack}
-          style={{ marginLeft: '-8px', marginBottom: 12 }}
-          startIcon={<ChevronLeftIcon />}
-        >
-          กลับ
-        </Button>
-        <Typography
-          component='h1'
-          variant='h4'
-          color='secondary'
-          style={{ fontWeight: 600, marginBottom: 24 }}
-        >
-          แก้ไขข้อมูลหน่วยงาน
-        </Typography>
-
+  const renderContent = () => {
+    if (isLoading) {
+      return <Loading height={500}></Loading>
+    } else {
+      return (
         <form onSubmit={editAgencyInfoForm.handleSubmit}>
           <Box mt={2} mb={4}>
             <Paper
@@ -427,7 +412,11 @@ export default function EditAgencyInfo() {
             </Paper>
             <Button
               fullWidth
-              disabled={!isEditAgencyInfoFormDirty()}
+              disabled={
+                !isEditAgencyInfoFormDirty() ||
+                editAgencyInfoForm.values.ministryId === null ||
+                editAgencyInfoForm.values.departmentId === null
+              }
               variant='contained'
               color='secondary'
               size='large'
@@ -439,6 +428,33 @@ export default function EditAgencyInfo() {
             </Button>
           </Box>
         </form>
+      )
+    }
+  }
+
+  return (
+    <>
+      <Toolbar id='back-to-top-anchor' />
+      <Container maxWidth='sm' className={classes.content}>
+        <Button
+          variant='text'
+          color='primary'
+          onClick={onBack}
+          style={{ marginLeft: '-8px', marginBottom: 12 }}
+          startIcon={<ChevronLeftIcon />}
+        >
+          กลับ
+        </Button>
+        <Typography
+          component='h1'
+          variant='h4'
+          color='secondary'
+          style={{ fontWeight: 600, marginBottom: 24 }}
+        >
+          แก้ไขข้อมูลหน่วยงาน
+        </Typography>
+
+        {renderContent()}
       </Container>
     </>
   )

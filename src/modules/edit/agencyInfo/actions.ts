@@ -2,10 +2,9 @@
 import axios from 'axios'
 import * as uiActions from 'modules/ui/actions'
 import { handleApiError } from 'utils/error'
-import { push } from 'connected-react-router'
 import { getCookie } from 'utils/cookies'
 
-const PATH = process.env.REACT_APP_BASE_PATH
+import * as infoActions from 'modules/info/actions'
 
 const EDIT_AGENCY_INFO_REQUEST =
   'ocsc-job/edit-agency-info/EDIT_AGENCY_INFO_REQUEST'
@@ -38,10 +37,10 @@ function editAgencyInfo(agencyInfo: any) {
       dispatch(
         uiActions.setFlashMessage('แก้ไขข้อมูลหน่วยงานเรียบร้อยแล้ว', 'success')
       )
-      dispatch(push(`${PATH}`))
+      dispatch(infoActions.loadDepartment(agencyInfo.departmentId))
     } catch (err) {
       dispatch({ type: EDIT_AGENCY_INFO_FAILURE })
-      handleApiError(err, dispatch)
+      handleApiError(err, dispatch, 'แก้ไขข้อมูลหน่วยงานไม่สำเร็จ')
     }
   }
 }
