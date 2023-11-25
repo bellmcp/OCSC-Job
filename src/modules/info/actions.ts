@@ -1,6 +1,5 @@
 import axios from 'axios'
-import { get } from 'lodash'
-import * as uiActions from 'modules/ui/actions'
+import { handleApiError } from 'utils/error'
 
 const LOAD_MINISTRIES_REQUEST = 'ocsc-job/info/LOAD_MINISTRIES_REQUEST'
 const LOAD_MINISTRIES_SUCCESS = 'ocsc-job/info/LOAD_MINISTRIES_SUCCESS'
@@ -41,16 +40,7 @@ function loadMininstries() {
       })
     } catch (err) {
       dispatch({ type: LOAD_MINISTRIES_FAILURE })
-      dispatch(
-        uiActions.setFlashMessage(
-          `โหลดรายชื่อกระทรวงทั้งหมดไม่สำเร็จ เกิดข้อผิดพลาด ${get(
-            err,
-            'response.status',
-            'บางอย่าง'
-          )}`,
-          'error'
-        )
-      )
+      handleApiError(err, dispatch, 'โหลดรายชื่อกระทรวงทั้งหมดไม่สำเร็จ')
     }
   }
 }
@@ -71,16 +61,7 @@ function loadDepartments() {
       })
     } catch (err) {
       dispatch({ type: LOAD_DEPARTMENTS_FAILURE })
-      dispatch(
-        uiActions.setFlashMessage(
-          `โหลดรายชื่อกรมทั้งหมดไม่สำเร็จ เกิดข้อผิดพลาด ${get(
-            err,
-            'response.status',
-            'บางอย่าง'
-          )}`,
-          'error'
-        )
-      )
+      handleApiError(err, dispatch, 'โหลดรายชื่อกรมทั้งหมดไม่สำเร็จ')
     }
   }
 }
@@ -101,15 +82,10 @@ function loadDepartmentsByMinistryId(ministryId: number) {
       })
     } catch (err) {
       dispatch({ type: LOAD_DEPARTMENTS_BY_MINISTRY_ID_FAILURE })
-      dispatch(
-        uiActions.setFlashMessage(
-          `โหลดรายชื่อกรมทั้งหมดในกระทรวง ${ministryId} ไม่สำเร็จ เกิดข้อผิดพลาด ${get(
-            err,
-            'response.status',
-            'บางอย่าง'
-          )}`,
-          'error'
-        )
+      handleApiError(
+        err,
+        dispatch,
+        `โหลดรายชื่อกรมทั้งหมดในกระทรวง ${ministryId} ไม่สำเร็จ`
       )
     }
   }
@@ -131,16 +107,7 @@ function loadDepartment(departmentId: number) {
       })
     } catch (err) {
       dispatch({ type: LOAD_DEPARTMENT_FAILURE })
-      dispatch(
-        uiActions.setFlashMessage(
-          `โหลดข้อมูลกรม ${departmentId} ไม่สำเร็จ เกิดข้อผิดพลาด ${get(
-            err,
-            'response.status',
-            'บางอย่าง'
-          )}`,
-          'error'
-        )
-      )
+      handleApiError(err, dispatch, `โหลดข้อมูลกรม ${departmentId} ไม่สำเร็จ จ`)
     }
   }
 }
@@ -161,16 +128,7 @@ function loadRoles() {
       })
     } catch (err) {
       dispatch({ type: LOAD_ROLES_FAILURE })
-      dispatch(
-        uiActions.setFlashMessage(
-          `โหลดรายชื่อบทบาทไม่สำเร็จ เกิดข้อผิดพลาด ${get(
-            err,
-            'response.status',
-            'บางอย่าง'
-          )}`,
-          'error'
-        )
-      )
+      handleApiError(err, dispatch, 'โหลดรายชื่อบทบาทไม่สำเร็จ')
     }
   }
 }
