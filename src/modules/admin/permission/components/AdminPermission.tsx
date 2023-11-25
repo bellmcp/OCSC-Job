@@ -1,5 +1,6 @@
 // @ts-nocheck
 import React, { useEffect } from 'react'
+import { isEmpty } from 'lodash'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { useHistory } from 'react-router-dom'
@@ -10,6 +11,7 @@ import { ChevronLeft as ChevronLeftIcon } from '@material-ui/icons'
 
 import DataTable from './DataTable'
 import Loading from 'modules/ui/components/Loading'
+import Empty from 'modules/ui/components/Empty'
 import * as adminActions from 'modules/admin/actions'
 import * as infoActions from 'modules/info/actions'
 
@@ -73,7 +75,9 @@ export default function AdminPermission() {
 
   const renderResult = () => {
     if (isAdminLoading || isInfoLoading || isPermissionLoading) {
-      return <Loading height={800} />
+      return <Loading height={500} />
+    } else if (isEmpty(adminPermissions)) {
+      return <Empty height={500} />
     } else {
       return (
         <DataTable
@@ -113,7 +117,11 @@ export default function AdminPermission() {
           สิทธิ์ของหน่วยงาน
         </Typography>
       </Container>
-      <Container maxWidth='xl' className={classes.content}>
+      <Container
+        maxWidth='xl'
+        className={classes.content}
+        style={{ paddingLeft: 24, paddingRight: 24 }}
+      >
         <Box mt={2} mb={4}>
           {renderResult()}
         </Box>

@@ -1,7 +1,7 @@
 // @ts-nocheck
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { get } from 'lodash'
+import { get, isEmpty } from 'lodash'
 import { getCookie } from 'utils/cookies'
 
 import { useHistory } from 'react-router-dom'
@@ -29,6 +29,7 @@ import { ChevronLeft as ChevronLeftIcon } from '@material-ui/icons'
 import { getRoleFromToken } from 'utils/isLogin'
 import DataTable from './DataTable'
 import Loading from 'modules/ui/components/Loading'
+import Empty from 'modules/ui/components/Empty'
 import * as workerActions from 'modules/worker/actions'
 import * as infoActions from 'modules/info/actions'
 
@@ -123,7 +124,9 @@ export default function WorkerPermission() {
 
   const renderResult = () => {
     if (isLoading || isPermissionLoading) {
-      return <Loading height={800} />
+      return <Loading height={500} />
+    } else if (isEmpty(workerPermissions)) {
+      return <Empty height={500} />
     } else {
       return (
         <DataTable
@@ -296,7 +299,11 @@ export default function WorkerPermission() {
           </Paper>
         </Box>
       </Container>
-      <Container maxWidth='xl' className={classes.content}>
+      <Container
+        maxWidth='xl'
+        className={classes.content}
+        style={{ paddingLeft: 24, paddingRight: 24 }}
+      >
         <Box mt={2} mb={4}>
           {renderResult()}
         </Box>
