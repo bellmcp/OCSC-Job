@@ -220,7 +220,7 @@ function loadAdminAccounts(ministryid: number, departmentid: number) {
   }
 }
 
-function addAdminAccount(userInfo: any) {
+function addAdminAccount(userInfo: any, successCallback: any) {
   return async (dispatch: any) => {
     dispatch({ type: ADD_ADMIN_ACCOUNT_REQUEST })
     const token = getCookie('token')
@@ -248,6 +248,7 @@ function addAdminAccount(userInfo: any) {
       dispatch(
         uiActions.setFlashMessage('เพิ่มผู้ดูแลระบบเรียบร้อยแล้ว', 'success')
       )
+      successCallback()
       dispatch(loadAdminAccounts(userInfo.ministryId, userInfo.departmentId))
     } catch (err) {
       dispatch({ type: ADD_ADMIN_ACCOUNT_FAILURE })
