@@ -2,6 +2,7 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
+import MaskedInput from 'react-text-mask'
 
 import { useTheme } from '@material-ui/core/styles'
 import {
@@ -16,6 +17,7 @@ import {
   FormControl,
   Select,
   MenuItem,
+  Input,
 } from '@material-ui/core'
 import Stack from '@mui/material/Stack'
 
@@ -26,6 +28,39 @@ interface AddWorkerModalProps {
   handleClose: () => void
   ministryId: number
   departmentId: number
+}
+
+function TextMaskCitizenID(props: any) {
+  const { inputRef, ...other } = props
+  return (
+    <MaskedInput
+      {...other}
+      ref={(ref) => {
+        inputRef(ref ? ref.inputElement : null)
+      }}
+      mask={[
+        /\d/,
+        '-',
+        /\d/,
+        /\d/,
+        /\d/,
+        /\d/,
+        '-',
+        /\d/,
+        /\d/,
+        /\d/,
+        /\d/,
+        /\d/,
+        '-',
+        /\d/,
+        /\d/,
+        '-',
+        /\d/,
+      ]}
+      placeholderChar='_'
+      placeholder='0-0000-00000-00-0'
+    />
+  )
 }
 
 export default function AddWorkerModal({
@@ -58,9 +93,15 @@ export default function AddWorkerModal({
     validationSchema: validationSchema,
     onSubmit: (values) => {
       dispatch(
-        workerActions.addWorkerAccount({ ...values, ministryId, departmentId })
+        workerActions.addWorkerAccount(
+          {
+            ...values,
+            nationalId: values.nationalId.replaceAll('-', '') || '',
+            departmentId,
+          },
+          onCloseModal
+        )
       )
-      onCloseModal()
     },
   })
 
@@ -160,14 +201,13 @@ export default function AddWorkerModal({
                 </Typography>
               </Grid>
               <Grid item xs={12} md={6}>
-                <TextField
+                <Input
                   id='nationalId'
                   name='nationalId'
                   value={formik.values.nationalId}
                   onChange={formik.handleChange}
-                  variant='outlined'
-                  size='small'
                   fullWidth
+                  inputComponent={TextMaskCitizenID}
                 />
               </Grid>
             </Grid>
@@ -250,6 +290,7 @@ export default function AddWorkerModal({
             type='submit'
             disabled={
               formik.values.nationalId === '' ||
+              formik.values.nationalId.includes('_') ||
               formik.values.title === '' ||
               formik.values.firstName === '' ||
               formik.values.lastName === ''

@@ -230,7 +230,7 @@ function loadWorkerAccounts(ministryid: number, departmentid: number) {
   }
 }
 
-function addWorkerAccount(userInfo: any) {
+function addWorkerAccount(userInfo: any, successCallback: any) {
   return async (dispatch: any) => {
     dispatch({ type: ADD_WORKER_ACCOUNT_REQUEST })
     const token = getCookie('token')
@@ -258,6 +258,7 @@ function addWorkerAccount(userInfo: any) {
       dispatch(
         uiActions.setFlashMessage('เพิ่มผู้ปฏิบัติงานเรียบร้อยแล้ว', 'success')
       )
+      successCallback()
       dispatch(loadWorkerAccounts(userInfo.ministryId, userInfo.departmentId))
     } catch (err) {
       dispatch({ type: ADD_WORKER_ACCOUNT_FAILURE })

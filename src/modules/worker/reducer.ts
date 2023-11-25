@@ -17,6 +17,7 @@ import {
 } from './actions'
 const initialState = {
   isLoading: false,
+  isSubmitting: false,
   isPermissionLoading: false,
   ocscServices: [],
   workerPermissions: [],
@@ -32,9 +33,9 @@ export default function (state = initialState, action: any) {
     case LOAD_WORKER_ACCOUNTS_REQUEST:
       return { ...state, isLoading: true, workerAccounts: [] }
     case ADD_WORKER_ACCOUNT_REQUEST:
-      return { ...state, isLoading: true }
+      return { ...state, isSubmitting: true }
     case EDIT_WORKER_ACCOUNT_REQUEST:
-      return { ...state, isLoading: true }
+      return { ...state, isSubmitting: true }
     case LOAD_OCSC_SEVICES_SUCCESS:
       return {
         ...state,
@@ -54,9 +55,9 @@ export default function (state = initialState, action: any) {
         workerAccounts: action.payload.workerAccounts,
       }
     case ADD_WORKER_ACCOUNT_SUCCESS:
-      return { ...state, isLoading: false }
+      return { ...state, isSubmitting: false }
     case EDIT_WORKER_ACCOUNT_SUCCESS:
-      return { ...state, isLoading: false }
+      return { ...state, isSubmitting: false }
     case LOAD_WORKER_PERMISSIONS_FAILURE:
       return { ...state, isPermissionLoading: false }
     case LOAD_WORKER_ACCOUNTS_FAILURE:
@@ -67,12 +68,12 @@ export default function (state = initialState, action: any) {
     case ADD_WORKER_ACCOUNT_FAILURE:
       return {
         ...state,
-        isLoading: false,
+        isSubmitting: false,
       }
     case EDIT_WORKER_ACCOUNT_FAILURE:
       return {
         ...state,
-        isLoading: false,
+        isSubmitting: false,
       }
     case LOAD_OCSC_SEVICES_FAILURE:
       return {
