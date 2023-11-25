@@ -82,10 +82,10 @@ function editUserInfo(userInfo: any) {
           'success'
         )
       )
-      dispatch(push(`${PATH}`))
+      dispatch(loadUserInfo())
     } catch (err) {
       dispatch({ type: EDIT_USER_INFO_FAILURE })
-      handleApiError(err, dispatch)
+      handleApiError(err, dispatch, 'แก้ไขข้อมูลส่วนบุคคลไม่สำเร็จ')
     }
   }
 }

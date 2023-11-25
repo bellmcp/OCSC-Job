@@ -2,10 +2,7 @@
 import axios from 'axios'
 import * as uiActions from 'modules/ui/actions'
 import { handleApiError } from 'utils/error'
-import { push } from 'connected-react-router'
 import { getCookie } from 'utils/cookies'
-
-const PATH = process.env.REACT_APP_BASE_PATH
 
 const CHANGE_PASSWORD_REQUEST =
   'ocsc-job/change-password/CHANGE_PASSWORD_REQUEST'
@@ -38,10 +35,10 @@ function changePassword(userInfo: any) {
         uiActions.setFlashMessage('เปลี่ยนรหัสผ่านสำเร็จแล้ว', 'success')
       )
       console.log('result :>> ', result)
-      dispatch(push(`${PATH}`))
+      window.location.reload()
     } catch (err) {
       dispatch({ type: CHANGE_PASSWORD_FAILURE })
-      handleApiError(err, dispatch)
+      handleApiError(err, dispatch, 'เปลี่ยนรหัสผ่านไม่สำเร็จ')
     }
   }
 }
