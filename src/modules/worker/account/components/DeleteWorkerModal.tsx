@@ -23,9 +23,13 @@ export default function DeleteWorkerModal({
 
   const handleAccept = () => {
     dispatch(
-      workerActions.deleteWorkerAccount(data.id, ministryId, departmentId)
+      workerActions.deleteWorkerAccount(
+        data.id,
+        ministryId,
+        departmentId,
+        handleClose
+      )
     )
-    handleClose()
   }
 
   return (

@@ -271,7 +271,8 @@ function editWorkerAccount(
   userInfo: any,
   workerId: number,
   ministryId: number,
-  departmentId: number
+  departmentId: number,
+  successCallback: any
 ) {
   return async (dispatch: any) => {
     dispatch({ type: EDIT_WORKER_ACCOUNT_REQUEST })
@@ -298,6 +299,7 @@ function editWorkerAccount(
       dispatch(
         uiActions.setFlashMessage('แก้ไขผู้ปฏิบัติงานเรียบร้อยแล้ว', 'success')
       )
+      successCallback()
       dispatch(loadWorkerAccounts(ministryId, departmentId))
     } catch (err) {
       dispatch({ type: EDIT_WORKER_ACCOUNT_FAILURE })
@@ -309,7 +311,8 @@ function editWorkerAccount(
 function deleteWorkerAccount(
   workerId: number,
   ministryId: number,
-  departmentId: number
+  departmentId: number,
+  successCallback: any
 ) {
   return async (dispatch: any) => {
     dispatch({ type: DELETE_WORKER_ACCOUNT_REQUEST })
@@ -326,6 +329,7 @@ function deleteWorkerAccount(
       dispatch(
         uiActions.setFlashMessage('ลบผู้ปฏิบัติงานเรียบร้อยแล้ว', 'success')
       )
+      successCallback()
       dispatch(loadWorkerAccounts(ministryId, departmentId))
     } catch (err) {
       dispatch({ type: DELETE_WORKER_ACCOUNT_FAILURE })

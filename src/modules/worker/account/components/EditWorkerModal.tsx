@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useFormik } from 'formik'
 import { get } from 'lodash'
 import * as yup from 'yup'
+import MaskedInput from 'react-text-mask'
+
 import { useTheme } from '@material-ui/core/styles'
 import {
   Dialog,
@@ -16,6 +18,7 @@ import {
   FormControl,
   Select,
   MenuItem,
+  Input,
 } from '@material-ui/core'
 import Stack from '@mui/material/Stack'
 
@@ -27,6 +30,39 @@ interface EditWorkerModalProps {
   handleClose: () => void
   ministryId: number
   departmentId: number
+}
+
+function TextMaskCitizenID(props: any) {
+  const { inputRef, ...other } = props
+  return (
+    <MaskedInput
+      {...other}
+      ref={(ref) => {
+        inputRef(ref ? ref.inputElement : null)
+      }}
+      mask={[
+        /\d/,
+        '-',
+        /\d/,
+        /\d/,
+        /\d/,
+        /\d/,
+        '-',
+        /\d/,
+        /\d/,
+        /\d/,
+        /\d/,
+        /\d/,
+        '-',
+        /\d/,
+        /\d/,
+        '-',
+        /\d/,
+      ]}
+      placeholderChar='_'
+      placeholder='0-0000-00000-00-0'
+    />
+  )
 }
 
 export default function EditWorkerModal({
@@ -51,15 +87,20 @@ export default function EditWorkerModal({
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
+      const removeDash = values.nationalId.replaceAll('-', '')
+      const removeUnderscroll = removeDash.replaceAll('_', '')
       dispatch(
         workerActions.editWorkerAccount(
-          values,
+          {
+            ...values,
+            nationalId: removeUnderscroll || '',
+          },
           get(data, 'id', ''),
           ministryId,
-          departmentId
+          departmentId,
+          onCloseModal
         )
       )
-      onCloseModal()
     },
   })
 
@@ -154,14 +195,13 @@ export default function EditWorkerModal({
                 </Typography>
               </Grid>
               <Grid item xs={12} md={6}>
-                <TextField
+                <Input
                   id='nationalId'
                   name='nationalId'
                   value={formik.values.nationalId}
                   onChange={formik.handleChange}
-                  variant='outlined'
-                  size='small'
                   fullWidth
+                  inputComponent={TextMaskCitizenID}
                 />
               </Grid>
             </Grid>
