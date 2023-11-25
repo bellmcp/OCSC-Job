@@ -1,8 +1,7 @@
 //@ts-nocheck
 import axios from 'axios'
-import { get } from 'lodash'
-import * as uiActions from 'modules/ui/actions'
 import { getCookie } from 'utils/cookies'
+import { handleApiError } from 'utils/error'
 
 const LOAD_MENU_ITEMS_REQUEST = 'ocsc-job/home/LOAD_MENU_ITEMS_REQUEST'
 const LOAD_MENU_ITEMS_SUCCESS = 'ocsc-job/home/LOAD_MENU_ITEMS_SUCCESS'
@@ -30,16 +29,7 @@ function loadMenuItems() {
       })
     } catch (err) {
       dispatch({ type: LOAD_MENU_ITEMS_FAILURE })
-      dispatch(
-        uiActions.setFlashMessage(
-          `โหลดรายชื่อเมนูไม่สำเร็จ เกิดข้อผิดพลาด ${get(
-            err,
-            'response.status',
-            'บางอย่าง'
-          )}`,
-          'error'
-        )
-      )
+      handleApiError(err, dispatch, 'โหลดรายชื่อเมนูไม่สำเร็จ')
     }
   }
 }

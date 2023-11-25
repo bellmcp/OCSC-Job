@@ -2,11 +2,8 @@
 import axios from 'axios'
 import * as uiActions from 'modules/ui/actions'
 import { handleApiError } from 'utils/error'
-import { push } from 'connected-react-router'
 import { get } from 'lodash'
 import { getCookie } from 'utils/cookies'
-
-const PATH = process.env.REACT_APP_BASE_PATH
 
 const LOAD_USER_INFO_REQUEST = 'ocsc-job/edit-user-info/LOAD_USER_INFO_REQUEST'
 const LOAD_USER_INFO_SUCCESS = 'ocsc-job/edit-user-info/LOAD_USER_INFO_SUCCESS'

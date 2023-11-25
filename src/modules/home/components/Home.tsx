@@ -22,6 +22,7 @@ import {
 
 import * as homeActions from 'modules/home/actions'
 import { getRoleFromToken } from 'utils/isLogin'
+import Loading from 'modules/ui/components/Loading'
 
 const PATH = process.env.REACT_APP_BASE_PATH
 
@@ -31,7 +32,9 @@ export default function Home() {
   const theme = useTheme()
 
   const { roles = [] } = useSelector((state: any) => state.info)
-  const { menuItems = [] } = useSelector((state: any) => state.home)
+  const { menuItems = [], isLoading = false } = useSelector(
+    (state: any) => state.home
+  )
 
   const role = getRoleFromToken()
   const getRoleByKey = (key: string) => {
@@ -77,6 +80,65 @@ export default function Home() {
   const profileImage = getCookie('seal') || ''
   const ministry = getCookie('ministry') || ''
   const department = getCookie('department') || ''
+
+  const renderContent = () => {
+    if (isLoading) {
+      return (
+        <Grid item xs={12} md={8}>
+          <Loading height={800}></Loading>
+        </Grid>
+      )
+    } else {
+      return (
+        <Grid item xs={12} md={8}>
+          <Toolbar />
+          <Stack
+            direction='column'
+            alignItems='center'
+            spacing={1}
+            sx={{ marginBottom: 4 }}
+          >
+            <Typography
+              component='h1'
+              variant='h4'
+              align='center'
+              color='secondary'
+              style={{ fontWeight: 600 }}
+            >
+              หน้าหลัก
+            </Typography>
+          </Stack>
+          <Stack direction='column' alignItems='center' spacing={2}>
+            {menuItems.map((menuItem: any, index: any) => (
+              <Button
+                key={index}
+                size='large'
+                color='secondary'
+                variant={
+                  isExternalLink(menuItem.url) ? 'outlined' : 'contained'
+                }
+                endIcon={
+                  isExternalLink(menuItem.url) ? (
+                    <LaunchIcon />
+                  ) : (
+                    <ChevronRightIcon />
+                  )
+                }
+                fullWidth
+                style={{
+                  textAlign: 'left',
+                  justifyContent: 'flex-start',
+                }}
+                onClick={() => handleClickMenuItem(menuItem.url)}
+              >
+                {menuItem.text}
+              </Button>
+            ))}
+          </Stack>
+        </Grid>
+      )
+    }
+  }
 
   return (
     <Container maxWidth='md'>
@@ -126,52 +188,7 @@ export default function Home() {
             </Stack>
           </Stack>
         </Grid>
-        <Grid item xs={12} md={8}>
-          <Toolbar />
-          <Stack
-            direction='column'
-            alignItems='center'
-            spacing={1}
-            sx={{ marginBottom: 4 }}
-          >
-            <Typography
-              component='h1'
-              variant='h4'
-              align='center'
-              color='secondary'
-              style={{ fontWeight: 600 }}
-            >
-              หน้าหลัก
-            </Typography>
-          </Stack>
-          <Stack direction='column' alignItems='center' spacing={2}>
-            {menuItems.map((menuItem: any, index: any) => (
-              <Button
-                key={index}
-                size='large'
-                color='secondary'
-                variant={
-                  isExternalLink(menuItem.url) ? 'outlined' : 'contained'
-                }
-                endIcon={
-                  isExternalLink(menuItem.url) ? (
-                    <LaunchIcon />
-                  ) : (
-                    <ChevronRightIcon />
-                  )
-                }
-                fullWidth
-                style={{
-                  textAlign: 'left',
-                  justifyContent: 'flex-start',
-                }}
-                onClick={() => handleClickMenuItem(menuItem.url)}
-              >
-                {menuItem.text}
-              </Button>
-            ))}
-          </Stack>
-        </Grid>
+        {renderContent()}
       </Grid>
     </Container>
   )

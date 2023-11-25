@@ -50,7 +50,7 @@ function authenticateWithDopa(userInfo: any) {
       )
     } catch (err) {
       dispatch({ type: LOAD_AUTHENTICATE_WITH_DOPA_FAILURE })
-      handleApiError(err, dispatch)
+      handleApiError(err, dispatch, 'พิสูจน์ตัวจริงกับกรมการปกครองไม่สำเร็จ')
     }
   }
 }
@@ -84,7 +84,7 @@ function resetPassword(userInfo: any, dopaToken: string) {
       dispatch(push(`${PATH}`))
     } catch (err) {
       dispatch({ type: RESET_PASSWORD_FAILURE })
-      handleApiError(err, dispatch)
+      handleApiError(err, dispatch, 'ตั้งรหัสผ่านใหม่ไม่สำเร็จ')
     }
   }
 }
