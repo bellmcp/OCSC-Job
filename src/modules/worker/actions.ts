@@ -80,15 +80,10 @@ function loadOCSCServices() {
       })
     } catch (err) {
       dispatch({ type: LOAD_OCSC_SEVICES_FAILURE })
-      dispatch(
-        uiActions.setFlashMessage(
-          `โหลดรายชื่อบริการของสำนักงาน ก.พ. ไม่สำเร็จ เกิดข้อผิดพลาด ${get(
-            err,
-            'response.status',
-            'บางอย่าง'
-          )}`,
-          'error'
-        )
+      handleApiError(
+        err,
+        dispatch,
+        'โหลดรายชื่อบริการของสำนักงาน ก.พ. ไม่สำเร็จ'
       )
     }
   }
@@ -120,15 +115,10 @@ function loadWorkerPermissions(ministryid: number, departmentid: number) {
       })
     } catch (err) {
       dispatch({ type: LOAD_WORKER_PERMISSIONS_FAILURE })
-      dispatch(
-        uiActions.setFlashMessage(
-          `โหลดรายชื่อสิทธิ์ของผู้ปฏิบัติงานไม่สำเร็จ เกิดข้อผิดพลาด ${get(
-            err,
-            'response.status',
-            'บางอย่าง'
-          )}`,
-          'error'
-        )
+      handleApiError(
+        err,
+        dispatch,
+        'โหลดรายชื่อสิทธิ์ของผู้ปฏิบัติงานไม่สำเร็จ'
       )
     }
   }
@@ -157,7 +147,7 @@ function enableWorkerPermission(agencyId: number, ocscServiceId: number) {
       dispatch(uiActions.setFlashMessage('เพิ่มสิทธิ์เรียบร้อยแล้ว', 'success'))
     } catch (err) {
       dispatch({ type: ENABLE_WORKER_PERMISSION_FAILURE })
-      handleApiError(err, dispatch)
+      handleApiError(err, dispatch, 'เพิ่มสิทธิ์ของผู้ปฏิบัติงานไม่สำเร็จ')
       dispatch(push(`${PATH}`))
     }
   }
@@ -183,7 +173,7 @@ function disableWorkerPermission(agencyId: number, ocscServiceId: number) {
       dispatch(uiActions.setFlashMessage('ยกเลิกสิทธิ์เรียบร้อยแล้ว', 'info'))
     } catch (err) {
       dispatch({ type: DISABLE_WORKER_PERMISSION_FAILURE })
-      handleApiError(err, dispatch)
+      handleApiError(err, dispatch, 'ยกเลิกสิทธิ์ของผู้ปฏิบัติงานไม่สำเร็จ')
       dispatch(push(`${PATH}`))
     }
   }
@@ -216,16 +206,7 @@ function loadWorkerAccounts(ministryid: number, departmentid: number) {
       })
     } catch (err) {
       dispatch({ type: LOAD_WORKER_ACCOUNTS_FAILURE })
-      dispatch(
-        uiActions.setFlashMessage(
-          `โหลดรายชื่อผู้ปฏิบัติงานไม่สำเร็จ เกิดข้อผิดพลาด ${get(
-            err,
-            'response.status',
-            'บางอย่าง'
-          )}`,
-          'error'
-        )
-      )
+      handleApiError(err, dispatch, 'โหลดรายชื่อผู้ปฏิบัติงานไม่สำเร็จ')
     }
   }
 }
@@ -262,7 +243,7 @@ function addWorkerAccount(userInfo: any, successCallback: any) {
       dispatch(loadWorkerAccounts(userInfo.ministryId, userInfo.departmentId))
     } catch (err) {
       dispatch({ type: ADD_WORKER_ACCOUNT_FAILURE })
-      handleApiError(err, dispatch)
+      handleApiError(err, dispatch, 'เพิ่มผู้ปฏิบัติงานไม่สำเร็จ')
     }
   }
 }
@@ -303,7 +284,7 @@ function editWorkerAccount(
       dispatch(loadWorkerAccounts(ministryId, departmentId))
     } catch (err) {
       dispatch({ type: EDIT_WORKER_ACCOUNT_FAILURE })
-      handleApiError(err, dispatch)
+      handleApiError(err, dispatch, 'แก้ไขผู้ปฏิบัติงานไม่สำเร็จ')
     }
   }
 }
@@ -333,7 +314,7 @@ function deleteWorkerAccount(
       dispatch(loadWorkerAccounts(ministryId, departmentId))
     } catch (err) {
       dispatch({ type: DELETE_WORKER_ACCOUNT_FAILURE })
-      handleApiError(err, dispatch)
+      handleApiError(err, dispatch, 'ลบผู้ปฏิบัติงานไม่สำเร็จ')
     }
   }
 }

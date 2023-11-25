@@ -50,7 +50,7 @@ function authenticateWithDopa(userInfo: any) {
       )
     } catch (err) {
       dispatch({ type: LOAD_AUTHENTICATE_WITH_DOPA_FAILURE })
-      handleApiError(err, dispatch)
+      handleApiError(err, dispatch, 'พิสูจน์ตัวจริงกับกรมการปกครองไม่สำเร็จ')
     }
   }
 }
@@ -95,7 +95,7 @@ function register(userInfo: any, dopaToken: string) {
       dispatch(push(`${PATH}`))
     } catch (err) {
       dispatch({ type: LOAD_REGISTER_FAILURE })
-      handleApiError(err, dispatch)
+      handleApiError(err, dispatch, 'สมัครสมาชิกไม่สำเร็จ')
     }
   }
 }
