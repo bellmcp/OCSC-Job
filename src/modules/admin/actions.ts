@@ -3,7 +3,6 @@ import axios from 'axios'
 import * as uiActions from 'modules/ui/actions'
 import { handleApiError } from 'utils/error'
 import { push } from 'connected-react-router'
-import { get } from 'lodash'
 import { getCookie } from 'utils/cookies'
 
 const PATH = process.env.REACT_APP_BASE_PATH
@@ -74,15 +73,10 @@ function loadOCSCServices() {
       })
     } catch (err) {
       dispatch({ type: LOAD_OCSC_SEVICES_FAILURE })
-      dispatch(
-        uiActions.setFlashMessage(
-          `โหลดรายชื่อบริการของสำนักงาน ก.พ. ไม่สำเร็จ เกิดข้อผิดพลาด ${get(
-            err,
-            'response.status',
-            'บางอย่าง'
-          )}`,
-          'error'
-        )
+      handleApiError(
+        err,
+        dispatch,
+        'โหลดรายชื่อบริการของสำนักงาน ก.พ. ไม่สำเร็จ'
       )
     }
   }
@@ -110,16 +104,7 @@ function loadAdminPermissions() {
       })
     } catch (err) {
       dispatch({ type: LOAD_ADMIN_PERMISSIONS_FAILURE })
-      dispatch(
-        uiActions.setFlashMessage(
-          `โหลดรายชื่อสิทธิ์ของหน่วยงานไม่สำเร็จ เกิดข้อผิดพลาด ${get(
-            err,
-            'response.status',
-            'บางอย่าง'
-          )}`,
-          'error'
-        )
-      )
+      handleApiError(err, dispatch, 'โหลดรายชื่อสิทธิ์ของหน่วยงานไม่สำเร็จ')
     }
   }
 }
@@ -147,7 +132,7 @@ function enableAdminPermission(departmentId: number, ocscServiceId: number) {
       dispatch(uiActions.setFlashMessage('เพิ่มสิทธิ์เรียบร้อยแล้ว', 'success'))
     } catch (err) {
       dispatch({ type: ENABLE_ADMIN_PERMISSION_FAILURE })
-      handleApiError(err, dispatch)
+      handleApiError(err, dispatch, 'เพิ่มสิิทธิ์ของผู้ดูแลระบบ')
       dispatch(push(`${PATH}`))
     }
   }
@@ -173,7 +158,7 @@ function disableAdminPermission(departmentId: number, ocscServiceId: number) {
       dispatch(uiActions.setFlashMessage('ยกเลิกสิทธิ์เรียบร้อยแล้ว', 'info'))
     } catch (err) {
       dispatch({ type: DISABLE_ADMIN_PERMISSION_FAILURE })
-      handleApiError(err, dispatch)
+      handleApiError(err, dispatch, 'ยกเลิกสิิทธิ์ของผู้ดูแลระบบ')
       dispatch(push(`${PATH}`))
     }
   }
@@ -206,16 +191,7 @@ function loadAdminAccounts(ministryid: number, departmentid: number) {
       })
     } catch (err) {
       dispatch({ type: LOAD_ADMIN_ACCOUNTS_FAILURE })
-      dispatch(
-        uiActions.setFlashMessage(
-          `โหลดรายชื่อผู้ดูแลระบบไม่สำเร็จ เกิดข้อผิดพลาด ${get(
-            err,
-            'response.status',
-            'บางอย่าง'
-          )}`,
-          'error'
-        )
-      )
+      handleApiError(err, dispatch, 'โหลดรายชื่อผู้ดูแลระบบไม่สำเร็จ')
     }
   }
 }
@@ -252,7 +228,7 @@ function addAdminAccount(userInfo: any, successCallback: any) {
       dispatch(loadAdminAccounts(userInfo.ministryId, userInfo.departmentId))
     } catch (err) {
       dispatch({ type: ADD_ADMIN_ACCOUNT_FAILURE })
-      handleApiError(err, dispatch)
+      handleApiError(err, dispatch, 'เพิ่มผู้ดูแลระบบไม่สำเร็จ')
     }
   }
 }
@@ -293,7 +269,7 @@ function editAdminAccount(
       dispatch(loadAdminAccounts(ministryId, departmentId))
     } catch (err) {
       dispatch({ type: EDIT_ADMIN_ACCOUNT_FAILURE })
-      handleApiError(err, dispatch)
+      handleApiError(err, dispatch, 'แก้ไขผู้ดูแลระบบไม่สำเร็จ')
     }
   }
 }

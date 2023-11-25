@@ -202,7 +202,7 @@ export default function WorkerAccount() {
 
   const renderSearchResult = () => {
     if (isLoading) {
-      return <Loading height={300}></Loading>
+      return <Loading height={800}></Loading>
     } else {
       return (
         <Box mb={4}>
