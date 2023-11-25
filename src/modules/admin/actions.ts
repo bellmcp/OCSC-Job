@@ -261,7 +261,8 @@ function editAdminAccount(
   userInfo: any,
   adminId: number,
   ministryId: number,
-  departmentId: number
+  departmentId: number,
+  successCallback: any
 ) {
   return async (dispatch: any) => {
     dispatch({ type: EDIT_ADMIN_ACCOUNT_REQUEST })
@@ -288,6 +289,7 @@ function editAdminAccount(
       dispatch(
         uiActions.setFlashMessage('แก้ไขผู้ดูแลระบบเรียบร้อยแล้ว', 'success')
       )
+      successCallback()
       dispatch(loadAdminAccounts(ministryId, departmentId))
     } catch (err) {
       dispatch({ type: EDIT_ADMIN_ACCOUNT_FAILURE })
@@ -299,7 +301,8 @@ function editAdminAccount(
 function deleteAdminAccount(
   adminId: number,
   ministryId: number,
-  departmentId: number
+  departmentId: number,
+  successCallback: any
 ) {
   return async (dispatch: any) => {
     dispatch({ type: DELETE_ADMIN_ACCOUNT_REQUEST })
@@ -316,6 +319,7 @@ function deleteAdminAccount(
       dispatch(
         uiActions.setFlashMessage('ลบผู้ดูแลระบบเรียบร้อยแล้ว', 'success')
       )
+      successCallback()
       dispatch(loadAdminAccounts(ministryId, departmentId))
     } catch (err) {
       dispatch({ type: DELETE_ADMIN_ACCOUNT_FAILURE })

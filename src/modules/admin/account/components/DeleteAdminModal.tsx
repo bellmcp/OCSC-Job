@@ -22,8 +22,14 @@ export default function DeleteAdminModal({
   const dispatch = useDispatch()
 
   const handleAccept = () => {
-    dispatch(adminActions.deleteAdminAccount(data.id, ministryId, departmentId))
-    handleClose()
+    dispatch(
+      adminActions.deleteAdminAccount(
+        data.id,
+        ministryId,
+        departmentId,
+        handleClose
+      )
+    )
   }
 
   return (

@@ -17,6 +17,7 @@ import {
 } from './actions'
 const initialState = {
   isLoading: false,
+  isSubmitting: false,
   isPermissionLoading: false,
   ocscServices: [],
   adminPermissions: [],
@@ -32,9 +33,9 @@ export default function (state = initialState, action: any) {
     case LOAD_ADMIN_ACCOUNTS_REQUEST:
       return { ...state, isLoading: true, adminAccounts: [] }
     case ADD_ADMIN_ACCOUNT_REQUEST:
-      return { ...state, isLoading: true }
+      return { ...state, isSubmitting: true }
     case EDIT_ADMIN_ACCOUNT_REQUEST:
-      return { ...state, isLoading: true }
+      return { ...state, isSubmitting: true }
     case LOAD_OCSC_SEVICES_SUCCESS:
       return {
         ...state,
@@ -56,12 +57,12 @@ export default function (state = initialState, action: any) {
     case ADD_ADMIN_ACCOUNT_SUCCESS:
       return {
         ...state,
-        isLoading: false,
+        isSubmitting: false,
       }
     case EDIT_ADMIN_ACCOUNT_SUCCESS:
       return {
         ...state,
-        isLoading: false,
+        isSubmitting: false,
       }
     case LOAD_ADMIN_ACCOUNTS_FAILURE:
       return {
@@ -71,12 +72,12 @@ export default function (state = initialState, action: any) {
     case ADD_ADMIN_ACCOUNT_FAILURE:
       return {
         ...state,
-        isLoading: false,
+        isSubmitting: false,
       }
     case EDIT_ADMIN_ACCOUNT_FAILURE:
       return {
         ...state,
-        isLoading: false,
+        isSubmitting: false,
       }
     case LOAD_ADMIN_PERMISSIONS_FAILURE:
       return { ...state, isPermissionLoading: false }
