@@ -11,6 +11,7 @@ import {
   Grid,
   Container,
   Chip,
+  useMediaQuery,
 } from '@material-ui/core'
 import { Stack } from '@mui/material'
 import { useTheme } from '@material-ui/core/styles'
@@ -30,6 +31,7 @@ export default function Home() {
   const dispatch = useDispatch()
   const history = useHistory()
   const theme = useTheme()
+  const matches = useMediaQuery(theme.breakpoints.up('md'))
 
   const { roles = [] } = useSelector((state: any) => state.info)
   const { menuItems = [], isLoading = false } = useSelector(
@@ -144,7 +146,12 @@ export default function Home() {
     <Container maxWidth='md'>
       <Grid container style={{ paddingBlock: 128 }} spacing={6}>
         <Grid container item xs={12} md={4}>
-          <Stack direction='column' alignItems='flex-start' spacing={4}>
+          <Stack
+            direction='column'
+            alignItems={matches ? 'flex-start' : 'center'}
+            spacing={4}
+            width='100%'
+          >
             <Avatar
               src={profileImage}
               style={{
@@ -155,12 +162,17 @@ export default function Home() {
                   '0 2px 4px -2px rgba(0,0,0,0.24), 0 4px 24px -2px rgba(0, 0, 0, 0.2)',
               }}
             />
-            <Stack direction='column' spacing={1} alignItems='flex-start'>
+            <Stack
+              direction='column'
+              spacing={1}
+              alignItems={matches ? 'flex-start' : 'center'}
+            >
               <Typography
                 component='h1'
                 variant='h5'
                 color='textPrimary'
-                style={{ fontWeight: 600 }}
+                align={matches ? 'left' : 'center'}
+                style={{ fontWeight: 600, lineHeight: 1.2 }}
               >
                 {fullnameLabel}
               </Typography>
@@ -175,12 +187,18 @@ export default function Home() {
                   color: getChipColorByRole(role),
                 }}
               />
-              <Typography variant='body1' color='textSecondary'>
+              <Typography
+                variant='body1'
+                color='textSecondary'
+                align={matches ? 'left' : 'center'}
+                style={{ lineHeight: 1.2 }}
+              >
                 {ministry}
               </Typography>
               <Typography
                 variant='body1'
                 color='textSecondary'
+                align={matches ? 'left' : 'center'}
                 style={{ lineHeight: 1.2 }}
               >
                 {department}
