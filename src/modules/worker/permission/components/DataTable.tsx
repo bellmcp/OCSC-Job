@@ -54,6 +54,8 @@ export default function DataTable({
   ocscServices,
   workerPermissions,
   isPermissionLoading,
+  ministryId,
+  departmentId,
 }: any) {
   const classes = useStyles()
 
@@ -160,6 +162,8 @@ export default function DataTable({
                       permission={permission}
                       agencyId={workerPermission.id}
                       ocscServiceId={getOCSCServiceIdByIndex(index)}
+                      ministryId={ministryId}
+                      departmentId={departmentId}
                     />
                   </StyledTableCell>
                 )

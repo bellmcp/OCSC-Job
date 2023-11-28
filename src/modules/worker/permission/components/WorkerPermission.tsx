@@ -133,6 +133,8 @@ export default function WorkerPermission() {
           ocscServices={ocscServices}
           workerPermissions={workerPermissions}
           isPermissionLoading={isPermissionLoading}
+          ministryId={ministryId}
+          departmentId={departmentId}
         />
       )
     }

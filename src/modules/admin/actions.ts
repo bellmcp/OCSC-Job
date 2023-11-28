@@ -2,10 +2,7 @@
 import axios from 'axios'
 import * as uiActions from 'modules/ui/actions'
 import { handleApiError } from 'utils/error'
-import { push } from 'connected-react-router'
 import { getCookie } from 'utils/cookies'
-
-const PATH = process.env.REACT_APP_BASE_PATH
 
 const LOAD_OCSC_SEVICES_REQUEST = 'ocsc-job/admin/LOAD_OCSC_SEVICES_REQUEST'
 const LOAD_OCSC_SEVICES_SUCCESS = 'ocsc-job/admin/LOAD_OCSC_SEVICES_SUCCESS'
@@ -132,8 +129,8 @@ function enableAdminPermission(departmentId: number, ocscServiceId: number) {
       dispatch(uiActions.setFlashMessage('เพิ่มสิทธิ์เรียบร้อยแล้ว', 'success'))
     } catch (err) {
       dispatch({ type: ENABLE_ADMIN_PERMISSION_FAILURE })
-      handleApiError(err, dispatch, 'เพิ่มสิิทธิ์ของผู้ดูแลระบบ')
-      dispatch(push(`${PATH}`))
+      handleApiError(err, dispatch, 'เพิ่มสิทธิ์ของหน่วยงานไม่สำเร็จ')
+      dispatch(loadAdminPermissions())
     }
   }
 }
@@ -158,8 +155,8 @@ function disableAdminPermission(departmentId: number, ocscServiceId: number) {
       dispatch(uiActions.setFlashMessage('ยกเลิกสิทธิ์เรียบร้อยแล้ว', 'info'))
     } catch (err) {
       dispatch({ type: DISABLE_ADMIN_PERMISSION_FAILURE })
-      handleApiError(err, dispatch, 'ยกเลิกสิิทธิ์ของผู้ดูแลระบบ')
-      dispatch(push(`${PATH}`))
+      handleApiError(err, dispatch, 'ยกเลิกสิทธิ์ของหน่วยงานไม่สำเร็จ')
+      dispatch(loadAdminPermissions())
     }
   }
 }

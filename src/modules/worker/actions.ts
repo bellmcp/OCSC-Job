@@ -2,10 +2,7 @@
 import axios from 'axios'
 import * as uiActions from 'modules/ui/actions'
 import { handleApiError } from 'utils/error'
-import { push } from 'connected-react-router'
 import { getCookie } from 'utils/cookies'
-
-const PATH = process.env.REACT_APP_BASE_PATH
 
 const LOAD_OCSC_SEVICES_REQUEST = 'ocsc-job/worker/LOAD_OCSC_SEVICES_REQUEST'
 const LOAD_OCSC_SEVICES_SUCCESS = 'ocsc-job/worker/LOAD_OCSC_SEVICES_SUCCESS'
@@ -123,7 +120,12 @@ function loadWorkerPermissions(ministryid: number, departmentid: number) {
   }
 }
 
-function enableWorkerPermission(agencyId: number, ocscServiceId: number) {
+function enableWorkerPermission(
+  agencyId: number,
+  ocscServiceId: number,
+  ministryId: number,
+  departmentId: number
+) {
   return async (dispatch: any) => {
     dispatch({ type: ENABLE_WORKER_PERMISSION_REQUEST })
     const token = getCookie('token')
@@ -147,12 +149,17 @@ function enableWorkerPermission(agencyId: number, ocscServiceId: number) {
     } catch (err) {
       dispatch({ type: ENABLE_WORKER_PERMISSION_FAILURE })
       handleApiError(err, dispatch, 'เพิ่มสิทธิ์ของผู้ปฏิบัติงานไม่สำเร็จ')
-      dispatch(push(`${PATH}`))
+      dispatch(loadWorkerPermissions(ministryId, departmentId))
     }
   }
 }
 
-function disableWorkerPermission(agencyId: number, ocscServiceId: number) {
+function disableWorkerPermission(
+  agencyId: number,
+  ocscServiceId: number,
+  ministryId: number,
+  departmentId: number
+) {
   return async (dispatch: any) => {
     dispatch({ type: DISABLE_WORKER_PERMISSION_REQUEST })
     const token = getCookie('token')
@@ -173,7 +180,7 @@ function disableWorkerPermission(agencyId: number, ocscServiceId: number) {
     } catch (err) {
       dispatch({ type: DISABLE_WORKER_PERMISSION_FAILURE })
       handleApiError(err, dispatch, 'ยกเลิกสิทธิ์ของผู้ปฏิบัติงานไม่สำเร็จ')
-      dispatch(push(`${PATH}`))
+      dispatch(loadWorkerPermissions(ministryId, departmentId))
     }
   }
 }

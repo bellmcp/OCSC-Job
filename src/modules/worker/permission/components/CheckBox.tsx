@@ -10,6 +10,8 @@ export default function CheckBox({
   permission,
   agencyId,
   ocscServiceId,
+  ministryId,
+  departmentId,
 }: any) {
   const [checked, setChecked] = useState<boolean>(false)
   const dispatch = useDispatch()
@@ -17,9 +19,23 @@ export default function CheckBox({
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setChecked(event.target.checked)
     if (event.target.checked) {
-      dispatch(workerActions.enableWorkerPermission(agencyId, ocscServiceId))
+      dispatch(
+        workerActions.enableWorkerPermission(
+          agencyId,
+          ocscServiceId,
+          ministryId,
+          departmentId
+        )
+      )
     } else {
-      dispatch(workerActions.disableWorkerPermission(agencyId, ocscServiceId))
+      dispatch(
+        workerActions.disableWorkerPermission(
+          agencyId,
+          ocscServiceId,
+          ministryId,
+          departmentId
+        )
+      )
     }
   }
 

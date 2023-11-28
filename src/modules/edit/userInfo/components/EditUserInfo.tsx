@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
 import { useHistory } from 'react-router-dom'
-import { format } from 'date-fns'
 import { get } from 'lodash'
 
 import {
