@@ -97,6 +97,7 @@ export default function AddWorkerModal({
           {
             ...values,
             nationalId: values.nationalId.replaceAll('-', '') || '',
+            ministryId,
             departmentId,
           },
           onCloseModal
