@@ -269,12 +269,7 @@ export default function EditUserInfo() {
                       color='secondary'
                       style={{ fontWeight: 500 }}
                     >
-                      {userInfo.birthDate
-                        ? format(
-                            new Date(userInfo.birthDate),
-                            'dd/MM/yyyy'
-                          ).toString()
-                        : ''}
+                      {userInfo.birthDatePrint || ''}
                     </Typography>
                   </Grid>
                 </Grid>
