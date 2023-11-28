@@ -29,7 +29,7 @@ function loadMenuItems() {
       })
     } catch (err) {
       dispatch({ type: LOAD_MENU_ITEMS_FAILURE })
-      handleApiError(err, dispatch, 'โหลดรายชื่อเมนูไม่สำเร็จ')
+      handleApiError(err, dispatch, 'โหลดข้อมูลเมนูไม่สำเร็จ')
     }
   }
 }

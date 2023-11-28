@@ -79,7 +79,7 @@ function loadOCSCServices() {
       handleApiError(
         err,
         dispatch,
-        'โหลดรายชื่อบริการของสำนักงาน ก.พ. ไม่สำเร็จ'
+        'โหลดข้อมูลบริการของสำนักงาน ก.พ. ไม่สำเร็จ'
       )
     }
   }
@@ -111,11 +111,7 @@ function loadWorkerPermissions(ministryid: number, departmentid: number) {
       })
     } catch (err) {
       dispatch({ type: LOAD_WORKER_PERMISSIONS_FAILURE })
-      handleApiError(
-        err,
-        dispatch,
-        'โหลดรายชื่อสิทธิ์ของผู้ปฏิบัติงานไม่สำเร็จ'
-      )
+      handleApiError(err, dispatch, 'โหลดข้อมูลสิทธิ์ของผู้ปฏิบัติงานไม่สำเร็จ')
     }
   }
 }
@@ -212,7 +208,7 @@ function loadWorkerAccounts(ministryid: number, departmentid: number) {
       })
     } catch (err) {
       dispatch({ type: LOAD_WORKER_ACCOUNTS_FAILURE })
-      handleApiError(err, dispatch, 'โหลดรายชื่อผู้ปฏิบัติงานไม่สำเร็จ')
+      handleApiError(err, dispatch, 'โหลดข้อมูลผู้ปฏิบัติงานไม่สำเร็จ')
     }
   }
 }

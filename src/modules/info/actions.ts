@@ -40,7 +40,7 @@ function loadMininstries() {
       })
     } catch (err) {
       dispatch({ type: LOAD_MINISTRIES_FAILURE })
-      handleApiError(err, dispatch, 'โหลดรายชื่อกระทรวงทั้งหมดไม่สำเร็จ')
+      handleApiError(err, dispatch, 'โหลดข้อมูลกระทรวงทั้งหมดไม่สำเร็จ')
     }
   }
 }
@@ -61,7 +61,7 @@ function loadDepartments() {
       })
     } catch (err) {
       dispatch({ type: LOAD_DEPARTMENTS_FAILURE })
-      handleApiError(err, dispatch, 'โหลดรายชื่อกรมทั้งหมดไม่สำเร็จ')
+      handleApiError(err, dispatch, 'โหลดข้อมูลกรมทั้งหมดไม่สำเร็จ')
     }
   }
 }
@@ -85,7 +85,7 @@ function loadDepartmentsByMinistryId(ministryId: number) {
       handleApiError(
         err,
         dispatch,
-        `โหลดรายชื่อกรมทั้งหมดในกระทรวง ${ministryId} ไม่สำเร็จ`
+        `โหลดข้อมูลกรมทั้งหมดในกระทรวง ${ministryId} ไม่สำเร็จ`
       )
     }
   }
@@ -128,7 +128,7 @@ function loadRoles() {
       })
     } catch (err) {
       dispatch({ type: LOAD_ROLES_FAILURE })
-      handleApiError(err, dispatch, 'โหลดรายชื่อบทบาทไม่สำเร็จ')
+      handleApiError(err, dispatch, 'โหลดข้อมูลบทบาทไม่สำเร็จ')
     }
   }
 }
