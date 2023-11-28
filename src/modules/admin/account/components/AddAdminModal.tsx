@@ -84,7 +84,7 @@ export default function AddAdminModal({
   const validationSchema = yup.object({})
   const formik = useFormik({
     initialValues: {
-      role: 'worker',
+      role: 'administrator',
       nationalId: '',
       title: '',
       firstName: '',
