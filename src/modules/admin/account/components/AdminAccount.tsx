@@ -28,6 +28,7 @@ import {
   Select,
   MenuItem,
 } from '@material-ui/core'
+import { Stack } from '@mui/material'
 
 import {
   KeyboardArrowUp as KeyboardArrowUpIcon,
@@ -232,19 +233,24 @@ export default function AdminAccount() {
             spacing={2}
           >
             <Grid item xs={6}>
-              <Button
-                variant='text'
-                color='primary'
-                onClick={onBack}
-                style={{ marginLeft: '-8px', marginBottom: 12 }}
-                startIcon={<ChevronLeftIcon />}
-              >
-                กลับ
-              </Button>
+              <Stack alignItems={!matches ? 'center' : 'start'}>
+                <div>
+                  <Button
+                    variant='text'
+                    color='primary'
+                    onClick={onBack}
+                    style={{ marginLeft: '-8px', marginBottom: 12 }}
+                    startIcon={<ChevronLeftIcon />}
+                  >
+                    กลับ
+                  </Button>
+                </div>
+              </Stack>
               <Typography
                 component='h1'
                 variant='h4'
                 color='secondary'
+                align={!matches ? 'center' : 'left'}
                 style={{ fontWeight: 600 }}
               >
                 ผู้ดูแลระบบ

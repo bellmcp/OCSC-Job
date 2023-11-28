@@ -38,10 +38,7 @@ const PATH = process.env.REACT_APP_BASE_PATH
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     content: {
-      padding: theme.spacing(4, 0),
-      [theme.breakpoints.down('sm')]: {
-        padding: theme.spacing(4, 4),
-      },
+      padding: theme.spacing(4, 4),
     },
     sectionTitle: {
       fontSize: '1.7rem',
@@ -183,12 +180,11 @@ export default function WorkerPermission() {
               padding: 24,
               boxShadow: '0 0 20px 0 rgba(204,242,251,0.3)',
               border: '1px solid rgb(204 242 251)',
-              width: '50%',
             }}
           >
             <Grid container spacing={2}>
               <Grid container item direction='row' alignItems='center'>
-                <Grid xs={12} md={4}>
+                <Grid xs={12} md={2}>
                   <Typography
                     variant='body1'
                     color='textPrimary'
@@ -197,7 +193,7 @@ export default function WorkerPermission() {
                     กระทรวง
                   </Typography>
                 </Grid>
-                <Grid xs={12} md={8}>
+                <Grid xs={12} md={4}>
                   <FormControl fullWidth size='small'>
                     <Select
                       disabled={role !== 'ocsc'}
@@ -243,7 +239,7 @@ export default function WorkerPermission() {
                 </Grid>
               </Grid>
               <Grid container item direction='row' alignItems='center'>
-                <Grid xs={12} md={4}>
+                <Grid xs={12} md={2}>
                   <Typography
                     variant='body1'
                     color='textPrimary'
@@ -252,7 +248,7 @@ export default function WorkerPermission() {
                     กรมต้นสังกัด
                   </Typography>
                 </Grid>
-                <Grid xs={12} md={8}>
+                <Grid xs={12} md={4}>
                   <FormControl fullWidth size='small'>
                     <Select
                       disabled={role !== 'ocsc'}

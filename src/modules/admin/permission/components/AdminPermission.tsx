@@ -20,10 +20,7 @@ const PATH = process.env.REACT_APP_BASE_PATH
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     content: {
-      padding: theme.spacing(4, 0),
-      [theme.breakpoints.down('sm')]: {
-        padding: theme.spacing(4, 4),
-      },
+      padding: theme.spacing(4, 4),
     },
     sectionTitle: {
       fontSize: '1.7rem',
