@@ -79,7 +79,7 @@ export default function EditWorkerModal({
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
-      role: 'worker',
+      role: 'user',
       nationalId: get(data, 'nationalId', ''),
       title: get(data, 'title', ''),
       firstName: get(data, 'firstName', ''),

@@ -190,7 +190,7 @@ function loadWorkerAccounts(ministryid: number, departmentid: number) {
         params: {
           ministryid,
           departmentid,
-          role: 'worker',
+          role: 'user',
         },
         baseURL: process.env.REACT_APP_PORTAL_API_URL,
         headers: {

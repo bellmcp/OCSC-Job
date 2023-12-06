@@ -58,7 +58,7 @@ export default function Home() {
         return amber[800]
       case 'administrator':
         return theme.palette.secondary.main
-      case 'worker':
+      case 'user':
         return theme.palette.primary.main
     }
   }

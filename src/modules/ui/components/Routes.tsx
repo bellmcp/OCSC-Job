@@ -56,11 +56,11 @@ export default function Routes() {
         component={AdminPermission}
         path={`${PATH}/administrator-permission`}
       />
-      <PrivateRoute exact component={WorkerAccount} path={`${PATH}/worker`} />
+      <PrivateRoute exact component={WorkerAccount} path={`${PATH}/user`} />
       <PrivateRoute
         exact
         component={WorkerPermission}
-        path={`${PATH}/worker-permission`}
+        path={`${PATH}/user-permission`}
       />
       <Redirect to={`${PATH}`}></Redirect>
       <Route>

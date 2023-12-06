@@ -84,7 +84,7 @@ export default function AddWorkerModal({
   const validationSchema = yup.object({})
   const formik = useFormik({
     initialValues: {
-      role: 'worker',
+      role: 'user',
       nationalId: '',
       title: '',
       firstName: '',
