@@ -228,6 +228,8 @@ export default function NavBar() {
     eraseCookie('departmentId')
     eraseCookie('id')
     eraseCookie('seal')
+    eraseCookie('contact') // for accreditation-admin
+    eraseCookie('workplace') // for accreditation-admin
     dispatch(uiActions.setFlashMessage('ออกจากระบบเรียบร้อยแล้ว', 'success'))
     setTimeout(() => {
       history.push(`${PATH}/login`)
