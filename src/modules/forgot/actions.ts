@@ -60,7 +60,7 @@ function resetPassword(userInfo: any, dopaToken: string) {
     dispatch({ type: RESET_PASSWORD_REQUEST })
     try {
       const result = await axios.post(
-        '/resetpassword',
+        'agencies/resetpassword',
         {
           password1: userInfo.password1,
           password2: userInfo.password2,
