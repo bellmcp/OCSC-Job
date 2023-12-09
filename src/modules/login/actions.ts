@@ -49,6 +49,8 @@ function loadLogin(userInfo: any) {
       setCookie('ministryId', get(result, 'data.ministryId', ''), 3)
       setCookie('department', String(get(result, 'data.department', 0)), 3)
       setCookie('departmentId', get(result, 'data.departmentId', ''), 3)
+      setCookie('workplace', String(get(result, 'data.workplace', 0)), 3) // for accreditation gov
+      setCookie('contact', get(result, 'data.contact', ''), 3) // for accreditation gov
       dispatch(push(`${PATH}`))
       dispatch(uiActions.setFlashMessage('เข้าสู่ระบบเรียบร้อยแล้ว', 'success'))
     } catch (err) {
