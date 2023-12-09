@@ -90,7 +90,7 @@ function loadWorkerPermissions(ministryid: number, departmentid: number) {
     dispatch({ type: LOAD_WORKER_PERMISSIONS_REQUEST })
     const token = getCookie('token')
     try {
-      var { data } = await axios.get('/workerpermissions', {
+      var { data } = await axios.get('/userpermissions', {
         params: {
           ministryid,
           departmentid,
@@ -127,7 +127,7 @@ function enableWorkerPermission(
     const token = getCookie('token')
     try {
       const result = await axios.post(
-        '/workerpermissions',
+        '/userpermissions',
         {
           agencyId,
           ocscServiceId,
@@ -160,7 +160,7 @@ function disableWorkerPermission(
     dispatch({ type: DISABLE_WORKER_PERMISSION_REQUEST })
     const token = getCookie('token')
     try {
-      const result = await axios.delete('/workerpermissions', {
+      const result = await axios.delete('/userpermissions', {
         baseURL: process.env.REACT_APP_PORTAL_API_URL,
         headers: {
           Authorization: `Bearer ${token}`,
