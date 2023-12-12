@@ -5,7 +5,7 @@ import { useFormik } from 'formik'
 import * as yup from 'yup'
 import { useHistory } from 'react-router-dom'
 import MaskedInput from 'react-text-mask'
-import { format } from 'date-fns'
+import { format, add } from 'date-fns'
 import { get } from 'lodash'
 import { isLogin } from 'utils/isLogin'
 
@@ -612,7 +612,12 @@ export default function Register() {
                         style={{ fontWeight: 500 }}
                       >
                         {birthDate
-                          ? format(new Date(birthDate), 'dd/MM/yyyy').toString()
+                          ? format(
+                              add(new Date(birthDate), {
+                                years: 543,
+                              }),
+                              'dd/MM/yyyy'
+                            ).toString()
                           : ''}
                       </Typography>
                     </Grid>

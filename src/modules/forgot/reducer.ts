@@ -35,7 +35,6 @@ export default function (state = initialState, action: any) {
       return {
         ...state,
         isLoading: false,
-        dopaToken: action.payload.dopaToken,
       }
     case RESET_PASSWORD_FAILURE:
       return {
