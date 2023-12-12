@@ -42,7 +42,16 @@ export default function CustomDatePicker({ date, setDate }) {
             }
           }}
           renderInput={(params) => (
-            <TextField fullWidth size='small' {...params} color='primary' />
+            <TextField
+              fullWidth
+              size='small'
+              {...params}
+              color='primary'
+              inputProps={{
+                ...params.inputProps,
+                placeholder: 'วว/ดด/ปปปป',
+              }}
+            />
           )}
         />
       </ThemeProvider>
