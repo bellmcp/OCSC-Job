@@ -16,7 +16,7 @@ function changePassword(userInfo: any) {
     dispatch({ type: CHANGE_PASSWORD_REQUEST })
     const token = getCookie('token')
     try {
-      const result = await axios.post(
+      await axios.post(
         'agencies/changepassword',
         {
           currentPassword: userInfo.currentPassword,
@@ -34,8 +34,6 @@ function changePassword(userInfo: any) {
       dispatch(
         uiActions.setFlashMessage('เปลี่ยนรหัสผ่านสำเร็จแล้ว', 'success')
       )
-      console.log('result :>> ', result)
-      window.location.reload()
     } catch (err) {
       dispatch({ type: CHANGE_PASSWORD_FAILURE })
       handleApiError(err, dispatch, 'เปลี่ยนรหัสผ่านไม่สำเร็จ')

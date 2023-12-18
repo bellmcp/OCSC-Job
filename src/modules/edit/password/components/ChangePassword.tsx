@@ -79,6 +79,7 @@ export default function ChangePassword() {
           password2: values.password2,
         })
       )
+      changePasswordForm.resetForm()
     },
   })
 
