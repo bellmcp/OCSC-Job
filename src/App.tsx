@@ -8,9 +8,11 @@ import ScrollToTop from 'utils/ScrollToTop'
 import Layout from 'modules/ui/components/Layout'
 import META_IMAGE from './meta.jpg'
 
-const TITLE = 'ระบบบริหารจัดการสมาชิก และสิทธิ์การใช้งานของส่วนราชการ'
+const TITLE =
+  'ระบบบริหารจัดการสมาชิกและระบบ Log-in สำหรับเจ้าหน้าที่ของส่วนราชการ'
 const URL = process.env.REACT_APP_PLATFORM_URL
-const DESCRIPTION = 'ระบบบริหารจัดการสมาชิก และสิทธิ์การใช้งานของส่วนราชการ'
+const DESCRIPTION =
+  'ระบบบริหารจัดการสมาชิกและระบบ Log-in สำหรับเจ้าหน้าที่ของส่วนราชการ'
 
 const store = configureStore()
 

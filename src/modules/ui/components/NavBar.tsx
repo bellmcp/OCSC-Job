@@ -256,7 +256,8 @@ export default function NavBar() {
                 color='textPrimary'
                 style={{ fontWeight: 600 }}
               >
-                ระบบบริหารจัดการสมาชิก และสิทธิ์การใช้งานของส่วนราชการ
+                ระบบบริหารจัดการสมาชิกและระบบ Log-in
+                สำหรับเจ้าหน้าที่ของส่วนราชการ
               </Typography>
             </Hidden>
             <Hidden only={['md', 'lg', 'xl']}>

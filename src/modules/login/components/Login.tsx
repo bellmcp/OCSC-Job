@@ -137,7 +137,7 @@ export default function Login() {
               >
                 ระบบบริหารจัดการสมาชิก
                 <br />
-                และสิทธิ์การใช้งานของส่วนราชการ
+                และระบบ Log-in สำหรับเจ้าหน้าที่ของส่วนราชการ
               </Typography>
             </Grid>
             <Typography
