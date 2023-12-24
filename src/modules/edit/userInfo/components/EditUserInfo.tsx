@@ -1,5 +1,5 @@
 // @ts-nocheck
-import React, { useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
@@ -27,11 +27,14 @@ import {
   FormControl,
   Select,
   MenuItem,
+  Link,
 } from '@material-ui/core'
+import Stack from '@mui/material/Stack'
 
 import {
   ChevronRight as ChevronRightIcon,
   ChevronLeft as ChevronLeftIcon,
+  Launch as LaunchIcon,
 } from '@material-ui/icons'
 
 import * as userInfoActions from 'modules/edit/userInfo/actions'
@@ -79,7 +82,9 @@ export default function EditUserInfo() {
     dispatch(userInfoActions.loadUserInfo())
   }, [dispatch])
 
-  const { userInfo = {} } = useSelector((state: any) => state.userInfo)
+  const { userInfo = {}, uploadFile = '' } = useSelector(
+    (state: any) => state.userInfo
+  )
   const { ministries = [], departments = [] } = useSelector(
     (state: any) => state.info
   )
@@ -113,6 +118,23 @@ export default function EditUserInfo() {
     },
   })
 
+  const [file, setFile] = useState(undefined)
+
+  const handleFileInput = (e: any) => {
+    const file = e.target.files[0]
+    setFile(file)
+  }
+
+  const uploadForm = useFormik({
+    enableReinitialize: true,
+    initialValues: {
+      file,
+    },
+    onSubmit: (values) => {
+      dispatch(userInfoActions.uploadFile(file))
+    },
+  })
+
   const onBack = () => {
     history.push(`${PATH}/`)
   }
@@ -138,6 +160,13 @@ export default function EditUserInfo() {
     return get(result, 'department', '')
   }
 
+  const getAssignLetterLink = () => {
+    const assignLetter = get(userInfo, 'assignLetter', null)
+    if (uploadFile !== '') return uploadFile
+    else if (assignLetter !== null) return assignLetter
+    else return ''
+  }
+
   return (
     <>
       <Toolbar id='back-to-top-anchor' />
@@ -160,8 +189,8 @@ export default function EditUserInfo() {
           แก้ไขข้อมูลส่วนบุคคล
         </Typography>
 
-        <form onSubmit={editUserInfoForm.handleSubmit}>
-          <Box mt={2} mb={4}>
+        <Box mt={2} mb={4}>
+          <form onSubmit={editUserInfoForm.handleSubmit}>
             <Paper
               elevation={0}
               style={{
@@ -516,8 +545,69 @@ export default function EditUserInfo() {
             >
               แก้ไขข้อมูลส่วนบุคคล
             </Button>
-          </Box>
-        </form>
+          </form>
+          <form onSubmit={uploadForm.handleSubmit}>
+            <Paper
+              elevation={0}
+              style={{
+                borderRadius: 16,
+                padding: 24,
+                boxShadow: '0 0 20px 0 rgba(204,242,251,0.3)',
+                border: '1px solid rgb(204 242 251)',
+                marginTop: 48,
+              }}
+            >
+              <Typography
+                variant='body1'
+                color='textPrimary'
+                style={{ fontWeight: 600 }}
+              >
+                อัปโหลดไฟล์คำสั่งมอบหมายให้ปฏิบัติงาน (ไฟล์ PDF เท่านั้น
+                ขนาดไม่เกิน 1 MB)
+              </Typography>
+              {(get(userInfo, 'assignLetter', null) !== null ||
+                uploadFile !== '') && (
+                <Stack direction='row' spacing={1} style={{ marginTop: 16 }}>
+                  <Link
+                    color='primary'
+                    underline='hover'
+                    href={getAssignLetterLink()}
+                    target='_blank'
+                    style={{ cursor: 'pointer' }}
+                  >
+                    {getAssignLetterLink()}
+                  </Link>
+                  <LaunchIcon
+                    fontSize='small'
+                    style={{
+                      color: theme.palette.primary.main,
+                    }}
+                  />
+                </Stack>
+              )}
+              <input
+                name='file'
+                id='file'
+                type='file'
+                accept='.pdf'
+                style={{ width: '100%', marginTop: 16 }}
+                onChange={handleFileInput}
+              />
+            </Paper>
+            <Button
+              fullWidth
+              disabled={file === undefined}
+              variant='contained'
+              color='secondary'
+              size='large'
+              endIcon={<ChevronRightIcon />}
+              style={{ marginTop: 32 }}
+              type='submit'
+            >
+              อัพโหลดไฟล์
+            </Button>
+          </form>
+        </Box>
       </Container>
     </>
   )

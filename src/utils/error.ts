@@ -10,7 +10,9 @@ export const handleApiError = (
   if (!isEmpty(errorMessagefromAPI)) {
     dispatch(
       uiActions.setFlashMessage(
-        `<b>เกิดข้อผิดพลาด</b><br/>${errorMessagefromAPI}`,
+        `<b>${
+          templateMessage ? `${templateMessage} ` : ''
+        }เกิดข้อผิดพลาด</b><br/>${errorMessagefromAPI}`,
         'error'
       )
     )
