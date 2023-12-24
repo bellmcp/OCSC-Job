@@ -604,7 +604,7 @@ export default function EditUserInfo() {
               style={{ marginTop: 32 }}
               type='submit'
             >
-              อัพโหลดไฟล์
+              อัปโหลดไฟล์
             </Button>
           </form>
         </Box>
